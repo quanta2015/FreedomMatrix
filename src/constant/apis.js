@@ -6,7 +6,7 @@ if (mode === 'development') {
 }
 
 if (mode === 'production') {
-  API_SERVER = 'http://103.44.28.14:2888'
+  API_SERVER = 'http://103.44.28.14:1080'
 }
 
 export { API_SERVER }
