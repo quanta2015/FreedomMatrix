@@ -115,7 +115,7 @@ module.exports = function(webpackEnv) {
           options: {
             sourceMap: isEnvProduction && shouldUseSourceMap,
             modifyVars: { // 修改主题
-              'primary-color': '#5755d9',
+              'primary-color': '#3d74aa',
               'border-radius-base': '2px',
             },
             javascriptEnabled: true // 解决上文报错
