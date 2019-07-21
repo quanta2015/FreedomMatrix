@@ -19,9 +19,6 @@ var url = require('url')
 var port = 1080;
 var secret = 'bizsecret';
 
-//定时任务
-// scheduleScanMail();
-
 var app = express();
 
 // view engine setup
@@ -50,7 +47,16 @@ app.engine('hbs', hbs.engine);
 
 app.get('/', function(req, res, next) {
   res.sendfile(__dirname + '/index.html');
-  // res.render('index.html')
+});
+
+
+app.post('/user/reg', function(req, res, next) {
+  let data = req.body
+  console.log(data)
+  res.status(200).json({
+    code: 200,
+    msg: '保存成功'
+  })
 });
 
 

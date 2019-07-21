@@ -13,22 +13,11 @@ class UserActions extends BaseActions {
   }
 
   @action
-  saveLang(lang) {
-    this.store.cur = lang
-  }
-
-
-  @action
-  async saveAll() {
-    let langdb = clone(this.store.user.langdb)
-    let config = clone(this.store.user.config)
-    let params = {
-      langdb: langdb,
-      config: config
-    }
-    let r = await this.post(urls.API_SAVE_ALL, params, true)
+  async saveUser(params) {
+    console.log(urls.API_USER_REG)
+    let r = await this.post(urls.API_USER_REG, params, true)
     if (r && r.code === 200) {
-      message.success(r.msg)
+      console.log(r.data)
     }
   }
 

@@ -1,5 +1,6 @@
 import userStore       from 'model/user/store'
 import userActions     from 'model/user/action'
+
 import carlActions     from 'model/carl/action'
 import projectActions  from 'model/project/action'
 import styleActions    from 'model/style/action'
@@ -12,6 +13,7 @@ import configActions   from 'model/config/action'
 export default {
   userStore,
   userActions,
+  
   carlActions,
   projectActions,
   styleActions,

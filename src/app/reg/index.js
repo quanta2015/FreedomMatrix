@@ -2,7 +2,7 @@ import React from 'react'
 import { observer, inject } from 'mobx-react'
 import './index.less'
 import * as urls from 'constant/urls'
-import { Input,DatePicker,InputNumber,Select,Switch,Tabs,Button,Form  } from 'antd';
+import { Input,DatePicker,InputNumber,Select,Switch,Tabs,Button,Form,message  } from 'antd';
 import moment  from 'moment'
 
 const { Option } = Select;
@@ -12,51 +12,52 @@ const { TextArea } = Input;
 const dateFormat = 'YYYY/MM/DD';
 const monthFormat = 'YYYY/MM';
 
-@inject('carlActions', 'userStore')
+@inject('userActions', 'userStore')
 @observer
 class Reg extends React.Component {
   constructor(props) {
     super(props)
-    this.actions = props.carlActions
-    this.store = props.userStore
+    this.actions = props.userActions
+    this.store   = props.userStore
   }
 
 
   doReg = (e) =>{
-
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-      }
-
-
-      console.log('error')
-    });
-
-    // var forms = document.getElementsByClassName('m-reg-form');
-    // var validation = Array.prototype.filter.call(forms, function (form) {
-    //   console.log(form);
-
-
-    //   if (form.checkValidity() === false) {
-    //     form.classList.add('was-validated');
-    //   } else {
-        
-    //     console.log(form);
+    // this.props.form.validateFields({ force: true }, (err, values) => {
+    //   if (!err) {
+    //     console.log('Received values of form: ', values);
+    //     let pwd = values.pwd
+    //     let repwd = values.repwd
+    //     if (pwd !== repwd) {
+    //       message.success('r.msg')
+    //     }
     //   }
-    // })
+    // });
+
+
+
+    this.props.form.validateFields(async (err, values) => {
+      if (!err) {
+        let pwd = values.pwd
+        let repwd = values.repwd
+        if (pwd !== repwd) {
+          message.success('r.msg')
+        }else{
+          let r = await this.actions.saveUser(values)
+          if (r && r.code === 200) {
+            window.location.assign(`${window.location.origin}${window.location.pathname}#/home`)
+          }
+        }
+      }
+    })
   }
 
 
 
   render() {
-
     const { getFieldDecorator } = this.props.form;
-
     let tabList = [0,0,0]
-
-   
 
     return (
       <div className='g-reg'>
