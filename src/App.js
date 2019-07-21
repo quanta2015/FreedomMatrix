@@ -5,6 +5,7 @@ import * as urls from 'constant/urls.js'
 import Dashboard  from 'component/Dashboard'
 
 import home     from 'app/home'
+import reg      from 'app/reg'
 import project  from 'app/project'
 
 class App extends React.Component {
@@ -20,8 +21,9 @@ class App extends React.Component {
             <div className='app-root'>
               <Dashboard>
                 <Switch>
-                  <Route exact path='/home'    component={home}/>
-                  <Route exact path='/project' component={project}/>
+                  <Route exact path='/home'     component={home}/>
+                  <Route exact path='/project'  component={project}/>
+                  <Route exact path='/reg'      component={reg}/>
                 </Switch>
               </Dashboard>
             </div>

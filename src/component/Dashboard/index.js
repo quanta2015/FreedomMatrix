@@ -107,6 +107,11 @@ class Dashboard extends React.Component {
       <Layout className="layout">
         <Header>
           <div className="logo">自由阵</div>
+          <div className="m-reg">
+            <NavLink to='reg'>
+              <span>無料登録</span>
+            </NavLink>
+          </div>
           <div className="m-hd-desktop">
             <Menu theme='light' mode="horizontal">
               {menu.map((item,i) => {

@@ -13,8 +13,6 @@ class Home extends React.Component {
     this.store = props.userStore
   }
 
-
-
   render() {
    
     return (
