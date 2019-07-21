@@ -20,6 +20,8 @@
   .m-reg_h2 {
     padding: 5px 0;
     position: relative;
+    display: flex;
+    align-items: center;
 
     &:after {
       content: " ";
@@ -39,25 +41,36 @@
     display: flex;
     align-items: center;
     margin-bottom: 20px;
-}
+  }
 
-.m-ti {
-    width: 200px;
-    padding: 10px;
-    font-size: 12px;
-}
+  .m-ti {
+      width: 200px;
+      padding: 10px;
+      font-size: 12px;
+  }
 
-.m-co {
+  .m-co {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      flex-direction: column;
+  }
+
+  .m-gp {
+    width: 50px;
+  }
+
+  .m-tx {
+    padding: 0 10px;
+  }
+
+  .m-reg-form {
+      padding: 20px 0;
+  }
+
+
+  .m-h2-ti {
     flex: 1;
-    display: flex;
-}
-
-.m-gp {
-  width: 50px;
-}
-
-.m-reg-form {
-    padding: 20px 0;
 }
 
 

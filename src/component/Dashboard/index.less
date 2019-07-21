@@ -87,7 +87,47 @@ header {
 }
 
 
+@media only screen and (max-width: 768px) {
 
+
+  #root {
+    min-width: unset!important;
+  }
+
+
+  .ant-layout-header {
+    padding: 0 0 0 20px;
+    height: 50px;
+    line-height: 50px;
+  }
+
+  header {
+
+    .m-hd-desktop {
+      display: none;
+    }
+
+    
+    .m-hd-mobile {
+      display: block!important;
+    }
+
+    button.m-hd-mobile {
+      height: 100%;
+      width: 60px;
+      border-radius: 0;
+      font-size: 28px;
+    }
+
+
+
+  }
+}
+
+
+
+
+/*change antd code*/
 .ant-layout-header {
     display: flex;
     background: #fff;
@@ -133,42 +173,4 @@ header {
 
 .ant-layout-header {
     padding: 0 0 0 50px;
-}
-
-
-@media only screen and (max-width: 768px) {
-
-
-  #root {
-    min-width: unset!important;
-  }
-
-
-  .ant-layout-header {
-    padding: 0 0 0 20px;
-    height: 50px;
-    line-height: 50px;
-  }
-
-  header {
-
-    .m-hd-desktop {
-      display: none;
-    }
-
-    
-    .m-hd-mobile {
-      display: block!important;
-    }
-
-    button.m-hd-mobile {
-      height: 100%;
-      width: 60px;
-      border-radius: 0;
-      font-size: 28px;
-    }
-
-
-
-  }
 }
