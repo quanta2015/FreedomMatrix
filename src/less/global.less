@@ -43,14 +43,12 @@ body {
   transform: rotate(-45deg);
 }
 
-
-
-.m-form-text, .c-form-select, .m-form-text input {
+.m-form-text, .m-form-select, .m-form-text input {
   border-radius: 4px;
-  /*background-color: rgb(255, 242, 199);*/
   width: 100%;
-  height: 42px;
+  min-height: 40px;
 }
+
 
 .m-form-text>div {
   width: 100%;
@@ -87,47 +85,33 @@ select, input {
   align-items: center;
 }
 
-
-/*.ant-select, .ant-select-selection,.ant-calendar-picker,.ant-calendar-picker-input {
-    height: 42px;
-    width: 100%;
+.ant-form-item-required::before {
+  font-size: 12px;
+  content: '必須';
+  border: 1px solid #ff0000;
+  padding: 2px;
+  margin-right: 10px;
+  font-family: 'Hiragino Kaku Gothic ProN', YuGothic, 'Yu Gothic Medium', Meiryo, sans-serif;
 }
-*/
+
 
 .ant-form-item-label {
   text-align: unset; 
 }
 
-/*
-
-
-.invalid-feedback {
-    display: none;
-    width: 100%;
-    margin-top: .25rem;
-    font-size: 80%;
-    color: #dc3545;
+.ant-form-item-label > label {
+    color: rgba(0, 0, 0, 0.5);
 }
 
 
-.was-validated .form-control:invalid,.was-validated .form-control.ant-input-password>input:invalid {
-    border-color: #dc3545;
-    padding-right: 2.25rem;
-    background-repeat: no-repeat;
-    background-position: center right calc(2.25rem / 4);
-    background-size: calc(2.25rem / 2) calc(2.25rem / 2);
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23dc3545' viewBox='-2 -2 7 7'%3e%3cpath stroke='%23d9534f' d='M0 0l3 3m0-3L0 3'/%3e%3ccircle r='.5'/%3e%3ccircle cx='3' r='.5'/%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E")
+
+.ant-input-number, .ant-calendar-picker-input {
+  min-height:40px;
 }
 
-
-.was-validated .form-control:invalid~.invalid-feedback, 
-.was-validated .form-control.ant-input-password>input:invalid~.invalid-feedback {
-    display: block;
+.ant-select-selection {
+  min-height:40px;
+  display:flex;
+  align-items:center;
+  padding: 5px 00 10px;
 }
-.invalid-feedback {
-    display: none;
-    width: 100%;
-    margin-top: .25rem;
-    font-size: 80%;
-    color: #dc3545;
-}*/
