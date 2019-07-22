@@ -165,6 +165,7 @@ class Reg extends React.Component {
               <Switch onChange={this.showExp} />
             </h2>
             
+<<<<<<< HEAD
             {showexp?(
               <Tabs defaultActiveKey="1">
                 {tabList.map((item,index)=>{
@@ -256,6 +257,92 @@ class Reg extends React.Component {
             ):(<div></div>)}
 
             
+=======
+            <Tabs defaultActiveKey="1">
+            {tabList.map((item,index)=>{
+              return (
+              <TabPane tab={`案件${index+1}`} key={index+1}>
+                <div className="m-row">
+                  <div className="m-ti m-require">案件名</div>
+                  <div className="m-co">
+                    <Input className="m-form-text form-control" placeholder="xxxxx@yahoo.co.jp" required/>
+                    
+                  </div>
+                </div>
+                <div className="m-row">
+                  <div className="m-ti">期間</div>
+                  <div className="m-co">
+                    <RangePicker defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
+                                 format={dateFormat}　
+                                 className="m-form-text"/>
+                  </div>
+                </div>
+                <div className="m-row">
+                  <div className="m-ti">経験言語</div>
+                    <div className="m-co">
+                    <Select mode="multiple" defaultValue={['0']} className="m-form-text">
+                      <Option value="0">Java</Option>
+                      <Option value="1">ASP</Option>
+                      <Option value="2">PHP</Option>
+                      <Option value="3">Perl</Option>
+                      <Option value="4">Struts</Option>
+                      <Option value="5">HTML</Option>
+                      <Option value="6">JavaScript</Option>
+                      <Option value="7">.NET</Option>
+                      <Option value="8">XML</Option>
+                      <Option value="9">VB</Option>
+                      <Option value="10">Script</Option>
+                      <Option value="11">その他</Option>
+                    </Select>
+                  </div>
+                </div>
+                <div className="m-row">
+                  <div className="m-ti">経験職種</div>
+                    <div className="m-co">
+                    <Select mode="multiple" defaultValue={['0']} className="m-form-text">
+                      <Option value="0">システムエンジニア</Option>
+                      <Option value="1">プログラマ</Option>
+                      <Option value="2">Webエンジニア</Option>
+                      <Option value="3">ネットワークエンジニア</Option>
+                      <Option value="4">運用保守</Option>
+                      <Option value="5">データベースエンジニア</Option>
+                      <Option value="6">PM/PL/コンサル</Option>
+                      <Option value="7">評価・テスト</Option>
+                      <Option value="8">ヘルプデスク</Option>
+                      <Option value="9">SE支援その他</Option>
+                    </Select>
+                  </div>
+                </div>
+                <div className="m-row">
+                  <div className="m-ti">経験工程</div>
+                    <div className="m-co">
+                    <Select mode="multiple" defaultValue={['0']} className="m-form-text">
+                      <Option value="0">保険</Option>
+                      <Option value="1">流通</Option>
+                      <Option value="2">金融</Option>
+                      <Option value="3">証券</Option>
+                      <Option value="4">製造</Option>
+                      <Option value="5">運輸</Option>
+                      <Option value="6">通信</Option>
+                      <Option value="7">官公庁</Option>
+                      <Option value="8">教育</Option>
+                      <Option value="9">医療</Option>
+                      <Option value="10">情報</Option>
+                      <Option value="11">その他</Option>
+                    </Select>
+                  </div>
+                </div>
+                <div className="m-row">
+                  <div className="m-ti">詳細</div>
+                    <div className="m-co">
+                    <TextArea rows={4} />
+                  </div>
+                </div>
+              </TabPane>
+              ) 
+            })}
+            </Tabs>
+>>>>>>> 6ab3cf80770bad1f8f762181ae0434db634f6c35
 
 
             <div className="m-row fn-frc">

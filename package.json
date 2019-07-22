@@ -78,8 +78,13 @@
     "workbox-webpack-plugin": "4.2.0"
   },
   "scripts": {
+<<<<<<< HEAD
     "start": "SET REACT_APP_MY_VAR=development&&node scripts/start.js",
     "build": "SET REACT_APP_MY_VAR=production&&node scripts/build.js",
+=======
+    "start": "REACT_APP_MY_VAR=development && node scripts/start.js",
+    "build": "REACT_APP_MY_VAR=production && node scripts/build.js",
+>>>>>>> 6ab3cf80770bad1f8f762181ae0434db634f6c35
     "test": "node scripts/test.js",
     "format": "prettier --write --single-quote --print-width=120 --parser=flow --tab-width=2 \"js/**/*.{js,jsx}\"",
     "lint": "eslint \"**/*.{js,jsx}\" --quiet"
