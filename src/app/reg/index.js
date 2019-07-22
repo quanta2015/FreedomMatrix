@@ -12,6 +12,16 @@ const { TextArea } = Input;
 const dateFormat = 'YYYY/MM/DD';
 const monthFormat = 'YYYY/MM';
 
+const expItem = {
+  proj_name:"",
+  data_from:moment(moment(), dateFormat),
+  data_to:  moment(moment(), dateFormat),
+  work_lang:["0"],
+  work_role:["0"],
+  work_proj:["0"],
+  work_detl:""
+}
+
 @inject('userActions', 'userStore')
 @observer
 class Reg extends React.Component {
@@ -19,9 +29,17 @@ class Reg extends React.Component {
     super(props)
     this.actions = props.userActions
     this.store   = props.userStore
-
     this.state = {
-      showexp: false
+      showexp: false,
+      expList: [{
+        proj_name:"",
+        data_from:moment(moment(), dateFormat),
+        data_to:  moment(moment(), dateFormat),
+        work_lang:["0"],
+        work_role:["0"],
+        work_proj:["0"],
+        work_detl:""
+      }]
     }
   }
 
@@ -52,12 +70,19 @@ class Reg extends React.Component {
     })
   }
 
+  addExp = (e)=>{
+    let expList = this.state.expList;
+    expList.push(expItem)
+    this.setState({
+      showexp: expList
+    })
+  }
+
 
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    let tabList = [0,0,0]
-    let { showexp } = this.state
+    let { showexp,expList } = this.state
 
     return (
       <div className='g-reg'>
@@ -166,30 +191,29 @@ class Reg extends React.Component {
             </h2>
             
             {showexp?(
-              <Tabs defaultActiveKey="1">
-                {tabList.map((item,index)=>{
+              <Tabs defaultActiveKey="1"  tabBarExtraContent={<Button onClick={this.addExp}>+</Button>}>
+                {expList.map((item,index)=>{
                   return (
-                  <TabPane tab={`案件${index+1}`} key={index+1}>
+                  <TabPane tab={ <div><span>{index+1}</span> <Button onClick={this.delExp}>del</Button></div>} key={index+1}>
                     <Form.Item label="案件名">
-                    {getFieldDecorator('proj_name', {
+                    {getFieldDecorator(`proj_name_${index+1}`, {
                       rules: [{ required: true, type: 'string', message: '案件名を入力してください' }],
-                      initialValue: "案件名"
+                      initialValue: item.proj_name
                     })(<Input placeholder="案件名" />)}
                     </Form.Item>
 
                     <Form.Item label="期間">
-                    {getFieldDecorator(['data_from','data_to'], {
-                      rules: [{ required: true,  message: '期間を選択してください' }],
-                    })(<RangePicker defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
-                                       format={dateFormat}　
-                                       className="m-form-text"/>)}
+                      {getFieldDecorator([`data_from_${index+1}`,`data_to_${index+1}`], {
+                        rules: [{ required: true,  message: '期間を選択してください' }],
+                        initialValue: [item.data_from, item.data_to]
+                      })(<RangePicker format={dateFormat}　className="m-form-text"/>)}
                     </Form.Item>
 
                     <Form.Item label="経験言語">
-                      {getFieldDecorator('work_lang', {
+                      {getFieldDecorator(`work_lang_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '経験言語を選択してください' }],
                         initialValue: ["0"]
-                      })(<Select mode="multiple" defaultValue={['0']} className="m-form-text">
+                      })(<Select mode="multiple" className="m-form-text">
                           <Option value="0">Java</Option>
                           <Option value="1">ASP</Option>
                           <Option value="2">PHP</Option>
@@ -206,10 +230,10 @@ class Reg extends React.Component {
                     </Form.Item>
 
                     <Form.Item label="経験職種">
-                      {getFieldDecorator('work_role', {
+                      {getFieldDecorator(`work_role_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '経験職種を選択してください' }],
                         initialValue: ["0"]
-                      })(<Select mode="multiple" defaultValue={['0']} className="m-form-text">
+                      })(<Select mode="multiple" className="m-form-text">
                           <Option value="0">システムエンジニア</Option>
                           <Option value="1">プログラマ</Option>
                           <Option value="2">Webエンジニア</Option>
@@ -224,10 +248,10 @@ class Reg extends React.Component {
                     </Form.Item>
 
                     <Form.Item label="経験工程">
-                      {getFieldDecorator('work_proj', {
+                      {getFieldDecorator(`work_proj_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '経験工程を選択してください' }],
                         initialValue: ["0"]
-                      })(<Select mode="multiple" defaultValue={['0']} className="m-form-text">
+                      })(<Select mode="multiple" className="m-form-text">
                           <Option value="0">保険</Option>
                           <Option value="1">流通</Option>
                           <Option value="2">金融</Option>
@@ -244,19 +268,16 @@ class Reg extends React.Component {
                     </Form.Item>
 
                     <Form.Item label="詳細">
-                      {getFieldDecorator('work_detl', {
-                        rules: [{ required: true, type: 'string', message: '詳細を入力してください' }],
+                      {getFieldDecorator(`work_detl_${index+1}`, {
+                        rules: [{ required: false, type: 'string', message: '詳細を入力してください' }],
+                        initialValue: ""
                       })(<TextArea rows={4} />)}
                     </Form.Item>
-
                   </TabPane>
                   ) 
                 })}
               </Tabs>
             ):(<div></div>)}
-
-            
-
 
             <div className="m-row fn-frc">
               <Button type="primary"  htmlType="submit" onClick={this.doReg}>登録</Button>
