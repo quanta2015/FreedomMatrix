@@ -4,6 +4,7 @@ import './index.less'
 import * as urls from 'constant/urls'
 import { Input,DatePicker,InputNumber,Select,Switch,Tabs,Button,Form,message  } from 'antd';
 import moment  from 'moment'
+import clone from 'util/clone'
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -12,15 +13,11 @@ const { TextArea } = Input;
 const dateFormat = 'YYYY/MM/DD';
 const monthFormat = 'YYYY/MM';
 
-const expItem = {
-  proj_name:"",
-  data_from:moment(moment(), dateFormat),
-  data_to:  moment(moment(), dateFormat),
-  work_lang:["0"],
-  work_role:["0"],
-  work_proj:["0"],
-  work_detl:""
-}
+
+
+
+
+
 
 @inject('userActions', 'userStore')
 @observer
@@ -29,19 +26,90 @@ class Reg extends React.Component {
     super(props)
     this.actions = props.userActions
     this.store   = props.userStore
-    this.state = {
-      showexp: false,
-      expList: [{
+
+    this.newTabIndex = 0;
+    const panes = [{
         proj_name:"",
-        data_from:moment(moment(), dateFormat),
-        data_to:  moment(moment(), dateFormat),
+        data_from:moment(new Date()).format("YYYY/MM/DD"),
+        data_to:  moment(new Date()).format("YYYY/MM/DD"),
         work_lang:["0"],
         work_role:["0"],
         work_proj:["0"],
-        work_detl:""
-      }]
+        work_detl:"",
+        key:'1'
+      }];
+
+    this.state = {
+      showexp: false,
+      activeKey: panes[0].key,
+      panes,
     }
   }
+
+  onChange = activeKey => {
+    this.setState({ activeKey });
+  };
+
+  onEdit = (targetKey, action) => {
+    this[action](targetKey);
+  };
+
+  add = () => {
+    const { panes } = this.state;
+    const activeKey = `newTab${this.newTabIndex++}`;
+    let expItem = {
+      proj_name:"",
+      data_from:moment(new Date()).format("YYYY/MM/DD"),
+      data_to:  moment(new Date()).format("YYYY/MM/DD"),
+      work_lang:["0"],
+      work_role:["0"],
+      work_proj:["0"],
+      work_detl:"",
+      key:activeKey
+    }
+    panes.push(expItem);
+    this.setState({ panes, activeKey });
+  };
+
+  remove = targetKey => {
+    let { activeKey } = this.state;
+    let lastIndex;
+    this.state.panes.forEach((pane, i) => {
+      if (pane.key === targetKey) {
+        lastIndex = i - 1;
+      }
+    });
+    // const panes = this.state.panes.filter(pane => pane.key !== targetKey);
+
+    const { panes }= this.state
+    const count = panes.length - (lastIndex+2)
+    for(let i=lastIndex+1;i<count;i++) {
+      panes[i].proj_name = panes[i+2].proj_name
+      panes[i].data_from = panes[i+2].data_from
+      panes[i].data_to   = panes[i+2].data_to
+      panes[i].work_lang = panes[i+2].work_lang
+      panes[i].work_role = panes[i+2].work_role
+      panes[i].work_proj = panes[i+2].work_proj
+      panes[i].work_detl = panes[i+2].work_detl
+    }
+    panes.splice(lastIndex+1,1)
+
+    // const panes = this.state.panes.reduce((pre,cur) => { 
+    //   pre = clone(cur)
+    //   return pre
+    //   // pane.key !== targetKey
+    // });
+
+
+    if (panes.length && activeKey === targetKey) {
+      if (lastIndex >= 0) {
+        activeKey = panes[lastIndex].key;
+      } else {
+        activeKey = panes[0].key;
+      }
+    }
+    this.setState({ panes, activeKey });
+  };
 
 
   doReg = (e) =>{
@@ -70,21 +138,17 @@ class Reg extends React.Component {
     })
   }
 
-  addExp = (e)=>{
-    let expList = this.state.expList;
-    expList.push(expItem)
-    this.setState({
-      showexp: expList
-    })
-  }
+  
 
-  delExp = (e)=>{
-    var id   = e.target.attributes['data-id'].value
+  saveProjName=(e)=>{
+    console.log('save')
+    const { panes } = this.state;
+    let id   = e.target.attributes['data-pid'].value
+    let name = e.target.attributes['data-name'].value
     let expList = this.state.expList;
-    expList.splice(id,1)
-    this.setState({
-      showexp: expList
-    })
+    let val  = e.target.value
+    panes[id][name]=val
+    this.setState({ panes});
   }
 
 
@@ -93,12 +157,15 @@ class Reg extends React.Component {
     const { getFieldDecorator } = this.props.form;
     let { showexp,expList } = this.state
 
+    console.log(expList)
+
     return (
       <div className='g-reg'>
         <div className="m-reg">
           <h1 className="m-reg_h1">無料登録フォーム</h1>
           <h2 className="m-reg_h2">基本情報をご入力ください</h2>
-          <Form className="m-reg-form" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+          <Form className="m-reg-form" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}
+            >
             <Form.Item label="メールアドレス">
               {getFieldDecorator('email', {
                 rules: [{ required: true, message: 'メールアドレスを入力してください' }],
@@ -200,26 +267,30 @@ class Reg extends React.Component {
             </h2>
             
             {showexp?(
-              <Tabs defaultActiveKey="1"  tabBarExtraContent={<Button onClick={this.addExp}>+</Button>}>
-                {expList.map((item,index)=>{
+              <Tabs defaultActiveKey="1" 
+                onChange={this.onChange}
+                activeKey={this.state.activeKey}
+                type="editable-card"
+                onEdit={this.onEdit}
+              >
+                {this.state.panes.map((item,index)=>{
                   return (
-                  <TabPane key={index+1} tab={ <div><span>案件 {index+1} </span><Button className="m-tab-del" data-id={index} onClick={this.delExp}>x</Button></div> 
-                    } 
+                  <TabPane key={item.key} tab={ `案件 ${index+1}` } 
                   >
-
-                    
                     <Form.Item label="案件名">
+
                     {getFieldDecorator(`proj_name_${index+1}`, {
                       rules: [{ required: true, type: 'string', message: '案件名を入力してください' }],
                       initialValue: item.proj_name
-                    })(<Input placeholder="案件名" />)}
+                    })(<Input placeholder="案件名" data-pid={index} data-name='proj_name' onChange={this.saveProjName} />)}
                     </Form.Item>
+
 
                     <Form.Item label="期間">
                       {getFieldDecorator([`data_from_${index+1}`,`data_to_${index+1}`], {
                         rules: [{ required: true,  message: '期間を選択してください' }],
-                        initialValue: [item.data_from, item.data_to]
-                      })(<RangePicker format={dateFormat}　className="m-form-text"/>)}
+                        initialValue: [moment(item.data_from,dateFormat), moment(item.data_to,dateFormat)]
+                      })(<RangePicker format={dateFormat}　className="m-form-text" data-pid={index} data-name='proj_name' onChange={this.saveProjName}/>)}
                     </Form.Item>
 
                     <Form.Item label="経験言語">
