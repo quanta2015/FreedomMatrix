@@ -195,11 +195,11 @@ class Reg extends React.Component {
                       <Option value="4">Struts</Option>
                       <Option value="5">HTML</Option>
                       <Option value="6">JavaScript</Option>
-                      <Option value="1">.NET</Option>
-                      <Option value="2">XML</Option>
-                      <Option value="3">VB</Option>
-                      <Option value="4">Script</Option>
-                      <Option value="4">その他</Option>
+                      <Option value="7">.NET</Option>
+                      <Option value="8">XML</Option>
+                      <Option value="9">VB</Option>
+                      <Option value="10">Script</Option>
+                      <Option value="11">その他</Option>
                     </Select>
                   </div>
                 </div>
