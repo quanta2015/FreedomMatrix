@@ -78,6 +78,15 @@ class Reg extends React.Component {
     })
   }
 
+  delExp = (e)=>{
+    var id   = e.target.attributes['data-id'].value
+    let expList = this.state.expList;
+    expList.splice(id,1)
+    this.setState({
+      showexp: expList
+    })
+  }
+
 
 
   render() {
@@ -194,7 +203,11 @@ class Reg extends React.Component {
               <Tabs defaultActiveKey="1"  tabBarExtraContent={<Button onClick={this.addExp}>+</Button>}>
                 {expList.map((item,index)=>{
                   return (
-                  <TabPane tab={ <div><span>{index+1}</span> <Button onClick={this.delExp}>del</Button></div>} key={index+1}>
+                  <TabPane key={index+1} tab={ <div><span>案件 {index+1} </span><Button className="m-tab-del" data-id={index} onClick={this.delExp}>x</Button></div> 
+                    } 
+                  >
+
+                    
                     <Form.Item label="案件名">
                     {getFieldDecorator(`proj_name_${index+1}`, {
                       rules: [{ required: true, type: 'string', message: '案件名を入力してください' }],
