@@ -15,10 +15,6 @@ const monthFormat = 'YYYY/MM';
 
 
 
-
-
-
-
 @inject('userActions', 'userStore')
 @observer
 class Reg extends React.Component {
@@ -59,8 +55,8 @@ class Reg extends React.Component {
     const activeKey = `newTab${this.newTabIndex++}`;
     let expItem = {
       proj_name:"",
-      date_from:moment(new Date()).format("YYYY/MM/DD"),
-      date_to:  moment(new Date()).format("YYYY/MM/DD"),
+      date_from:moment(new Date()).format(dateFormat),
+      date_to:  moment(new Date()).format(dateFormat),
       work_lang:["0"],
       work_role:["0"],
       work_proj:["0"],
@@ -98,17 +94,11 @@ class Reg extends React.Component {
         activeKey = panes[0].key;
       }
     }
-    setTimeout(()=>{
-      
-      this.setState({ panes, activeKey });
-    },500)
   };
 
 
   doReg = (e) =>{
     e.preventDefault();
-    
-
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
         let pwd = values.pwd
@@ -126,9 +116,7 @@ class Reg extends React.Component {
   }
 
   showExp = (e)=>{
-    this.setState({
-      showexp: e
-    })
+    this.setState({ showexp: e })
   }
 
   saveVal = (id,name,e)=>{
@@ -140,8 +128,8 @@ class Reg extends React.Component {
 
   saveRange = (id,v)=>{
     const { panes } = this.state;
-    panes[id]['date_from']=v[0].format("YYYY/MM/DD")
-    panes[id]['date_to']=v[1].format("YYYY/MM/DD")
+    panes[id]['date_from'] = v[0].format(dateFormat)
+    panes[id]['date_to']   = v[1].format(dateFormat)
     this.setState({ panes});
   }
 
@@ -280,7 +268,7 @@ class Reg extends React.Component {
                     {getFieldDecorator(`proj_name_${index+1}`, {
                       rules: [{ required: true, type: 'string', message: '案件名を入力してください' }],
                       initialValue: item.proj_name ,
-                    })(<Input placeholder="案件名" onChange={this.saveVal.bind(this,index,`proj_name`)} />)}
+                    })(<Input placeholder="案件名" onChange={this.saveVal.bind(this,index,'proj_name')} />)}
                     </Form.Item>
 
 
