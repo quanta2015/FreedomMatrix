@@ -94,6 +94,8 @@ class Reg extends React.Component {
         activeKey = panes[0].key;
       }
     }
+
+    this.setState({ panes, activeKey });
   };
 
 
@@ -267,7 +269,7 @@ class Reg extends React.Component {
 
                     {getFieldDecorator(`proj_name_${index+1}`, {
                       rules: [{ required: true, type: 'string', message: '案件名を入力してください' }],
-                      initialValue: item.proj_name ,
+                      initialValue: item.proj_name,
                     })(<Input placeholder="案件名" onChange={this.saveVal.bind(this,index,'proj_name')} />)}
                     </Form.Item>
 
