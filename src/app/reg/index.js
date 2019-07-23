@@ -79,21 +79,11 @@ class Reg extends React.Component {
         lastIndex = i - 1;
       }
     });
-    // const panes = this.state.panes.filter(pane => pane.key !== targetKey);
-
-    const { panes }= this.state
-    const count = panes.length - (lastIndex+2)
-    for(let i=lastIndex+1;i<count;i++) {
-      panes[i].proj_name = panes[i+2].proj_name
-      panes[i].data_from = panes[i+2].data_from
-      panes[i].data_to   = panes[i+2].data_to
-      panes[i].work_lang = panes[i+2].work_lang
-      panes[i].work_role = panes[i+2].work_role
-      panes[i].work_proj = panes[i+2].work_proj
-      panes[i].work_detl = panes[i+2].work_detl
-    }
-    panes.splice(lastIndex+1,1)
-
+    const panes = this.state.panes.filter(pane => pane.key !== targetKey)
+    this.props.form.setFieldsValue({
+      proj_name_1: panes[0].proj_name,
+      proj_name_2: panes[1].proj_name
+    })
     // const panes = this.state.panes.reduce((pre,cur) => { 
     //   pre = clone(cur)
     //   return pre
@@ -108,7 +98,10 @@ class Reg extends React.Component {
         activeKey = panes[0].key;
       }
     }
-    this.setState({ panes, activeKey });
+    setTimeout(()=>{
+      
+      this.setState({ panes, activeKey });
+    },500)
   };
 
 
@@ -155,9 +148,9 @@ class Reg extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    let { showexp,expList } = this.state
+    let { showexp,panes } = this.state
 
-    console.log(expList)
+    console.log(panes)
 
     return (
       <div className='g-reg'>
@@ -281,7 +274,7 @@ class Reg extends React.Component {
 
                     {getFieldDecorator(`proj_name_${index+1}`, {
                       rules: [{ required: true, type: 'string', message: '案件名を入力してください' }],
-                      initialValue: item.proj_name
+                      initialValue: item.proj_name ,
                     })(<Input placeholder="案件名" data-pid={index} data-name='proj_name' onChange={this.saveProjName} />)}
                     </Form.Item>
 
@@ -290,7 +283,7 @@ class Reg extends React.Component {
                       {getFieldDecorator([`data_from_${index+1}`,`data_to_${index+1}`], {
                         rules: [{ required: true,  message: '期間を選択してください' }],
                         initialValue: [moment(item.data_from,dateFormat), moment(item.data_to,dateFormat)]
-                      })(<RangePicker format={dateFormat}　className="m-form-text" data-pid={index} data-name='proj_name' onChange={this.saveProjName}/>)}
+                      })(<RangePicker format={dateFormat} data-pid={index} data-name='proj_name' className="m-form-text" data-pid={index} data-name='proj_name' onChange={this.saveProjName}/>)}
                     </Form.Item>
 
                     <Form.Item label="経験言語">
