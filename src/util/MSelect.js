@@ -24,7 +24,7 @@ class MSelect extends Select {
       <Select mode="multiple" {...rest}>
         {data.map((item,index)=>{
           return(
-            <Option value={item.val}>{item.txt}</Option>
+            <Option value={item.val} key ={index}>{item.txt}</Option>
           )
         })}
       </Select>
