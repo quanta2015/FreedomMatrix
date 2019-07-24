@@ -126,7 +126,41 @@ button.m-tab-del {
   line-height: 24px;
 }
 
+.ant-calendar-picker {
+    width: 100%;
+}
 
-/*.ant-tabs-nav div .ant-tabs-tab:first-child .m-tab-del {
+
+@media only screen and (max-width: 768px) {
+
+
+.ant-calendar {
+    width: 100%;
+}
+
+.ant-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.ant-row>div {
+    width: 100%;
+}
+
+.ant-calendar-picker-container {
+    width: calc( 100% - 20px );
+    left: 0!important;
+    margin: 10px;
+}
+
+
+.ant-calendar-input-wrap {
     display: none;
-}*/
+}
+
+#work_area {
+  /*display: none!important;*/
+}
+
+
+}

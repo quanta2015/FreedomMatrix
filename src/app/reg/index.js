@@ -5,6 +5,7 @@ import * as urls from 'constant/urls'
 import { Input,DatePicker,InputNumber,Select,Switch,Tabs,Button,Form,message  } from 'antd';
 import moment  from 'moment'
 import clone from 'util/clone'
+import MSelect from 'util/MSelect'
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -12,6 +13,13 @@ const { MonthPicker, RangePicker } = DatePicker;
 const { TextArea } = Input;
 const dateFormat = 'YYYY/MM/DD';
 const monthFormat = 'YYYY/MM';
+
+const workareaList = [{val:"0",txt:'23区'},
+                                 {val:"1",txt:'都内その他'}, 
+                                 {val:"2",txt:'横浜市'},
+                                 {val:"3",txt:'川崎市'},
+                                 {val:"4",txt:'神奈川県'},
+                                 {val:"5",txt:'千葉県'}]
 
 
 
@@ -143,6 +151,8 @@ class Reg extends React.Component {
     this.setState({ panes});
   }
 
+
+
   render() {
     const { getFieldDecorator } = this.props.form;
     let { showexp,panes } = this.state
@@ -205,16 +215,7 @@ class Reg extends React.Component {
               {getFieldDecorator('work_area', {
                 rules: [{ required: true, type: 'array', message: '勤務希望エリアを選択してください' }],
                 initialValue: ["0"]
-              })(<Select mode="multiple" className="m-form-text">
-                  <Option value="0">２３区</Option>
-                  <Option value="1">都内その他</Option>
-                  <Option value="2">横浜市</Option>
-                  <Option value="3">川崎市</Option>
-                  <Option value="4">神奈川県</Option>
-                  <Option value="5">千葉県</Option>
-                  <Option value="6">埼玉県</Option>
-                  <Option value="7">その他の県</Option>
-                </Select>)}
+              })(<MSelect className="m-form-text" data={workareaList}/> )}
             </Form.Item>
             <Form.Item label="希望稼働時期">
               {getFieldDecorator('work_time', {
@@ -232,7 +233,7 @@ class Reg extends React.Component {
               {getFieldDecorator('work_mony', {
                 rules: [{ type: 'integer', required: true,  min:1, max:200, message: '希望月額報酬を入力してください（最大200万円）' }],
                 initialValue: 10
-              })(<InputNumber placeholder="数字（単位：万円）" style={{width:'100%'}} />)}
+              })(<InputNumber placeholder="数字（単位：万円）" />)}
             </Form.Item>
             <Form.Item label="希望働き方">
               {getFieldDecorator('work_type', {
