@@ -13,8 +13,6 @@ const { TextArea } = Input;
 const dateFormat = 'YYYY/MM/DD';
 const monthFormat = 'YYYY/MM';
 
-
-
 @inject('userActions', 'userStore')
 @observer
 class Reg extends React.Component {
@@ -43,7 +41,7 @@ class Reg extends React.Component {
   }
 
   onChange = activeKey => {
-    this.setState({ activeKey });
+    this.setState({ activeKey })
   };
 
   onEdit = (targetKey, action) => {
@@ -97,7 +95,6 @@ class Reg extends React.Component {
 
     this.setState({ panes, activeKey });
   };
-
 
   doReg = (e) =>{
     e.preventDefault();
@@ -157,33 +154,35 @@ class Reg extends React.Component {
             <Form.Item label="メールアドレス">
               {getFieldDecorator('email', {
                 rules: [{ required: true, message: 'メールアドレスを入力してください' }],
-              })(<Input placeholder="メールアドレス"/>)}
+              })(<Input placeholder="email@address.com"/>)}
             </Form.Item>
             <Form.Item label="パスワード">
               {getFieldDecorator('pwd', {
                 rules: [{ required: true, message: 'パスワードを入力してください' }],
-              })(<Input.Password placeholder="パスワード"/>)}
+              })(<Input.Password placeholder=""/>)}
             </Form.Item>
             <Form.Item label="パスワード（確認用）">
               {getFieldDecorator('repwd', {
                 rules: [{ required: true, message: 'パスワードを再入力してください' }],
-              })(<Input.Password placeholder="パスワード（確認用）"/>)}
+              })(<Input.Password placeholder=""/>)}
             </Form.Item>
-            <Form.Item label="氏名">
-              {getFieldDecorator('name-cn', {
+            <Form.Item label="氏名（漢字）">
+              {getFieldDecorator('name-kj', {
                 rules: [{ required: true, message: '氏名を入力してください' }],
               })(<Input placeholder="自由陣　太郎"/>)}
             </Form.Item>
             <Form.Item label="氏名（カナ）">
-              {getFieldDecorator('name-kj', {
+              {getFieldDecorator('name-kn', {
                 rules: [{ required: true, message: '氏名（カナ）を入力してください' }],
               })(<Input placeholder="ジユウジン　タロウ"/>)}
             </Form.Item>
-            <Form.Item label="生まれた年">
-              {getFieldDecorator('name-kn', {
-                rules: [{ required: true, message: '生まれた年を入力してください' }],
-                rules: [{ required: true, type:'number', min:10000000000, max:99999999999,  message: '電話番号を入力してください' }],
-              })(<DatePicker mode = 'year' placeholder="生まれた年を入力"/>)}
+            <Form.Item label="生年月日">
+              {getFieldDecorator('bday', {
+                rules: [{ required: true,　message: '生年月日を入力してください' }],
+              })(<DatePicker className="m-form-text"          
+                              placeholder='年/月/日'              
+                              format= {dateFormat}              
+              />)}
             </Form.Item>
             <Form.Item label="電話番号">
               {getFieldDecorator('phone', {
