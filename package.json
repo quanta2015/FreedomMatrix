@@ -48,6 +48,7 @@
     "mobx": "^5.10.1",
     "mobx-devtools-mst": "^0.9.21",
     "mobx-react": "^6.0.3",
+    "mysql": "^2.17.1",
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "pnp-webpack-plugin": "1.2.1",
     "postcss-flexbugs-fixes": "4.1.0",
@@ -78,8 +79,8 @@
     "workbox-webpack-plugin": "4.2.0"
   },
   "scripts": {
-    "start": "REACT_APP_MY_VAR=development&&node scripts/start.js",
-    "build": "REACT_APP_MY_VAR=production&&node scripts/build.js",
+    "start": "SET REACT_APP_MY_VAR=development&&node scripts/start.js",
+    "build": "SET REACT_APP_MY_VAR=production&&node scripts/build.js",
     "test": "node scripts/test.js",
     "format": "prettier --write --single-quote --print-width=120 --parser=flow --tab-width=2 \"js/**/*.{js,jsx}\"",
     "lint": "eslint \"**/*.{js,jsx}\" --quiet"

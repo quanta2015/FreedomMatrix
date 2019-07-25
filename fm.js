@@ -8,6 +8,7 @@ var moment = require('moment');
 var cors = require('cors')
 var exphbs = require('express-handlebars');
 var url = require('url')
+var db = require("./db/db")
 // var jwt= require('jsonwebtoken')
 // var formidable = require('formidable'); 
 
@@ -56,13 +57,71 @@ app.post('/user/reg', function(req, res, next) {
 
   // 1. construct data to sql
   // 2. insert into database
+  let {}  = data
+  let expList = []
+  for(let i=1;i<data.count+1;i++) {
+    let item = {}
+    item[`proj_name`] = data[`proj_name_${i}`]
+    item[`date_from`] = data[`date_from_${i},date_to_${i}`][0]
+    item[  `date_to`] = data[`date_from_${i},date_to_${i}`][1]
+    item[`work_lang`] = data[`work_lang_${i}`]
+    item[`work_role`] = data[`work_role_${i}`]
+    item[`work_proj`] = data[`work_proj_${i}`]
+    item[`work_detl`] = data[`work_detl_${i}`]
+    expList.push(item)
+  }
 
+  let account = {
+    email:data.email,
+    pwd:data.pwd,
+    name_kj:data.name_kj,
+    name_kn:data.name_kn,
+    birth:data.birth,
+    phone:data.phone,
+    pers_type:data.pers_type,
+    work_area:data.work_area,
+    work_time:data.work_time,
+    work_mony:data.work_mony,
+    work_type:data.work_type
+  }
 
+  let sqlList   = []
+  let fieldList = []
+  let valList   = []
+  let table     = "account"
 
-  res.status(200).json({
-    code: 200,
-    msg: '保存成功'
+  db.prepareParm(account,fieldList,valList,[])
+  let sql = `insert into ${table} (${fieldList.join(',')}) values(${valList.join(',')})`
+  sqlList.push(sql)
+
+  table  = "exp"
+  for(let i=0;i<expList.length;i++) {
+    fieldList = []
+    valList   = []
+    table  = "exp"
+    db.prepareParm(expList[i],fieldList,valList,[])
+    sql = `insert into ${table} (${fieldList.join(',')}) values(${valList.join(',')})`
+    sqlList.push(sql)
+  }
+
+  sql = sqlList.join(';') + ';'
+  console.log(sql)
+
+  db.querySQL(sql, (err,ret)=>{
+    if (ret.code == 0) {
+      res.status(200).json({
+        code: 200,
+        msg: '保存成功'
+      })
+    }else{
+      res.status(500).json({
+        code: -1,
+        msg: '保存失败',
+        data: null,
+      })
+    }
   })
+
 });
 
 

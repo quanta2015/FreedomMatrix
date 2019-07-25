@@ -6,21 +6,14 @@ import { Input,DatePicker,InputNumber,Select,Switch,Tabs,Button,Form,message  } 
 import moment  from 'moment'
 import clone from 'util/clone'
 import MSelect from 'util/MSelect'
+import { workareaList, worktimeList, worktypeList, worklangList, workroleList, workprojList, DATE_FORMAT } from 'constant/data'
+
 
 const { Option } = Select;
 const { TabPane } = Tabs;
 const { MonthPicker, RangePicker } = DatePicker;
 const { TextArea } = Input;
-const dateFormat = 'YYYY/MM/DD';
-const monthFormat = 'YYYY/MM';
 
-
-const workareaList = [{val:"0",txt:'23区'},
-                                 {val:"1",txt:'都内その他'}, 
-                                 {val:"2",txt:'横浜市'},
-                                 {val:"3",txt:'川崎市'},
-                                 {val:"4",txt:'神奈川県'},
-                                 {val:"5",txt:'千葉県'}]
 
 
 @inject('userActions', 'userStore')
@@ -45,6 +38,7 @@ class Reg extends React.Component {
 
     this.state = {
       showexp: false,
+      regtype: 0,
       activeKey: panes[0].key,
       panes,
     }
@@ -63,8 +57,8 @@ class Reg extends React.Component {
     const activeKey = `newTab${this.newTabIndex++}`;
     let expItem = {
       proj_name:"",
-      date_from:moment(new Date()).format(dateFormat),
-      date_to:  moment(new Date()).format(dateFormat),
+      date_from:moment(new Date()).format(DATE_FORMAT),
+      date_to:  moment(new Date()).format(DATE_FORMAT),
       work_lang:["0"],
       work_role:["0"],
       work_proj:["0"],
@@ -115,7 +109,15 @@ class Reg extends React.Component {
         if (pwd !== repwd) {
           message.success('r.msg')
         }else{
+          values.count = this.state.panes.length
+          values.birth = moment(values.birth).format("YYYY/MM/DD")
+          
+          for(let i=1;i<this.state.panes.length+1;i++) {
+            values[`date_from_${i},date_to_${i}`][0] = moment(values[`date_from_${i},date_to_${i}`][0]).format("YYYY/MM/DD")
+            values[`date_from_${i},date_to_${i}`][1] = moment(values[`date_from_${i},date_to_${i}`][1]).format("YYYY/MM/DD")
+          }
           let r = await this.actions.saveUser(values)
+          console.log(r)
           if (r && r.code === 200) {
             window.location.assign(`${window.location.origin}${window.location.pathname}#/home`)
           }
@@ -137,8 +139,8 @@ class Reg extends React.Component {
 
   saveRange = (id,v)=>{
     const { panes } = this.state;
-    panes[id]['date_from'] = v[0].format(dateFormat)
-    panes[id]['date_to']   = v[1].format(dateFormat)
+    panes[id]['date_from'] = v[0].format(DATE_FORMAT)
+    panes[id]['date_to']   = v[1].format(DATE_FORMAT)
     this.setState({ panes});
   }
 
@@ -150,14 +152,23 @@ class Reg extends React.Component {
     this.setState({ panes});
   }
 
-
+  setType = (type,e)=>{
+    console.log(e)
+    console.log(type)
+    this.setState({ regtype: type })
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    let { showexp,panes } = this.state
+    let { showexp,panes,regtype } = this.state
 
     return (
       <div className='g-reg'>
+        <div className='m-reg-type'>
+          <Button className="m-type-btn c-blue" onClick={this.setType.bind(this,0)}>会員様へ無料登録</Button>
+          <Button className="m-type-btn c-yell" onClick={this.setType.bind(this,1)}>企業様へ無料登録</Button>
+        </div>
+        { regtype === 0 && 
         <div className="m-reg">
           <h1 className="m-reg_h1">無料登録フォーム</h1>
           <h2 className="m-reg_h2">基本情報をご入力ください</h2>
@@ -166,39 +177,45 @@ class Reg extends React.Component {
             <Form.Item label="メールアドレス">
               {getFieldDecorator('email', {
                 rules: [{ required: true, message: 'メールアドレスを入力してください' }],
-              })(<Input placeholder="email@address.com"/>)}
+                initialValue:'liyangtom@163.com'
+              })(<Input placeholder="email@address.com" />)}
             </Form.Item>
             <Form.Item label="パスワード">
               {getFieldDecorator('pwd', {
                 rules: [{ required: true, message: 'パスワードを入力してください' }],
+                initialValue: 'aaa' 
               })(<Input.Password placeholder=""/>)}
             </Form.Item>
             <Form.Item label="パスワード（確認用）">
               {getFieldDecorator('repwd', {
                 rules: [{ required: true, message: 'パスワードを再入力してください' }],
+                initialValue: 'aaa' 
               })(<Input.Password placeholder=""/>)}
             </Form.Item>
             <Form.Item label="氏名（漢字）">
-              {getFieldDecorator('name-kj', {
+              {getFieldDecorator('name_kj', {
                 rules: [{ required: true, message: '氏名を入力してください' }],
-              })(<Input placeholder="自由陣　太郎"/>)}
+                initialValue: 'liyangtom' 
+              })(<Input placeholder="自由陣　太郎" />)}
             </Form.Item>
             <Form.Item label="氏名（カナ）">
-              {getFieldDecorator('name-kn', {
+              {getFieldDecorator('name_kn', {
                 rules: [{ required: true, message: '氏名（カナ）を入力してください' }],
+                initialValue: 'tom' 
               })(<Input placeholder="ジユウジン　タロウ"/>)}
             </Form.Item>
             <Form.Item label="生年月日">
-              {getFieldDecorator('bday', {
+              {getFieldDecorator('birth', {
                 rules: [{ required: true,　message: '生年月日を入力してください' }],
               })(<DatePicker className="m-form-text"          
                               placeholder='年/月/日'              
-                              format= {dateFormat}              
+                              format= {DATE_FORMAT}              
               />)}
             </Form.Item>
             <Form.Item label="電話番号">
               {getFieldDecorator('phone', {
                 rules: [{ required: true, type:'number', min:10000000000, max:99999999999,  message: '電話番号を入力してください' }],
+                initialValue: '12345678901' 
               })(<InputNumber placeholder="01234567890（ハイフン不要）" style={{width:'100%'}} />)}
             </Form.Item>
             <Form.Item label="カテゴリー">
@@ -223,13 +240,7 @@ class Reg extends React.Component {
               {getFieldDecorator('work_time', {
                 rules: [{ required: true, type: 'array', message: '希望稼働時期を選択してください' }],
                 initialValue: ["0"]
-              })(<Select mode="multiple" className="m-form-text">
-                  <Option value="0">1ヶ月</Option>
-                  <Option value="1">3ヶ月</Option>
-                  <Option value="2">6ヶ月</Option>
-                  <Option value="3">1年</Option>
-                  <Option value="4">長期</Option>
-                </Select>)}
+              })(<MSelect className="m-form-text" data={worktimeList}/> )}
             </Form.Item>
             <Form.Item label="希望月額報酬（万円）">
               {getFieldDecorator('work_mony', {
@@ -241,14 +252,7 @@ class Reg extends React.Component {
               {getFieldDecorator('work_type', {
                 rules: [{ required: true, type: 'array', message: '希望働き方を選択してください' }],
                 initialValue: ["0"]
-              })(<Select mode="multiple" className="m-form-text">
-                  <Option value="0">常駐</Option>
-                  <Option value="1">週1</Option>
-                  <Option value="2">週2</Option>
-                  <Option value="3">週3</Option>
-                  <Option value="4">週4</Option>
-                  <Option value="5">完全リモート</Option>
-                </Select>)}
+              })(<MSelect className="m-form-text" data={worktypeList}/>)}
             </Form.Item>
 
         
@@ -280,8 +284,8 @@ class Reg extends React.Component {
                     <Form.Item label="期間">
                       {getFieldDecorator([`date_from_${index+1}`,`date_to_${index+1}`], {
                         rules: [{ required: true,  message: '期間を選択してください' }],
-                        initialValue: [moment(item.date_from,dateFormat), moment(item.date_to,dateFormat)]
-                      })(<RangePicker format={dateFormat}  className="m-form-text" 
+                        initialValue: [moment(item.date_from,DATE_FORMAT), moment(item.date_to,DATE_FORMAT)]
+                      })(<RangePicker format={DATE_FORMAT}  className="m-form-text" 
                                       onChange={this.saveRange.bind(this,index)}/>)}
                     </Form.Item>
 
@@ -289,58 +293,21 @@ class Reg extends React.Component {
                       {getFieldDecorator(`work_lang_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '経験言語を選択してください' }],
                         initialValue: ["0"]
-                      })(<Select mode="multiple" className="m-form-text" onChange={this.saveMul.bind(this,index,'work_lang')} >
-                          <Option value="0">Java</Option>
-                          <Option value="1">ASP</Option>
-                          <Option value="2">PHP</Option>
-                          <Option value="3">Perl</Option>
-                          <Option value="4">Struts</Option>
-                          <Option value="5">HTML</Option>
-                          <Option value="6">JavaScript</Option>
-                          <Option value="7">.NET</Option>
-                          <Option value="8">XML</Option>
-                          <Option value="9">VB</Option>
-                          <Option value="10">Script</Option>
-                          <Option value="11">その他</Option>
-                        </Select>)}
+                      })(<MSelect className="m-form-text" data={worklangList}/>)}
                     </Form.Item>
 
                     <Form.Item label="経験職種">
                       {getFieldDecorator(`work_role_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '経験職種を選択してください' }],
                         initialValue: ["0"]
-                      })(<Select mode="multiple" className="m-form-text" onChange={this.saveMul.bind(this,index,'work_role')}>
-                          <Option value="0">システムエンジニア</Option>
-                          <Option value="1">プログラマ</Option>
-                          <Option value="2">Webエンジニア</Option>
-                          <Option value="3">ネットワークエンジニア</Option>
-                          <Option value="4">運用保守</Option>
-                          <Option value="5">データベースエンジニア</Option>
-                          <Option value="6">PM/PL/コンサル</Option>
-                          <Option value="7">評価・テスト</Option>
-                          <Option value="8">ヘルプデスク</Option>
-                          <Option value="9">SE支援その他</Option>
-                        </Select>)}
+                      })(<MSelect className="m-form-text" data={workroleList}/>)}
                     </Form.Item>
 
                     <Form.Item label="経験工程">
                       {getFieldDecorator(`work_proj_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '経験工程を選択してください' }],
                         initialValue: ["0"]
-                      })(<Select mode="multiple" className="m-form-text" onChange={this.saveMul.bind(this,index,'work_proj')}>
-                          <Option value="0">保険</Option>
-                          <Option value="1">流通</Option>
-                          <Option value="2">金融</Option>
-                          <Option value="3">証券</Option>
-                          <Option value="4">製造</Option>
-                          <Option value="5">運輸</Option>
-                          <Option value="6">通信</Option>
-                          <Option value="7">官公庁</Option>
-                          <Option value="8">教育</Option>
-                          <Option value="9">医療</Option>
-                          <Option value="10">情報</Option>
-                          <Option value="11">その他</Option>
-                        </Select>)}
+                      })(<MSelect className="m-form-text" data={workprojList}/>)}
                     </Form.Item>
 
                     <Form.Item label="詳細">
@@ -360,6 +327,7 @@ class Reg extends React.Component {
             </div>
           </Form>
         </div>
+       }
       </div>
     )
   }

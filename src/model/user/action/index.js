@@ -16,9 +16,7 @@ class UserActions extends BaseActions {
   async saveUser(params) {
     console.log(urls.API_USER_REG)
     let r = await this.post(urls.API_USER_REG, params, true)
-    if (r && r.code === 200) {
-      console.log(r.data)
-    }
+    return r;
   }
 
   @action

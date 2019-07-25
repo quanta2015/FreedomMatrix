@@ -5,11 +5,13 @@ import { configure } from 'mobx'
 import { LocaleProvider } from 'antd'
 import zhCN from 'antd/lib/locale-provider/zh_CN'
 import 'moment/locale/zh-cn'
+
 import getValue from 'util/getValue'
 
 import injects from 'constant/injects'
 import App from './App';
 import 'less/global.less'
+
 
 window.getValue = getValue
 
