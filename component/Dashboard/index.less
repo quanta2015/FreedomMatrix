@@ -1,0 +1,176 @@
+@import '../../less/variables.less';
+ 
+
+
+header {
+
+  .logo {
+    width: 120px;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 24px;
+    flex: 1;
+  }
+
+  .m-hd-desktop {
+    display: flex;
+  }
+
+  .m-hd-mobile {
+    display: none;
+  }
+
+  .m-menu_s {
+      display: flex;
+      flex-direction: column;
+  }
+
+  .m-menu_s_tl {
+      margin-bottom: 1em;
+      font-size: 16px;
+  }
+
+  .m-menu_s>a {
+      margin-left: 15px;
+      margin-bottom: 1em;
+  }
+
+  .m-menu_h {
+      font-size: 16px;
+  }
+
+  .m-menu_h i,.m-menu_s_ch i,.m-menu_s_tl i {
+      margin-right: 10px;
+  }
+
+  .m-menu_h,.m-menu_s {
+    padding: 10px;
+    background: #3d74aa;
+    color:#fff;
+  } 
+
+
+  .m-menu_s_tl {
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    border-bottom:1px dashed #fff
+  }
+
+  .m-menu_s>a {
+    background:#3d74aa;
+    margin: 0;
+    padding: 5px 0 5px 35px
+  }
+
+  a {
+      color: #fff;
+  }
+
+  .m-reg {
+    background: #EA6464;
+    padding: 0 20px;
+    color: #fff;
+    cursor: pointer;
+    height: 100%;
+    transition: .5s;
+  }
+
+  .m-reg:hover {
+    background: #3d74aa;
+  }
+  
+  .account {
+    width: 80px;
+    text-align: center;
+  }
+
+}
+
+
+@media only screen and (max-width: 768px) {
+
+
+  #root {
+    min-width: unset!important;
+  }
+
+
+  .ant-layout-header {
+    padding: 0 0 0 20px;
+    height: 50px;
+    line-height: 50px;
+  }
+
+  header {
+
+    .m-hd-desktop {
+      display: none;
+    }
+
+    
+    .m-hd-mobile {
+      display: block!important;
+    }
+
+    button.m-hd-mobile {
+      height: 100%;
+      width: 60px;
+      border-radius: 0;
+      font-size: 28px;
+    }
+
+
+
+  }
+}
+
+
+
+
+/*change antd code*/
+.ant-layout-header {
+    display: flex;
+    background: #fff;
+    align-items: center;
+}
+
+
+.ant-menu-horizontal > .ant-menu-item {
+    padding-bottom: 10px;
+}
+
+.ant-layout {
+    border-bottom: 1px solid #eee;
+}
+
+.ant-menu-horizontal {
+    display: flex;
+    padding: 25px 0 0 0;
+    line-height: 1;
+}
+
+
+.ant-layout-content {
+    min-height: calc( 100vh - 64px );
+}
+
+.ant-drawer-body {
+    padding: 0;
+}
+
+.ant-drawer-header,.ant-drawer-body {
+    background: #EFF3F4;
+}
+
+.ant-drawer-title {
+    font-size: 32px;
+    color: @main-color;
+}
+
+.ant-drawer-header {
+    padding: 8px 15px;
+}
+
+.ant-layout-header {
+    padding: 0 0 0 50px;
+}
