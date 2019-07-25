@@ -53,6 +53,12 @@ app.get('/', function(req, res, next) {
 app.post('/user/reg', function(req, res, next) {
   let data = req.body
   console.log(data)
+
+  // 1. construct data to sql
+  // 2. insert into database
+
+
+
   res.status(200).json({
     code: 200,
     msg: '保存成功'

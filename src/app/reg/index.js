@@ -5,6 +5,7 @@ import * as urls from 'constant/urls'
 import { Input,DatePicker,InputNumber,Select,Switch,Tabs,Button,Form,message  } from 'antd';
 import moment  from 'moment'
 import clone from 'util/clone'
+import MSelect from 'util/MSelect'
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -13,6 +14,13 @@ const { TextArea } = Input;
 const dateFormat = 'YYYY/MM/DD';
 const monthFormat = 'YYYY/MM';
 
+
+const workareaList = [{val:"0",txt:'23区'},
+                                 {val:"1",txt:'都内その他'}, 
+                                 {val:"2",txt:'横浜市'},
+                                 {val:"3",txt:'川崎市'},
+                                 {val:"4",txt:'神奈川県'},
+                                 {val:"5",txt:'千葉県'}]
 
 
 @inject('userActions', 'userStore')
@@ -43,7 +51,7 @@ class Reg extends React.Component {
   }
 
   onChange = activeKey => {
-    this.setState({ activeKey });
+    this.setState({ activeKey })
   };
 
   onEdit = (targetKey, action) => {
@@ -98,7 +106,6 @@ class Reg extends React.Component {
     this.setState({ panes, activeKey });
   };
 
-
   doReg = (e) =>{
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
@@ -143,6 +150,8 @@ class Reg extends React.Component {
     this.setState({ panes});
   }
 
+
+
   render() {
     const { getFieldDecorator } = this.props.form;
     let { showexp,panes } = this.state
@@ -157,32 +166,35 @@ class Reg extends React.Component {
             <Form.Item label="メールアドレス">
               {getFieldDecorator('email', {
                 rules: [{ required: true, message: 'メールアドレスを入力してください' }],
-              })(<Input />)}
+              })(<Input placeholder="email@address.com"/>)}
             </Form.Item>
             <Form.Item label="パスワード">
               {getFieldDecorator('pwd', {
                 rules: [{ required: true, message: 'パスワードを入力してください' }],
-              })(<Input.Password placeholder="パスワード"/>)}
+              })(<Input.Password placeholder=""/>)}
             </Form.Item>
-            <Form.Item label="パスワード（確認用)">
+            <Form.Item label="パスワード（確認用）">
               {getFieldDecorator('repwd', {
                 rules: [{ required: true, message: 'パスワードを再入力してください' }],
-              })(<Input.Password placeholder="パスワード"/>)}
+              })(<Input.Password placeholder=""/>)}
             </Form.Item>
-            <Form.Item label="氏名">
-              {getFieldDecorator('name-cn', {
+            <Form.Item label="氏名（漢字）">
+              {getFieldDecorator('name-kj', {
                 rules: [{ required: true, message: '氏名を入力してください' }],
-              })(<Input placeholder="自由陣　太郎" />)}
+              })(<Input placeholder="自由陣　太郎"/>)}
             </Form.Item>
             <Form.Item label="氏名（カナ）">
-              {getFieldDecorator('name-kj', {
-                rules: [{ required: true, message: '氏名（カナ）を入力してください' }],
-              })(<Input.Password placeholder="ジユウジン　タロウ"/>)}
-            </Form.Item>
-            <Form.Item label="生まれた年">
               {getFieldDecorator('name-kn', {
-                rules: [{ required: true, message: '生まれた年を入力してください' }],
-              })(<DatePicker />)}
+                rules: [{ required: true, message: '氏名（カナ）を入力してください' }],
+              })(<Input placeholder="ジユウジン　タロウ"/>)}
+            </Form.Item>
+            <Form.Item label="生年月日">
+              {getFieldDecorator('bday', {
+                rules: [{ required: true,　message: '生年月日を入力してください' }],
+              })(<DatePicker className="m-form-text"          
+                              placeholder='年/月/日'              
+                              format= {dateFormat}              
+              />)}
             </Form.Item>
             <Form.Item label="電話番号">
               {getFieldDecorator('phone', {
@@ -205,16 +217,7 @@ class Reg extends React.Component {
               {getFieldDecorator('work_area', {
                 rules: [{ required: true, type: 'array', message: '勤務希望エリアを選択してください' }],
                 initialValue: ["0"]
-              })(<Select mode="multiple" className="m-form-text">
-                  <Option value="0">２３区</Option>
-                  <Option value="1">都内その他</Option>
-                  <Option value="2">横浜市</Option>
-                  <Option value="3">川崎市</Option>
-                  <Option value="4">神奈川県</Option>
-                  <Option value="5">千葉県</Option>
-                  <Option value="6">埼玉県</Option>
-                  <Option value="7">その他の県</Option>
-                </Select>)}
+              })(<MSelect className="m-form-text" data={workareaList}/> )}
             </Form.Item>
             <Form.Item label="希望稼働時期">
               {getFieldDecorator('work_time', {
@@ -232,7 +235,7 @@ class Reg extends React.Component {
               {getFieldDecorator('work_mony', {
                 rules: [{ type: 'integer', required: true,  min:1, max:200, message: '希望月額報酬を入力してください（最大200万円）' }],
                 initialValue: 10
-              })(<InputNumber placeholder="数字（単位：万円）" style={{width:'100%'}} />)}
+              })(<InputNumber placeholder="数字（単位：万円）" />)}
             </Form.Item>
             <Form.Item label="希望働き方">
               {getFieldDecorator('work_type', {
