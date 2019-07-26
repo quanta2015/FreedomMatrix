@@ -6,7 +6,7 @@ import { Input,DatePicker,InputNumber,Select,Switch,Tabs,Button,Form,message  } 
 import moment  from 'moment'
 import clone from 'util/clone'
 import MSelect from 'util/MSelect'
-import { workareaList, worktimeList, worktypeList, worklangList, workroleList, workprojList, DATE_FORMAT } from 'constant/data'
+import { workareaList, worktimeList, worktypeList, worklangList, workroleList, workprojList, workdomnList, workprefList, workrespList, DATE_FORMAT } from 'constant/data'
 
 
 const { Option } = Select;
@@ -38,7 +38,7 @@ class Reg extends React.Component {
 
     this.state = {
       showexp: false,
-      regtype: 0,
+      regtype: 1,
       activeKey: panes[0].key,
       panes,
     }
@@ -316,6 +316,183 @@ class Reg extends React.Component {
                         initialValue: ""
                       })(<TextArea rows={4} onChange={this.saveVal.bind(this,index,'work_detl')}/>)}
                     </Form.Item>
+                  </TabPane>
+                  ) 
+                })}
+              </Tabs>
+            ):(<div></div>)}
+
+            <div className="m-row fn-frc">
+              <Button type="primary"  htmlType="submit" onClick={this.doReg}>登録</Button>
+            </div>
+          </Form>
+        </div>
+       }
+        { regtype === 1 && 
+        <div className="m-reg">
+          <h1 className="m-reg_h1">無料登録フォーム</h1>
+          <h2 className="m-reg_h2">基本情報をご入力ください</h2>
+          <Form className="m-reg-form" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}
+            >
+            <Form.Item label="会社名">
+              {getFieldDecorator('name_comp', {
+                rules: [{ required: true, message: '会社名を入力してください' }],
+                // initialValue: 'liyangtom' 
+              })(<Input placeholder="自由陣株式会社" />)}
+            </Form.Item>
+            <Form.Item label="部署">
+              {getFieldDecorator('name_dept', {
+                rules: [{ required: true, message: '部署を入力してください' }],
+                // initialValue: 'liyangtom' 
+              })(<Input placeholder="総務部、人事部、経理部、営業部、開発部等" />)}
+            </Form.Item>
+            <Form.Item label="担当者氏名（漢字）">
+              {getFieldDecorator('name_kj', {
+                rules: [{ required: true, message: '担当者氏名（漢字）を入力してください' }],
+              })(<Input placeholder="自由陣　太郎"/>)}
+            </Form.Item>
+            <Form.Item label="担当者氏名（カナ）">
+              {getFieldDecorator('name_kn', {
+                rules: [{ required: true, message: '氏名（カナ）を入力してください' }],
+                // initialValue: 'tom' 
+              })(<Input placeholder="ジユウジン　タロウ"/>)}
+            </Form.Item>
+            <Form.Item label="電話番号">
+              {getFieldDecorator('phone', {
+                rules: [{ required: true, type:'number', min:10000000000, max:99999999999,  message: '電話番号を入力してください' }],
+                // initialValue: '12345678901' 
+              })(<InputNumber placeholder="01234567890（ハイフン不要）" style={{width:'100%'}} />)}
+            </Form.Item>
+            <Form.Item label="メールアドレス">
+              {getFieldDecorator('email', {
+                rules: [{ required: true, message: 'メールアドレスを入力してください' }],
+                // initialValue:'liyangtom@163.com'
+              })(<Input placeholder="email@address.com" />)}
+            </Form.Item>
+            <Form.Item label="パスワード">
+              {getFieldDecorator('pwd', {
+                rules: [{ required: true, message: 'パスワードを入力してください' }],
+                // initialValue: 'aaa' 
+              })(<Input.Password placeholder=""/>)}
+            </Form.Item>
+            <Form.Item label="パスワード（確認用）">
+              {getFieldDecorator('repwd', {
+                rules: [{ required: true, message: 'パスワードを再入力してください' }],
+                // initialValue: 'aaa' 
+              })(<Input.Password placeholder=""/>)}
+            </Form.Item>        
+            <h2 className="m-reg_h2">
+              <span className="m-h2-ti">案件登録</span>
+              <Switch onChange={this.showExp} />
+            </h2>
+            
+            {showexp?(
+              <Tabs defaultActiveKey="1" 
+                onChange={this.onChange}
+                activeKey={this.state.activeKey}
+                type="editable-card"
+                onEdit={this.onEdit}
+              >
+                {this.state.panes.map((item,index)=>{
+                  return (
+                  <TabPane key={item.key} tab={ `案件 ${index+1}` } 
+                  >
+                    <Form.Item label="案件名">
+                    {getFieldDecorator(`proj_name_${index+1}`, {
+                      rules: [{ required: true, type: 'string', message: '案件名を入力してください' }],
+                      initialValue: item.proj_name,
+                    })(<Input placeholder="案件名" onChange={this.saveVal.bind(this,index,'proj_name')} />)}
+                    </Form.Item>
+                    <Form.Item label="案件説明">
+                      {getFieldDecorator(`work_detl_${index+1}`, {
+                        rules: [{ required: false, type: 'string', message: '案件説明を入力してください' }],
+                        initialValue: "こちらの案件はXXXXXXX向けた開発案件です。\n特徴としましてはXXXXXX。\n＜特徴記載例＞\n・案件/言語のユニーク性\n・案件が取り巻く業界の特徴、魅力\n・チームの特徴、魅力\n・働く条件や環境の魅力\n・フリーランスのキャリアアップに繋がるメッセージング"
+                      })(<TextArea rows={4} onChange={this.saveVal.bind(this,index,'work_detl')}/>)}
+                    </Form.Item>
+                    <Form.Item label="業界">
+                      {getFieldDecorator(`work_domn_${index+1}`, {
+                        rules: [{ required: true, type: 'array', message: '業界を選択してください' }],
+                        initialValue: ["0"]
+                      })(<MSelect className="m-form-text" data={workdomnList}/>)}
+                    </Form.Item>
+                    <Form.Item label="稼働期間">
+                      {getFieldDecorator([`date_from_${index+1}`,`date_to_${index+1}`], {
+                        rules: [{ required: true,  message: '稼働期間を選択してください' }],
+                        initialValue: [moment(item.date_from,DATE_FORMAT), moment(item.date_to,DATE_FORMAT)]
+                      })(<RangePicker format={DATE_FORMAT}  className="m-form-text" 
+                                      onChange={this.saveRange.bind(this,index)}/>)}
+                    </Form.Item>
+                    <Form.Item label="勤務エリア">
+                      {getFieldDecorator('work_area', {
+                      rules: [{ required: true, type: 'array', message: '勤務エリアを選択してください' }],
+                      initialValue: ["0"]
+                      })(<MSelect className="m-form-text" data={workareaList}/> )}
+                    </Form.Item>
+                    <Form.Item label="こだわり">
+                      {getFieldDecorator('work_pref', {
+                      rules: [{ required: true, type: 'array', message: 'こだわりを選択してください' }],
+                      initialValue: ["0"]
+                      })(<MSelect className="m-form-text" data={workprefList}/> )}
+                    </Form.Item>
+                    <Form.Item label="応募対象">
+                    {getFieldDecorator('appl-target', {
+                      initialValue: "0",
+                      rules: [{ required: true, type: 'string', message: 'カテゴリーを選択してください' }]
+                    })(<Select className="m-form-text">
+                        <Option value="0">フリーランス</Option>
+                        <Option value="1">協力パートナー</Option>
+                        <Option value="2">副業</Option>
+                      </Select>)}
+                    </Form.Item>
+                    <Form.Item label="働き方">
+                      {getFieldDecorator('work_type', {
+                        rules: [{ required: true, type: 'array', message: '働き方を選択してください' }],
+                        initialValue: ["0"]
+                      })(<MSelect className="m-form-text" data={worktypeList}/>)}
+                    </Form.Item>
+
+                    <h1>ポジション別</h1>
+                    
+                    <Form.Item label="単価（万円）">
+                      {getFieldDecorator('work_mony', {
+                        rules: [{ type: 'integer', required: true,  min:1, max:200, message: '単価を入力してください（最大200万円）' }],
+                        initialValue: 10
+                      })(<InputNumber placeholder="数字（単位：万円）" />)}
+                    </Form.Item>
+                    <Form.Item label="担当工程">
+                      {getFieldDecorator(`work_resp_${index+1}`, {
+                        rules: [{ required: true, type: 'array', message: '担当工程を選択してください' }],
+                        initialValue: ["0"]
+                      })(<MSelect className="m-form-text" data={workrespList}/>)}
+                    </Form.Item>
+                    <Form.Item label="作業内容">
+                      {getFieldDecorator(`work_cont_${index+1}`, {
+                        rules: [{ required: false, type: 'string', message: '作業内容を入力してください' }],
+                        initialValue: "XXXXXXXXを行なっている企業にて、XXXX案件に携わっていただきます。\n具体的な業務としてXXXXXXXXXXXXXXXXXXXです。\n＜作業工程＞\nXXXX〜XXXXXまで\n＜開発環境＞\nXXXXXXXXXXXXXXX\nご興味を持って頂いた方はぜひ一度お話しましょう！\n「応募する」を押して頂くと、ダイレクトメッセージができますので、\nお待ちしております！"
+                      })(<TextArea rows={4} onChange={this.saveVal.bind(this,index,'work_cont')}/>)}
+                    </Form.Item>
+                    <Form.Item label="言語スキル">
+                      {getFieldDecorator(`lang＿skill_${index+1}`, {
+                        rules: [{ required: true, type: 'array', message: '言語スキルを選択してください' }],
+                        initialValue: ["0"]
+                      })(<MSelect className="m-form-text" data={worklangList}/>)}
+                    </Form.Item>
+
+                    <h1>求める経験</h1>
+
+                    <Form.Item label="必須">
+                      {getFieldDecorator(`reqr_exp_${index+1}`, {
+                        rules: [{ required: false, type: 'string', message: '求める経験（必須）を入力してください' }],
+                        initialValue: "XXXXXXXを使った設計/開発経験（●年経験）\nXXXXXXXの業界でのXXX経験"
+                      })(<TextArea rows={4} onChange={this.saveVal.bind(this,index,'reqr_exp')}/>)}
+                    </Form.Item>
+                    <Form.Item label="歓迎">
+                      {getFieldDecorator(`pref_exp_${index+1}`, {
+                        rules: [{ required: false, type: 'string', message: '求める経験(歓迎)を入力してください' }],
+                        initialValue: "XXXXXXXを使った設計/開発経験（●年経験）\nXXXXXXXの業界でのXXX経験"
+                      })(<TextArea rows={4} onChange={this.saveVal.bind(this,index,'pref_exp')}/>)}
+                    </Form.Item>
+
                   </TabPane>
                   ) 
                 })}
