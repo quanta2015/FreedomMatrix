@@ -13,9 +13,20 @@ class UserActions extends BaseActions {
   }
 
   @action
-  async saveUser(params) {
-    console.log(urls.API_USER_REG)
+  async regUser(params) {
     let r = await this.post(urls.API_USER_REG, params, true)
+    if (r && r.code === 200) {
+      let { token, user, exp } = r.data
+      jwt.saveToken(token)
+      jwt.saveUser(user)
+      jwt.saveExp(exp)
+
+      this.store.user = {
+        token: token,
+        user: user,
+        exp: exp 
+      }
+    }
     return r;
   }
 
@@ -38,6 +49,8 @@ class UserActions extends BaseActions {
         langdb: langdb,
         config: config
       }
+
+
     }
     return r
   }

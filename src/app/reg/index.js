@@ -2,7 +2,7 @@ import React from 'react'
 import { observer, inject } from 'mobx-react'
 import './index.less'
 import * as urls from 'constant/urls'
-import { Input,DatePicker,InputNumber,Select,Switch,Tabs,Button,Form,message  } from 'antd';
+import { Input,DatePicker,Modal, InputNumber,Select,Switch,Tabs,Button,Form,message  } from 'antd';
 import moment  from 'moment'
 import clone from 'util/clone'
 import MSelect from 'util/MSelect'
@@ -38,7 +38,7 @@ class Reg extends React.Component {
 
     this.state = {
       showexp: false,
-      regtype: 1,
+      regtype: 0,
       activeKey: panes[0].key,
       panes,
     }
@@ -119,16 +119,22 @@ class Reg extends React.Component {
               params[`date_from_${i},date_to_${i}`][0] = moment(params[`date_from_${i},date_to_${i}`][0]).format("YYYY/MM/DD")
               params[`date_from_${i},date_to_${i}`][1] = moment(params[`date_from_${i},date_to_${i}`][1]).format("YYYY/MM/DD")
             }
-
           }else{
             params.count = 0
           }
           
-          
-          let r = await this.actions.saveUser(params)
+          let r = await this.actions.regUser(params)
           console.log(r)
           if (r && r.code === 200) {
-            window.location.assign(`${window.location.origin}${window.location.pathname}#/home`)
+            Modal.success({
+              title: '登録成功！',
+              content: 'クリックして個人ページにジャンプします。',
+              okText:"確認",
+              onOk() {
+                window.location.assign(`${window.location.origin}${window.location.pathname}#/home`)
+              
+              }
+            })
           }
         }
       }

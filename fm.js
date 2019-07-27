@@ -9,13 +9,14 @@ var cors = require('cors')
 var exphbs = require('express-handlebars');
 var url = require('url')
 var db = require("./db/db")
-// var jwt= require('jsonwebtoken')
+var jwt= require('jsonwebtoken')
+
 // var formidable = require('formidable'); 
 
 // const configFile = `${__dirname}/data/config.json`
 // const config = JSON.parse(fs.readFileSync(configFile,'utf-8'))
 
-
+const clone = (e) =>{ return JSON.parse(JSON.stringify(e))}
 
 var port = 1080;
 var secret = 'bizsecret';
@@ -53,10 +54,8 @@ app.get('/', function(req, res, next) {
 
 app.post('/user/reg', function(req, res, next) {
   let data = req.body
-  console.log(data)
 
-  // 1. construct data to sql
-  // 2. insert into database
+  // init exp data
   let {}  = data
   let expList = []
   for(let i=1;i<data.count+1;i++) {
@@ -71,8 +70,7 @@ app.post('/user/reg', function(req, res, next) {
     expList.push(item)
   }
 
-
-
+  // init account data
   let account = {
     email:data.email,
     pwd:data.pwd,
@@ -92,10 +90,12 @@ app.post('/user/reg', function(req, res, next) {
   let valList   = []
   let table     = "account"
 
+  // create account sql
   db.prepareParm(account,fieldList,valList,[])
   let sql = `insert into ${table} (${fieldList.join(',')}) values(${valList.join(',')})`
   sqlList.push(sql)
 
+  // create exp sql
   table  = "exp"
   for(let i=0;i<expList.length;i++) {
     fieldList = []
@@ -109,11 +109,14 @@ app.post('/user/reg', function(req, res, next) {
   sql = sqlList.join(';') + ';'
   console.log(sql)
 
+  // insert data
   db.querySQL(sql, (err,ret)=>{
     if (ret.code == 0) {
+      token = jwt.sign({ email: account.email, pwd: account.pwd }, secret);
       res.status(200).json({
         code: 200,
-        msg: '保存成功'
+        msg: '保存成功',
+        data: {token: token, user: account, exp: expList}
       })
     }else{
       res.status(500).json({
