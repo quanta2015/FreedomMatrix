@@ -64,12 +64,14 @@ app.post('/user/reg', function(req, res, next) {
     item[`proj_name`] = data[`proj_name_${i}`]
     item[`date_from`] = data[`date_from_${i},date_to_${i}`][0]
     item[  `date_to`] = data[`date_from_${i},date_to_${i}`][1]
-    item[`work_lang`] = data[`work_lang_${i}`]
-    item[`work_role`] = data[`work_role_${i}`]
-    item[`work_proj`] = data[`work_proj_${i}`]
+    item[`work_lang`] = data[`select-multiple-work_lang_${i}`]
+    item[`work_role`] = data[`select-multiple-work_role_${i}`]
+    item[`work_proj`] = data[`select-multiple-work_proj_${i}`]
     item[`work_detl`] = data[`work_detl_${i}`]
     expList.push(item)
   }
+
+
 
   let account = {
     email:data.email,
@@ -77,12 +79,12 @@ app.post('/user/reg', function(req, res, next) {
     name_kj:data.name_kj,
     name_kn:data.name_kn,
     birth:data.birth,
-    phone:data.phone,
+    phone:data['input-number-phone'],
     pers_type:data.pers_type,
-    work_area:data.work_area,
-    work_time:data.work_time,
+    work_area:data['select-multiple-work_area'],
+    work_time:data['select-multiple-work_time'],
     work_mony:data.work_mony,
-    work_type:data.work_type
+    work_type:data['select-multiple-work_type']
   }
 
   let sqlList   = []

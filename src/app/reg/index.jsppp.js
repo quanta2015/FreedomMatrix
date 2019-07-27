@@ -104,28 +104,26 @@ class Reg extends React.Component {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
-
-        let params = clone(values)
-        let pwd   = params.pwd
-        let repwd = params.repwd
+        let pwd = values.pwd
+        let repwd = values.repwd
         if (pwd !== repwd) {
           message.success('r.msg')
         }else{
-          params.count = this.state.panes.length
-          params.birth = moment(values.params).format("YYYY/MM/DD")
+          values.count = this.state.panes.length
+          values.birth = moment(values.birth).format("YYYY/MM/DD")
 
           if (this.state.showexp) {
             for(let i=1;i<this.state.panes.length+1;i++) {
-              params[`date_from_${i},date_to_${i}`][0] = moment(params[`date_from_${i},date_to_${i}`][0]).format("YYYY/MM/DD")
-              params[`date_from_${i},date_to_${i}`][1] = moment(params[`date_from_${i},date_to_${i}`][1]).format("YYYY/MM/DD")
+              values[`date_from_${i},date_to_${i}`][0] = moment(values[`date_from_${i},date_to_${i}`][0]).format("YYYY/MM/DD")
+              values[`date_from_${i},date_to_${i}`][1] = moment(values[`date_from_${i},date_to_${i}`][1]).format("YYYY/MM/DD")
             }
 
           }else{
-            params.count = 0
+            values.count = 0
           }
           
           
-          let r = await this.actions.saveUser(params)
+          let r = await this.actions.saveUser(values)
           console.log(r)
           if (r && r.code === 200) {
             window.location.assign(`${window.location.origin}${window.location.pathname}#/home`)
@@ -223,9 +221,9 @@ class Reg extends React.Component {
               />)}
             </Form.Item>
             <Form.Item label="電話番号">
-              {getFieldDecorator('input-number-phone', {
+              {getFieldDecorator('phone', {
                 rules: [{ required: true, type:'number', min:10000000000, max:99999999999,  message: '電話番号を入力してください' }],
-                initialValue: 12345678901 
+                initialValue: '12345678901' 
               })(<InputNumber placeholder="01234567890（ハイフン不要）" style={{width:'100%'}} />)}
             </Form.Item>
             <Form.Item label="カテゴリー">
@@ -241,13 +239,13 @@ class Reg extends React.Component {
 
             <h2 className="m-reg_h2">稼働希望をご入力ください</h2>
             <Form.Item label="勤務希望エリア">
-              {getFieldDecorator('select-multiple-work_area', {
+              {getFieldDecorator('work_area', {
                 rules: [{ required: true, type: 'array', message: '勤務希望エリアを選択してください' }],
                 initialValue: ['0']
               })(<MSelect className="m-form-text" data={workareaList}/> )}
             </Form.Item>
             <Form.Item label="希望稼働時期">
-              {getFieldDecorator('select-multiple-work_time', {
+              {getFieldDecorator('work_time', {
                 rules: [{ required: true, type: 'array', message: '希望稼働時期を選択してください' }],
                 initialValue: ["0"]
               })(<MSelect className="m-form-text" data={worktimeList}/> )}
@@ -259,7 +257,7 @@ class Reg extends React.Component {
               })(<InputNumber placeholder="数字（単位：万円）" />)}
             </Form.Item>
             <Form.Item label="希望働き方">
-              {getFieldDecorator('select-multiple-work_type', {
+              {getFieldDecorator('work_type', {
                 rules: [{ required: true, type: 'array', message: '希望働き方を選択してください' }],
                 initialValue: ["0"]
               })(<MSelect className="m-form-text" data={worktypeList}/>)}
@@ -300,21 +298,21 @@ class Reg extends React.Component {
                     </Form.Item>
 
                     <Form.Item label="経験言語">
-                      {getFieldDecorator(`select-multiple-work_lang_${index+1}`, {
+                      {getFieldDecorator(`work_lang_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '経験言語を選択してください' }],
                         initialValue: ["0"]
                       })(<MSelect className="m-form-text" data={worklangList}/>)}
                     </Form.Item>
 
                     <Form.Item label="経験職種">
-                      {getFieldDecorator(`select-multiple-work_role_${index+1}`, {
+                      {getFieldDecorator(`work_role_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '経験職種を選択してください' }],
                         initialValue: ["0"]
                       })(<MSelect className="m-form-text" data={workroleList}/>)}
                     </Form.Item>
 
                     <Form.Item label="経験工程">
-                      {getFieldDecorator(`select-multiple-work_proj_${index+1}`, {
+                      {getFieldDecorator(`work_proj_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '経験工程を選択してください' }],
                         initialValue: ["0"]
                       })(<MSelect className="m-form-text" data={workprojList}/>)}
