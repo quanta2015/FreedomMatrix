@@ -132,7 +132,6 @@ class Reg extends React.Component {
               okText:"確認",
               onOk() {
                 window.location.assign(`${window.location.origin}${window.location.pathname}#/home`)
-              
               }
             })
           }

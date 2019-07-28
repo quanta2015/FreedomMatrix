@@ -6,7 +6,7 @@ import { Input } from 'antd';
 
 @inject('carlActions', 'userStore')
 @observer
-class Home extends React.Component {
+class Homecomp extends React.Component {
   constructor(props) {
     super(props)
     this.actions = props.carlActions
@@ -16,12 +16,12 @@ class Home extends React.Component {
   render() {
    
     return (
-      <div className='g-home'>
-        home
+      <div className='g-homecomp'>
+        home comp
       </div>
     )
   }
 }
 
 
-export default Home
+export default Homecomp

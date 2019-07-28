@@ -8,57 +8,7 @@ const { Sider } = Layout
 const { SubMenu } = Menu;
 const MenuItem = Menu.Item
 
-let menu = [
-      {
-        path:'/home',
-        icon:'home',
-        title:'HOME'
-      },{
-        icon:'project',
-        title:'案件',
-        submenu: [{
-          path:'/search',
-          icon:'search',
-          title:'案件検索',
-        },{
-          path:'/addproject',
-          icon:'schedule',
-          title:'案件登録'
-        },{
-          path:'/myproject',
-          icon:'project',
-          title:'案件My'
-        }]
-      },{
-        path:'/mymember',
-        icon:'user',
-        title:'会員My'
-      },{
-        path:'/ask',
-        icon:'question-circle',
-        title:'お問い合わせ'
-      },{
-        icon:'user',
-        title: 'その他',
-        submenu: [{
-          path:'/management',
-          icon:'profile',
-          title:'運営企業'
-        },{
-          path:'/rule',
-          icon:'profile',
-          title:'利用規約'
-        },{
-          path:'/privacy',
-          icon:'profile',
-          title:'プライバシーポリシー'
-        },{
-          path:'/news',
-          icon:'profile',
-          title:'お役たち情報'
-        }]
-      }
-    ]
+import { MAIN_MENU }  from 'constant/data'
 
 
 @inject('userActions', 'userStore')
@@ -67,8 +17,8 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props)
     this.actions = props.userActions
-    this.store = props.userStore
-    this.state = { visible: false };
+    this.store   = props.userStore
+    this.state   = { visible: false };
   }
 
 
@@ -93,6 +43,13 @@ class Dashboard extends React.Component {
 
   render() {
 
+    let isLogin = this.store.isLogin
+    if (typeof(isLogin)==='undefined') {
+      isLogin = 0;
+    }
+
+    console.log(isLogin)
+
     const dropdownMenu = (
       <Menu>
         <Menu.Item>
@@ -114,10 +71,10 @@ class Dashboard extends React.Component {
           </div>
           <div className="m-hd-desktop">
             <Menu theme='light' mode="horizontal">
-              {menu.map((item,i) => {
+              {MAIN_MENU.map((item,i) => {
                 if (!item.submenu) {
                   return(
-                  <MenuItem key={i}>
+                  <MenuItem key={i} className={(isLogin===item.type)||(0===item.type)?'fn-show':'fn-hide'}>
                     <NavLink to={item.path} >
                       <Icon type={item.icon} />
                       <span>{item.title}</span>
@@ -144,13 +101,14 @@ class Dashboard extends React.Component {
           </div>
           <div className="m-hd-mobile">
             <Drawer
+              className="m-mobile-menu"
               title={<Icon type="codepen" />}
               placement="left"
               closable={false}
               onClose={this.onClose}
               visible={this.state.visible}
             >
-              {menu.map((item,i) => {
+              {MAIN_MENU.map((item,i) => {
                 if (!item.submenu) {
                   return(
                   <p key={i} className="m-menu_h">

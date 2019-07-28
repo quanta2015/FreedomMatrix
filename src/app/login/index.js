@@ -8,7 +8,7 @@ const FormItem = Form.Item
 @Form.create()
 @inject('userActions', 'userStore')
 @observer
-class LoginForm extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props)
     this.actions = props.userActions
@@ -71,4 +71,4 @@ class LoginForm extends React.Component {
   }
 }
 
-export default LoginForm
+export default Login

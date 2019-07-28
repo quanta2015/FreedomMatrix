@@ -6,6 +6,8 @@ import store from '../store'
 import jwt from 'util/token'
 import clone from 'util/clone'
 
+
+
 class UserActions extends BaseActions {
   constructor(store) {
     super()
@@ -26,8 +28,9 @@ class UserActions extends BaseActions {
         user: user,
         exp: exp 
       }
+      this.store.isLogin = 1
     }
-    return r;
+    return r
   }
 
   @action

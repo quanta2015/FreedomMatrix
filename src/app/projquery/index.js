@@ -7,7 +7,7 @@ import { message } from 'antd'
 
 @inject('projectActions', 'userStore')
 @observer
-class Project extends React.Component {
+class Projquery extends React.Component {
 
   constructor(props) {
     super(props)
@@ -19,8 +19,10 @@ class Project extends React.Component {
   render() {
 
     return (
-      <div className='g-project'>
-        project
+      <div className='g-projquery'>
+        query
+
+        aaaaaaaa
       </div>
     )
   }
@@ -29,4 +31,4 @@ class Project extends React.Component {
 
 
 
-export default Project
+export default Projquery
