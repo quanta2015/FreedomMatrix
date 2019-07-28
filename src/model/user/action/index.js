@@ -62,9 +62,10 @@ class UserActions extends BaseActions {
   async logout() {
     this.store.user = null
     jwt.removeToken()
-    jwt.removeConfig()
+    jwt.removeUser()
+    jwt.removeExp()
   }
-
+  
 
   @action
   async autoLogin() {

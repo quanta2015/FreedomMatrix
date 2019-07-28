@@ -1,7 +1,7 @@
 import React from 'react'
 import { observer, inject } from 'mobx-react'
 import { Form, Button, Input, Icon } from 'antd'
-
+import { NavLink } from 'react-router-dom'
 import './index.less'
 const FormItem = Form.Item
 
@@ -32,10 +32,10 @@ class Login extends React.Component {
     const {  getFieldDecorator } = this.props.form
 
     return (
-      <div className='login__container'>
+      <div className='g-login'>
         <div className='login__content'>
           <div className='login__header'>
-            <span>BIZPLUS后台管理系统</span>
+            <span>自由阵ログイン </span>
           </div>
 
           <div className='login__form'>
@@ -60,7 +60,10 @@ class Login extends React.Component {
                 )}
               </FormItem>
 
-              <Form.Item>
+              <Form.Item formItemLayout='vertical'>
+                <Button className='login__btn' >
+                  <NavLink to='/searchproj'><span>返回</span></NavLink> 
+                </Button>
                 <Button className='login__btn' type='primary' htmlType='submit' > 登录 </Button>
               </Form.Item>
             </Form>

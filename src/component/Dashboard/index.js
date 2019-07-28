@@ -64,7 +64,12 @@ class Dashboard extends React.Component {
       <Layout className="layout">
         <Header>
           <div className="logo">自由阵</div>
-          <div className="m-reg">
+          <div className="m-hd-btn m-login">
+            <NavLink to='login'>
+              <span>ログイン</span>
+            </NavLink>
+          </div>
+          <div className="m-hd-btn m-reg">
             <NavLink to='reg'>
               <span>無料登録</span>
             </NavLink>
