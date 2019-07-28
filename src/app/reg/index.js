@@ -27,6 +27,7 @@ class Reg extends React.Component {
     this.newTabIndex = 0;
     const panes = [{
         proj_name:"",
+        pl: 2,
         date_from:moment(new Date()).format("YYYY/MM/DD"),
         date_to:  moment(new Date()).format("YYYY/MM/DD"),
         work_lang:["0"],
