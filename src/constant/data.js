@@ -83,7 +83,7 @@ export const workprojList = [{txt: '保険',val:'0'},
                              {txt: '情報',val:'10'},
                              {txt: 'その他',val:'11'}]
 
-export const workdomnList = [{txt: '自動車（部品）',          val:'0'},
+export const projdomnList = [{txt: '自動車（部品）',          val:'0'},
                              {txt: '製造・機械',             val:'1'},
                              {txt: '運輸',                  val:'2'},
                              {txt: '通信',                  val:'3'},
@@ -98,7 +98,7 @@ export const workdomnList = [{txt: '自動車（部品）',          val:'0'},
                              {txt: '農林水産',               val:'12'},
                              {txt: 'その他',                val:'13'}]
 
-export const workprefList = [{txt: '新着',                 val:'0'},
+export const projprefList = [{txt: '新着',                 val:'0'},
                              {txt: '長期稼働',              val:'1'},
                              {txt: '高単価',               val:'2'},
                              {txt: 'スタートアップ',         val:'3'},
@@ -118,7 +118,7 @@ export const workprefList = [{txt: '新着',                 val:'0'},
                              {txt: 'リモート可',             val:'17'},
                              {txt: '残業なし',              val:'18'}]
 
-export const workrespList = [{txt: '計画調査',  val:'0'},
+export const projrespList = [{txt: '計画調査',  val:'0'},
                              {txt: '要件定義',  val:'1'},
                              {txt: '基本設計',  val:'2'},
                              {txt: '詳細設計', val:'3'},

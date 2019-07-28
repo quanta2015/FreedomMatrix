@@ -6,7 +6,7 @@ import { Input,DatePicker,Modal, InputNumber,Select,Switch,Tabs,Button,Form,mess
 import moment  from 'moment'
 import clone from 'util/clone'
 import MSelect from 'util/MSelect'
-import { workareaList, worktimeList, worktypeList, worklangList, workroleList, workprojList, workdomnList, workprefList, workrespList, DATE_FORMAT } from 'constant/data'
+import { workareaList, worktimeList, worktypeList, worklangList, workroleList, workprojList, projdomnList, projprefList, projrespList, DATE_FORMAT } from 'constant/data'
 
 
 const { Option } = Select;
@@ -185,7 +185,7 @@ class Reg extends React.Component {
         </div>
         { regtype === 0 && 
         <div className="m-reg">
-          <h1 className="m-reg_h1">無料登録フォーム</h1>
+          <h1 className="m-reg_h1">無料会員登録フォーム</h1>
           <h2 className="m-reg_h2">基本情報をご入力ください</h2>
           <Form className="m-reg-form" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}
             >
@@ -345,7 +345,7 @@ class Reg extends React.Component {
        }
         { regtype === 1 && 
         <div className="m-reg">
-          <h1 className="m-reg_h1">無料登録フォーム</h1>
+          <h1 className="m-reg_h1">無料企業登録フォーム</h1>
           <h2 className="m-reg_h2">基本情報をご入力ください</h2>
           <Form className="m-reg-form" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}
             >
@@ -397,7 +397,7 @@ class Reg extends React.Component {
               })(<Input.Password placeholder=""/>)}
             </Form.Item>        
             <h2 className="m-reg_h2">
-              <span className="m-h2-ti">案件登録</span>
+              <span className="m-h2-ti">案件登録（後でも可能）</span>
               <Switch onChange={this.showExp} />
             </h2>
             
@@ -419,16 +419,16 @@ class Reg extends React.Component {
                     })(<Input placeholder="案件名" onChange={this.saveVal.bind(this,index,'proj_name')} />)}
                     </Form.Item>
                     <Form.Item label="案件説明">
-                      {getFieldDecorator(`work_detl_${index+1}`, {
+                      {getFieldDecorator(`proj_detl_${index+1}`, {
                         rules: [{ required: false, type: 'string', message: '案件説明を入力してください' }],
                         initialValue: "こちらの案件はXXXXXXX向けた開発案件です。\n特徴としましてはXXXXXX。\n＜特徴記載例＞\n・案件/言語のユニーク性\n・案件が取り巻く業界の特徴、魅力\n・チームの特徴、魅力\n・働く条件や環境の魅力\n・フリーランスのキャリアアップに繋がるメッセージング"
                       })(<TextArea rows={4} onChange={this.saveVal.bind(this,index,'work_detl')}/>)}
                     </Form.Item>
                     <Form.Item label="業界">
-                      {getFieldDecorator(`work_domn_${index+1}`, {
+                      {getFieldDecorator(`proj_domn_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '業界を選択してください' }],
                         initialValue: ["0"]
-                      })(<MSelect className="m-form-text" data={workdomnList}/>)}
+                      })(<MSelect className="m-form-text" data={projdomnList}/>)}
                     </Form.Item>
                     <Form.Item label="稼働期間">
                       {getFieldDecorator([`date_from_${index+1}`,`date_to_${index+1}`], {
@@ -438,19 +438,19 @@ class Reg extends React.Component {
                                       onChange={this.saveRange.bind(this,index)}/>)}
                     </Form.Item>
                     <Form.Item label="勤務エリア">
-                      {getFieldDecorator('work_area', {
+                      {getFieldDecorator('proj_area', {
                       rules: [{ required: true, type: 'array', message: '勤務エリアを選択してください' }],
                       initialValue: ["0"]
                       })(<MSelect className="m-form-text" data={workareaList}/> )}
                     </Form.Item>
                     <Form.Item label="こだわり">
-                      {getFieldDecorator('work_pref', {
+                      {getFieldDecorator('proj_pref', {
                       rules: [{ required: true, type: 'array', message: 'こだわりを選択してください' }],
                       initialValue: ["0"]
-                      })(<MSelect className="m-form-text" data={workprefList}/> )}
+                      })(<MSelect className="m-form-text" data={projprefList}/> )}
                     </Form.Item>
                     <Form.Item label="応募対象">
-                    {getFieldDecorator('appl-target', {
+                    {getFieldDecorator('proj-targ', {
                       initialValue: "0",
                       rules: [{ required: true, type: 'string', message: 'カテゴリーを選択してください' }]
                     })(<Select className="m-form-text">
@@ -460,7 +460,7 @@ class Reg extends React.Component {
                       </Select>)}
                     </Form.Item>
                     <Form.Item label="働き方">
-                      {getFieldDecorator('work_type', {
+                      {getFieldDecorator('proj_styl', {
                         rules: [{ required: true, type: 'array', message: '働き方を選択してください' }],
                         initialValue: ["0"]
                       })(<MSelect className="m-form-text" data={worktypeList}/>)}
@@ -469,25 +469,31 @@ class Reg extends React.Component {
                     <h1>ポジション別</h1>
                     
                     <Form.Item label="単価（万円）">
-                      {getFieldDecorator('work_mony', {
+                      {getFieldDecorator('proj_mony', {
                         rules: [{ type: 'integer', required: true,  min:1, max:200, message: '単価を入力してください（最大200万円）' }],
                         initialValue: 10
                       })(<InputNumber placeholder="数字（単位：万円）" />)}
                     </Form.Item>
+                    <Form.Item label="職種">
+                      {getFieldDecorator(`proj_role_${index+1}`, {
+                        rules: [{ required: true, type: 'array', message: '職種を選択してください' }],
+                        initialValue: ["0"]
+                      })(<MSelect className="m-form-text" data={workroleList}/>)}
+                    </Form.Item>
                     <Form.Item label="担当工程">
-                      {getFieldDecorator(`work_resp_${index+1}`, {
+                      {getFieldDecorator(`proj_resp_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '担当工程を選択してください' }],
                         initialValue: ["0"]
-                      })(<MSelect className="m-form-text" data={workrespList}/>)}
+                      })(<MSelect className="m-form-text" data={projrespList}/>)}
                     </Form.Item>
                     <Form.Item label="作業内容">
-                      {getFieldDecorator(`work_cont_${index+1}`, {
+                      {getFieldDecorator(`proj_cont_${index+1}`, {
                         rules: [{ required: false, type: 'string', message: '作業内容を入力してください' }],
                         initialValue: "XXXXXXXXを行なっている企業にて、XXXX案件に携わっていただきます。\n具体的な業務としてXXXXXXXXXXXXXXXXXXXです。\n＜作業工程＞\nXXXX〜XXXXXまで\n＜開発環境＞\nXXXXXXXXXXXXXXX\nご興味を持って頂いた方はぜひ一度お話しましょう！\n「応募する」を押して頂くと、ダイレクトメッセージができますので、\nお待ちしております！"
                       })(<TextArea rows={4} onChange={this.saveVal.bind(this,index,'work_cont')}/>)}
                     </Form.Item>
                     <Form.Item label="言語スキル">
-                      {getFieldDecorator(`lang＿skill_${index+1}`, {
+                      {getFieldDecorator(`proj_lang_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '言語スキルを選択してください' }],
                         initialValue: ["0"]
                       })(<MSelect className="m-form-text" data={worklangList}/>)}
@@ -507,7 +513,6 @@ class Reg extends React.Component {
                         initialValue: "XXXXXXXを使った設計/開発経験（●年経験）\nXXXXXXXの業界でのXXX経験"
                       })(<TextArea rows={4} onChange={this.saveVal.bind(this,index,'pref_exp')}/>)}
                     </Form.Item>
-
                   </TabPane>
                   ) 
                 })}
