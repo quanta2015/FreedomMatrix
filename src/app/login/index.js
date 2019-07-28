@@ -22,7 +22,7 @@ class Login extends React.Component {
       if (!err) {
         let r = await this.actions.login(values)
         if (r && r.code === 200) {
-          window.location.assign(`${window.location.origin}${window.location.pathname}#/home`)
+          window.location.assign(`${window.location.origin}${window.location.pathname}#/homeuser`)
         }
       }
     })
@@ -33,7 +33,7 @@ class Login extends React.Component {
 
     return (
       <div className='g-login'>
-        <div className='login__content'>
+        <div className='m-login'>
           <div className='login__header'>
             <span>自由阵ログイン </span>
           </div>
@@ -41,9 +41,9 @@ class Login extends React.Component {
           <div className='login__form'>
             <Form onSubmit={this.handleSubmit}>
               <FormItem hasFeedback>
-                {getFieldDecorator('usr', { rules: [{ required: true, message: '请输入账号' }] })(
+                {getFieldDecorator('email', { rules: [{ required: true, message: '请输入账号' }] })(
                   <Input
-                    name='usr'
+                    name='email'
                     prefix={<Icon type='user' />}
                     placeholder='请输入账号'
                   />
@@ -62,7 +62,7 @@ class Login extends React.Component {
 
               <Form.Item formItemLayout='vertical'>
                 <Button className='login__btn' >
-                  <NavLink to='/searchproj'><span>返回</span></NavLink> 
+                  <NavLink to='/'><span>返回</span></NavLink> 
                 </Button>
                 <Button className='login__btn' type='primary' htmlType='submit' > 登录 </Button>
               </Form.Item>

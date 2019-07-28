@@ -25,6 +25,7 @@ class App extends React.Component {
             <div className='app-root'>
               <Dashboard>
                 <Switch>
+                  <Route exact path='/'          component={projquery}/>
                   <Route exact path='/reg'       component={reg}/>
                   <Route exact path='/login'     component={login}/>
                   <Route exact path='/projquery' component={projquery}/>

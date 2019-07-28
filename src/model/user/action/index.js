@@ -38,22 +38,18 @@ class UserActions extends BaseActions {
     let r = await this.post(urls.API_USER_LOGIN, params, true)
     if (r && r.code === 200) {
       let token = r.data.token
-      let langdb = r.data.langdb
-      let config = r.data.config
+      let user = r.data.user
+      let exp = r.data.exp
       jwt.saveToken(token)
-      jwt.saveLangdb(langdb)
-      jwt.saveConfig(config)
+      jwt.saveUser(user)
+      jwt.saveExp(exp)
 
       const data = jwt.decodeToken()
       this.store.user = {
-        usr: data.usr,
-        pwd: data.pwd,
         token: jwt.getToken(),
-        langdb: langdb,
-        config: config
+        user: user,
+        exp: exp
       }
-
-
     }
     return r
   }
