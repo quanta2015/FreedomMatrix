@@ -37,19 +37,17 @@ class UserActions extends BaseActions {
   async login(params) {
     let r = await this.post(urls.API_USER_LOGIN, params, true)
     if (r && r.code === 200) {
-      let token = r.data.token
-      let user = r.data.user
-      let exp = r.data.exp
+      let { token, user, exp } = r.data
       jwt.saveToken(token)
       jwt.saveUser(user)
       jwt.saveExp(exp)
 
-      const data = jwt.decodeToken()
       this.store.user = {
-        token: jwt.getToken(),
+        token: token,
         user: user,
         exp: exp
       }
+      this.store.isLogin = 1
     }
     return r
   }
@@ -57,6 +55,7 @@ class UserActions extends BaseActions {
   @action
   async logout() {
     this.store.user = null
+    this.store.isLogin = 0
     jwt.removeToken()
     jwt.removeUser()
     jwt.removeExp()

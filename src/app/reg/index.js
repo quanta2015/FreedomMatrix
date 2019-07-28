@@ -6,8 +6,7 @@ import { Input,DatePicker,Modal, InputNumber,Select,Switch,Tabs,Button,Form,mess
 import moment  from 'moment'
 import clone from 'util/clone'
 import MSelect from 'util/MSelect'
-import { workareaList, worktimeList, worktypeList, worklangList, workroleList, workprojList, projdomnList, projprefList, projrespList, DATE_FORMAT } from 'constant/data'
-
+import * as cd from 'constant/data'
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -27,7 +26,6 @@ class Reg extends React.Component {
     this.newTabIndex = 0;
     const panes = [{
         proj_name:"",
-        pl:1,
         date_from:moment(new Date()).format("YYYY/MM/DD"),
         date_to:  moment(new Date()).format("YYYY/MM/DD"),
         work_lang:["0"],
@@ -58,8 +56,8 @@ class Reg extends React.Component {
     const activeKey = `newTab${this.newTabIndex++}`;
     let expItem = {
       proj_name:"",
-      date_from:moment(new Date()).format(DATE_FORMAT),
-      date_to:  moment(new Date()).format(DATE_FORMAT),
+      date_from:moment(new Date()).format(cd.DATE_FORMAT),
+      date_to:  moment(new Date()).format(cd.DATE_FORMAT),
       work_lang:["0"],
       work_role:["0"],
       work_proj:["0"],
@@ -103,46 +101,52 @@ class Reg extends React.Component {
 
   doReg = (e) =>{
     e.preventDefault();
-    this.props.form.validateFields(async (err, values) => {
+    this.props.form.validateFields( async (err, values) => {
       if (!err) {
-
         let params = clone(values)
         let pwd   = params.pwd
         let repwd = params.repwd
         if (pwd !== repwd) {
-          message.success('r.msg')
+          message.success('二回入力したパスワードが一致しません。')
         }else{
-          params.count = this.state.panes.length
-          params.birth = moment(values.params).format("YYYY/MM/DD")
-
-          if (this.state.showexp) {
-            for(let i=1;i<this.state.panes.length+1;i++) {
-              params[`date_from_${i},date_to_${i}`][0] = moment(params[`date_from_${i},date_to_${i}`][0]).format("YYYY/MM/DD")
-              params[`date_from_${i},date_to_${i}`][1] = moment(params[`date_from_${i},date_to_${i}`][1]).format("YYYY/MM/DD")
+          Modal.confirm({
+            title: 'データをログインするかどうかを確認してください?',
+            onOk:()=> {
+              this.regUser(params)
             }
-          }else{
-            params.count = 0
-          }
+          });
           
-          let r = await this.actions.regUser(params)
-          console.log(r)
-          if (r && r.code === 200) {
-            Modal.success({
-              title: '登録成功！',
-              content: 'クリックして個人ページにジャンプします。',
-              okText:"確認",
-              onOk() {
-                window.location.assign(`${window.location.origin}${window.location.pathname}#/home`)
-              }
-            })
-          }
         }
       }
     })
   }
 
-  showExp = (e)=>{
+  regUser = async (params) => {
+    params.count = this.state.panes.length
+    params.birth = moment(params.birth).format("YYYY/MM/DD")
+    if (this.state.showexp) {
+      for(let i=1;i<this.state.panes.length+1;i++) {
+        params[`date_from_${i},date_to_${i}`][0] = moment(params[`date_from_${i},date_to_${i}`][0]).format("YYYY/MM/DD")
+        params[`date_from_${i},date_to_${i}`][1] = moment(params[`date_from_${i},date_to_${i}`][1]).format("YYYY/MM/DD")
+      }
+    }else{
+      params.count = 0
+    }
+    
+    let r = await this.actions.regUser(params)
+    if (r && r.code === 200) {
+      Modal.success({
+        title: '登録成功！',
+        content: 'クリックして個人ページにジャンプします。',
+        okText:"確認",
+        onOk() {
+          window.location.assign(`${window.location.origin}${window.location.pathname}#/homeuser`)
+        }
+      })
+    }
+  }
 
+  showExp = (e)=>{
     this.setState({ showexp: e })
   }
 
@@ -155,8 +159,8 @@ class Reg extends React.Component {
 
   saveRange = (id,v)=>{
     const { panes } = this.state;
-    panes[id]['date_from'] = v[0].format(DATE_FORMAT)
-    panes[id]['date_to']   = v[1].format(DATE_FORMAT)
+    panes[id]['date_from'] = v[0].format(cd.DATE_FORMAT)
+    panes[id]['date_to']   = v[1].format(cd.DATE_FORMAT)
     this.setState({ panes});
   }
 
@@ -182,7 +186,7 @@ class Reg extends React.Component {
       <div className='g-reg'>
         <div className='m-reg-type'>
           <Button className="m-type-btn c-blue" onClick={this.setType.bind(this,0)}>会員様へ無料登録</Button>
-          <Button className="m-type-btn c-yell" onClick={this.setType.bind(this,1)}>企業様へ無料登録</Button>
+          <Button className="m-type-btn c-blue" onClick={this.setType.bind(this,1)}>企業様へ無料登録</Button>
         </div>
         { regtype === 0 && 
         <div className="m-reg">
@@ -225,7 +229,7 @@ class Reg extends React.Component {
                 rules: [{ required: true,　message: '生年月日を入力してください' }],
               })(<DatePicker className="m-form-text"          
                               placeholder='年/月/日'              
-                              format= {DATE_FORMAT}              
+                              format= {cd.DATE_FORMAT}              
               />)}
             </Form.Item>
             <Form.Item label="電話番号">
@@ -250,13 +254,13 @@ class Reg extends React.Component {
               {getFieldDecorator('select-multiple-work_area', {
                 rules: [{ required: true, type: 'array', message: '勤務希望エリアを選択してください' }],
                 initialValue: ['0']
-              })(<MSelect className="m-form-text" data={workareaList}/> )}
+              })(<MSelect className="m-form-text" data={cd.workareaList}/> )}
             </Form.Item>
             <Form.Item label="希望稼働時期">
               {getFieldDecorator('select-multiple-work_time', {
                 rules: [{ required: true, type: 'array', message: '希望稼働時期を選択してください' }],
                 initialValue: ["0"]
-              })(<MSelect className="m-form-text" data={worktimeList}/> )}
+              })(<MSelect className="m-form-text" data={cd.worktimeList}/> )}
             </Form.Item>
             <Form.Item label="希望月額報酬（万円）">
               {getFieldDecorator('work_mony', {
@@ -268,7 +272,7 @@ class Reg extends React.Component {
               {getFieldDecorator('select-multiple-work_type', {
                 rules: [{ required: true, type: 'array', message: '希望働き方を選択してください' }],
                 initialValue: ["0"]
-              })(<MSelect className="m-form-text" data={worktypeList}/>)}
+              })(<MSelect className="m-form-text" data={cd.worktypeList}/>)}
             </Form.Item>
 
         
@@ -300,8 +304,8 @@ class Reg extends React.Component {
                     <Form.Item label="期間">
                       {getFieldDecorator([`date_from_${index+1}`,`date_to_${index+1}`], {
                         rules: [{ required: true,  message: '期間を選択してください' }],
-                        initialValue: [moment(item.date_from,DATE_FORMAT), moment(item.date_to,DATE_FORMAT)]
-                      })(<RangePicker format={DATE_FORMAT}  className="m-form-text" 
+                        initialValue: [moment(item.date_from,cd.DATE_FORMAT), moment(item.date_to,cd.DATE_FORMAT)]
+                      })(<RangePicker format={cd.DATE_FORMAT}  className="m-form-text" 
                                       onChange={this.saveRange.bind(this,index)}/>)}
                     </Form.Item>
 
@@ -309,21 +313,21 @@ class Reg extends React.Component {
                       {getFieldDecorator(`select-multiple-work_lang_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '経験言語を選択してください' }],
                         initialValue: ["0"]
-                      })(<MSelect className="m-form-text" data={worklangList}/>)}
+                      })(<MSelect className="m-form-text" data={cd.worklangList}/>)}
                     </Form.Item>
 
                     <Form.Item label="経験職種">
                       {getFieldDecorator(`select-multiple-work_role_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '経験職種を選択してください' }],
                         initialValue: ["0"]
-                      })(<MSelect className="m-form-text" data={workroleList}/>)}
+                      })(<MSelect className="m-form-text" data={cd.workroleList}/>)}
                     </Form.Item>
 
                     <Form.Item label="経験工程">
                       {getFieldDecorator(`select-multiple-work_proj_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '経験工程を選択してください' }],
                         initialValue: ["0"]
-                      })(<MSelect className="m-form-text" data={workprojList}/>)}
+                      })(<MSelect className="m-form-text" data={cd.workprojList}/>)}
                     </Form.Item>
 
                     <Form.Item label="詳細">
@@ -429,26 +433,26 @@ class Reg extends React.Component {
                       {getFieldDecorator(`proj_domn_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '業界を選択してください' }],
                         initialValue: ["0"]
-                      })(<MSelect className="m-form-text" data={projdomnList}/>)}
+                      })(<MSelect className="m-form-text" data={cd.projdomnList}/>)}
                     </Form.Item>
                     <Form.Item label="稼働期間">
                       {getFieldDecorator([`date_from_${index+1}`,`date_to_${index+1}`], {
                         rules: [{ required: true,  message: '稼働期間を選択してください' }],
-                        initialValue: [moment(item.date_from,DATE_FORMAT), moment(item.date_to,DATE_FORMAT)]
-                      })(<RangePicker format={DATE_FORMAT}  className="m-form-text" 
+                        initialValue: [moment(item.date_from,cd.DATE_FORMAT), moment(item.date_to,cd.DATE_FORMAT)]
+                      })(<RangePicker format={cd.DATE_FORMAT}  className="m-form-text" 
                                       onChange={this.saveRange.bind(this,index)}/>)}
                     </Form.Item>
                     <Form.Item label="勤務エリア">
                       {getFieldDecorator('proj_area', {
                       rules: [{ required: true, type: 'array', message: '勤務エリアを選択してください' }],
                       initialValue: ["0"]
-                      })(<MSelect className="m-form-text" data={workareaList}/> )}
+                      })(<MSelect className="m-form-text" data={cd.workareaList}/> )}
                     </Form.Item>
                     <Form.Item label="こだわり">
                       {getFieldDecorator('proj_pref', {
                       rules: [{ required: true, type: 'array', message: 'こだわりを選択してください' }],
                       initialValue: ["0"]
-                      })(<MSelect className="m-form-text" data={projprefList}/> )}
+                      })(<MSelect className="m-form-text" data={cd.projprefList}/> )}
                     </Form.Item>
                     <Form.Item label="応募対象">
                     {getFieldDecorator('proj-targ', {
@@ -464,7 +468,7 @@ class Reg extends React.Component {
                       {getFieldDecorator('proj_styl', {
                         rules: [{ required: true, type: 'array', message: '働き方を選択してください' }],
                         initialValue: ["0"]
-                      })(<MSelect className="m-form-text" data={worktypeList}/>)}
+                      })(<MSelect className="m-form-text" data={cd.worktypeList}/>)}
                     </Form.Item>
 
                     <h1>ポジション別</h1>
@@ -479,13 +483,13 @@ class Reg extends React.Component {
                       {getFieldDecorator(`proj_role_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '職種を選択してください' }],
                         initialValue: ["0"]
-                      })(<MSelect className="m-form-text" data={workroleList}/>)}
+                      })(<MSelect className="m-form-text" data={cd.workroleList}/>)}
                     </Form.Item>
                     <Form.Item label="担当工程">
                       {getFieldDecorator(`proj_resp_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '担当工程を選択してください' }],
                         initialValue: ["0"]
-                      })(<MSelect className="m-form-text" data={projrespList}/>)}
+                      })(<MSelect className="m-form-text" data={cd.projrespList}/>)}
                     </Form.Item>
                     <Form.Item label="作業内容">
                       {getFieldDecorator(`proj_cont_${index+1}`, {
@@ -497,7 +501,7 @@ class Reg extends React.Component {
                       {getFieldDecorator(`proj_lang_${index+1}`, {
                         rules: [{ required: true, type: 'array', message: '言語スキルを選択してください' }],
                         initialValue: ["0"]
-                      })(<MSelect className="m-form-text" data={worklangList}/>)}
+                      })(<MSelect className="m-form-text" data={cd.worklangList}/>)}
                     </Form.Item>
 
                     <h1>求める経験</h1>

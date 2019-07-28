@@ -24,9 +24,7 @@ class Dashboard extends React.Component {
 
   logout = async() => {
     await this.actions.logout()
-    window.location.assign(
-      window.location.origin + window.location.pathname + '#' + '/login'
-    )
+    window.location.assign(`${window.location.origin}${window.location.pathname}#/`)
   }
 
   showDrawer = () => {
