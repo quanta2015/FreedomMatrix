@@ -116,7 +116,7 @@ class Dashboard extends React.Component {
               {MAIN_MENU.map((item,i) => {
                 if (!item.submenu) {
                   return(
-                  <p key={i} className="m-menu_h">
+                  <p key={i} className="m-menu_h" className={(isLogin===item.type)||(0===item.type)?'fn-show':'fn-hide'}>
                     <NavLink to={item.path} >
                       <Icon type={item.icon} />
                       <span>{item.title}</span>

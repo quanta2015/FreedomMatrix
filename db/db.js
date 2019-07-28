@@ -94,9 +94,9 @@ var add = async (table, params, cb)=>{
       conn.query(sql, ( err, rows) => {
         if ( err ) {
           console.log('SQL error', err )
-          cb( err, { code: 1, msg: '数据添加失败！'} )
+          cb( err, { code: 1, msg: '数据添加失败！' } )
         } else {
-          cb( err, { code: 0, msg: '数据添加成功！'} )
+          cb( err, { code: 0, msg: '数据添加成功！', rows:rows} )
         }
         conn.release()
       })

@@ -52,23 +52,38 @@ app.get('/', function(req, res, next) {
 });
 
 
+app.post('/user/login', function(req, res) {
+  var {email, pwd} = req.body
+  token = jwt.sign({ email: email, pwd: pwd }, secret);
+  
+  let where = `where email='${email}' and pwd = '${pwd}'`
+  db.select('account',where,'','', (err,ret)=>{
+    let account = ret[0]
+    if (ret.length > 0) {
+      where = `where pid=${account.id}`
+      db.select('exp',where,'','', (err,exp)=>{
+          // let exp = eret
+          
+          res.status(200).json({
+            code: 200,
+            msg: '登录成功',
+            data: {token: token, user: account, exp: clone(exp)}
+          })
+      })
+    }else{
+      res.status(500).json({
+        code: -1,
+        msg: '登录失败',
+        data: null,
+      })
+    }
+  })
+})
+
+
+
 app.post('/user/reg', function(req, res, next) {
   let data = req.body
-
-  // init exp data
-  let {}  = data
-  let expList = []
-  for(let i=1;i<data.count+1;i++) {
-    let item = {}
-    item[`proj_name`] = data[`proj_name_${i}`]
-    item[`date_from`] = data[`date_from_${i},date_to_${i}`][0]
-    item[  `date_to`] = data[`date_from_${i},date_to_${i}`][1]
-    item[`work_lang`] = data[`select-multiple-work_lang_${i}`]
-    item[`work_role`] = data[`select-multiple-work_role_${i}`]
-    item[`work_proj`] = data[`select-multiple-work_proj_${i}`]
-    item[`work_detl`] = data[`work_detl_${i}`]
-    expList.push(item)
-  }
 
   // init account data
   let account = {
@@ -88,45 +103,63 @@ app.post('/user/reg', function(req, res, next) {
   let sqlList   = []
   let fieldList = []
   let valList   = []
-  let table     = "account"
 
-  // create account sql
-  db.prepareParm(account,fieldList,valList,[])
-  let sql = `insert into ${table} (${fieldList.join(',')}) values(${valList.join(',')})`
-  sqlList.push(sql)
+  // insert account table
+  db.add('account',account, (err,ret)=>{
+    if (ret.code == 0) { 
+      
 
-  // create exp sql
-  table  = "exp"
-  for(let i=0;i<expList.length;i++) {
-    fieldList = []
-    valList   = []
-    table  = "exp"
-    db.prepareParm(expList[i],fieldList,valList,[])
-    sql = `insert into ${table} (${fieldList.join(',')}) values(${valList.join(',')})`
-    sqlList.push(sql)
-  }
+      if (data.count>0) {
+        // exp data
+        let expList = []
+        for(let i=1;i<data.count+1;i++) {
+          let item = {}
+          item[`pid`] = ret.rows.insertId
+          item[`proj_name`] = data[`proj_name_${i}`]
+          item[`date_from`] = data[`date_from_${i},date_to_${i}`][0]
+          item[  `date_to`] = data[`date_from_${i},date_to_${i}`][1]
+          item[`work_lang`] = data[`select-multiple-work_lang_${i}`]
+          item[`work_role`] = data[`select-multiple-work_role_${i}`]
+          item[`work_proj`] = data[`select-multiple-work_proj_${i}`]
+          item[`work_detl`] = data[`work_detl_${i}`]
+          expList.push(item)
+        }
 
-  sql = sqlList.join(';') + ';'
-  console.log(sql)
+        // create exp sql
+        for(let i=0;i<expList.length;i++) {
+          fieldList = []
+          valList   = []
+          db.prepareParm(expList[i],fieldList,valList,[])
+          sql = `insert into exp (${fieldList.join(',')}) values(${valList.join(',')})`
+          sqlList.push(sql)
+        }
+        sql = sqlList.join(';') + ';'
 
-  // insert data
-  db.querySQL(sql, (err,ret)=>{
-    if (ret.code == 0) {
-      token = jwt.sign({ email: account.email, pwd: account.pwd }, secret);
-      res.status(200).json({
-        code: 200,
-        msg: '保存成功',
-        data: {token: token, user: account, exp: expList}
-      })
+        // insert account table
+        db.querySQL(sql, (err,ret)=>{
+          if (ret.code == 0) { 
+            token = jwt.sign({ email: account.email, pwd: account.pwd }, secret);
+            res.status(200).json({
+              code: 200,
+              msg: '保存成功',
+              data: {token: token, user: account, exp: expList}
+            })
+          }else{
+            res.status(500).json({ code: -1, msg: '保存失败', data: null })
+          }
+        })
+      }else{
+        token = jwt.sign({ email: account.email, pwd: account.pwd }, secret);
+        res.status(200).json({
+          code: 200,
+          msg: '保存成功',
+          data: {token: token, user: account, exp: []}
+        })
+      }
     }else{
-      res.status(500).json({
-        code: -1,
-        msg: '保存失败',
-        data: null,
-      })
+      res.status(500).json({ code: -1, msg: '保存失败', data: null })
     }
   })
-
 });
 
 
