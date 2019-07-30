@@ -41,7 +41,10 @@ class Login extends React.Component {
           <div className='login__form'>
             <Form onSubmit={this.handleSubmit}>
               <FormItem hasFeedback>
-                {getFieldDecorator('email', { rules: [{ required: true, message: '请输入账号' }] })(
+                {getFieldDecorator('email', { 
+                  rules: [{ required: true, message: '请输入账号' }],
+                  initialValue: 'liy@163.com'
+                })(
                   <Input
                     name='email'
                     prefix={<Icon type='user' />}
@@ -50,7 +53,10 @@ class Login extends React.Component {
                 )}
               </FormItem>
               <FormItem hasFeedback>
-                {getFieldDecorator('pwd', { rules: [{ required: true, message: '请输入密码！' }] })(
+                {getFieldDecorator('pwd', { 
+                  rules: [{ required: true, message: '请输入密码！',
+                  initialValue: 'aaa'
+                }] })(
                   <Input
                     prefix={<Icon type='lock' />}
                     name='pwd'

@@ -20,6 +20,29 @@ var prepareParm = (obj, nl, vl, el)=> {
   }
 }
 
+
+
+var selectPage = async (table, whereSql, orderSql, pageIndex=1, size=10, cb)=>{
+  pool.getConnection((err, conn)=>{
+    if (err) {
+      console.log('Connect error', err )
+    } else {
+      let sql = `select * from ${table} ${whereSql} ${orderSql} limit ${(pageIndex-1)*size}, ${size}`
+      conn.query(sql,  ( err, rows) => {
+        if ( err ) {
+          console.log('SQL error', err )
+        } else {
+          cb( err, rows )
+        }
+        conn.release()
+      })
+    }
+  })
+};
+
+
+
+
 var select = async (table, where, order, limit, cb)=>{
   pool.getConnection((err, conn)=>{
     if (err) {
@@ -118,6 +141,20 @@ var querySQL = async (sql, cb)=>{
   });
 };
 
+var procedureSQL = async (sql, params, cb)=>{
+  var conn = mysql.createConnection(config);
+  conn.query(sql, params, function (err, ret, fields) {
+    if ( err ) {
+      console.log('SQL error', err )
+      cb( err, ret )
+    } else {
+      cb( err, ret[0])
+    }
+    conn.end();
+  });
+};
+
+
 // var update = async (table, update, where, cb)=> {
 //   await conn;
 //   try{
@@ -168,9 +205,9 @@ var querySQL = async (sql, cb)=>{
 
 exports.select     = select;
 exports.selectAll  = selectAll;
-// exports.selectPage = selectPage;
+exports.selectPage = selectPage;
 exports.querySQL   = querySQL;
 exports.add        = add;
-// exports.update     = update;
+exports.procedureSQL     = procedureSQL;
 exports.del        = del;
 exports.prepareParm= prepareParm;

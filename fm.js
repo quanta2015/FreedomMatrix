@@ -52,6 +52,31 @@ app.get('/', function(req, res, next) {
 });
 
 
+app.post('/fav/query', function(req, res) {
+
+
+  var {id} = req.body
+  let sql = `CALL GET_FAV(?)`;
+
+  db.procedureSQL(sql,id,(err,ret)=>{
+      if (err) {
+        res.status(500).json({
+          code: -1,
+          msg: '获取fav失败',
+          data: null,
+        })
+      }else{
+        res.status(200).json({
+          code: 200,
+          msg: 'fav',
+          data: ret
+        })
+      }
+  })
+})
+  
+
+
 app.post('/user/login', function(req, res) {
   var {email, pwd} = req.body
   token = jwt.sign({ email: email, pwd: pwd }, secret);
