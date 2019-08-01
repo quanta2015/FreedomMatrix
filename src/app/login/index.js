@@ -4,6 +4,7 @@ import { Form, Button, Input, Icon } from 'antd'
 import { NavLink } from 'react-router-dom'
 import './index.less'
 const FormItem = Form.Item
+import * as MSG  from 'constant/msg'
 
 @Form.create()
 @inject('userActions', 'userStore')
@@ -42,26 +43,26 @@ class Login extends React.Component {
             <Form onSubmit={this.handleSubmit}>
               <FormItem hasFeedback>
                 {getFieldDecorator('email', { 
-                  rules: [{ required: true, message: '请输入账号' }],
+                  rules: [{ required: true, message: MSG.MSG_INPUT_ACCOUNT }],
                   initialValue: 'liy@163.com'
                 })(
                   <Input
                     name='email'
                     prefix={<Icon type='user' />}
-                    placeholder='请输入账号'
+                    placeholder={MSG.MSG_INPUT_ACCOUNT}
                   />
                 )}
               </FormItem>
               <FormItem hasFeedback>
                 {getFieldDecorator('pwd', { 
-                  rules: [{ required: true, message: '请输入密码！',
+                  rules: [{ required: true, message: MSG.MSG_INPUT_PWD,
                   initialValue: 'aaa'
                 }] })(
                   <Input
                     prefix={<Icon type='lock' />}
                     name='pwd'
                     type='password'
-                    placeholder='请输入密码'
+                    placeholder={MSG.MSG_INPUT_PWD}
                   />
                 )}
               </FormItem>

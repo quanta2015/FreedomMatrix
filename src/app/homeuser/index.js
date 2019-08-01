@@ -3,7 +3,8 @@ import { observer, inject } from 'mobx-react'
 import { Input,Tabs,Form,Button,DatePicker,Select,InputNumber } from 'antd';
 import './index.less'
 import * as urls from 'constant/urls'
-import * as cd from 'constant/data'
+import * as cd   from 'constant/data'
+import * as MSG  from 'constant/msg'
 import clone   from 'util/clone'
 import MSelect from 'util/MSelect'
 import getNode from 'util/getNode'
@@ -11,13 +12,14 @@ import moment  from 'moment'
 
 
 
-
 const { TabPane } = Tabs;
 const { MonthPicker, RangePicker } = DatePicker;
 const { TextArea } = Input;
 
+
+
 @Form.create()
-@inject('favActions', 'favStore','userStore')
+@inject('favActions', 'favStore', 'applyActions', 'applyStore', 'userStore')
 @observer
 class Homeuser extends React.Component {
   constructor(props) {
@@ -31,6 +33,7 @@ class Homeuser extends React.Component {
       id: 67 //this.props.userStore.user.user.id
     }
     this.props.favActions.queryFav(params) 
+    this.props.applyActions.queryApply(params) 
   }
 
   setEdit = () => {
@@ -44,16 +47,15 @@ class Homeuser extends React.Component {
     e.preventDefault();
     this.props.form.validateFields( async (err, values) => {
     
+
     })
   }
 
   render() {
     const { editable } = this.state
     const { user } = this.props.userStore
-    const { fav }  = this.props.favStore
-    const { getFieldDecorator } = this.props.form;
-
-
+    const { getFieldDecorator } = this.props.form
+    const personType = cd.personType
 
     const workareaList = getValue(user, 'user.workareaList', '') || ['0']
     const worktimeList = getValue(user, 'user.worktimeList', '') || ['0']
@@ -65,83 +67,81 @@ class Homeuser extends React.Component {
     const name_kn =      getValue(user, 'user.name_kn', '')
     const pers_type =    getValue(user, 'user.pers_type', '') || '0'
     const work_money   = getValue(user, 'user.work_money', '') || 0
-    // const exp = getValue(data, exp, '')
 
-    let list =   getValue(fav, 'data', [])
-
-    console.log(list)
-
+    let favList = getValue(this.props.favStore.fav, 'data', [])
+    let appList = getValue(this.props.applyStore.apply, 'data', [])
 
    
     return (
       <div className='g-homeuser'>
           <Tabs className="m-home-menu" type="card">
-            <TabPane tab="用户信息" key="1" className="m-tab-userinfo">
+            <TabPane tab={MSG.TAB_HOME_USR_IF} key="1" className="m-tab-userinfo">
               <Form className="m-reg-form" onSubmit={this.handleSubmit} >
                 <div className="m-row">
                   <div className="m-tl">
-                    <span>基本情報</span>
+                    <span>{MSG.MSG_FORM_BASIC}</span>
                     <div className="m-fn">
-                      <Button htmlType="button" onClick={this.setEdit}>修改</Button>
-                      <Button htmlType="submit" >保存</Button>
+                      <Button htmlType="button" onClick={this.setEdit}>{MSG.MSG_UPDATE}</Button>
+                      <Button htmlType="submit" >{MSG.MSG_SAVE}</Button>
                     </div>
                   </div>
                 </div>
                 <div className="m-row">
-                  <div className="m-col-tl">メールアドレス</div>
+                  <div className="m-col-tl">{MSG.MSG_FORM_EMAIL}</div>
                   <div className="m-col-co">
-                    <Input placeholder="email@address.com"  defaultValue={email} disabled={editable}/>
+                    <Input placeholder={MSG.MSG_FORM_PD_EMAIL}  defaultValue={email} disabled={editable}/>
                   </div>
-                  <div className="m-col-tl">電話番号</div>
+                  <div className="m-col-tl">{MSG.MSG_FORM_PHONE}</div>
                   <div className="m-col-co">
-                    <Input placeholder="01234567890（ハイフン不要）"  defaultValue={pwd} disabled={editable}/>
-                  </div>
-                </div>
-                <div className="m-row">
-                  <div className="m-col-tl">氏名（漢字）</div>
-                  <div className="m-col-co">
-                    <Input placeholder="自由陣　太郎" defaultValue={name_kj} disabled={editable}/>
-                  </div>
-                  <div className="m-col-tl">氏名（カナ）</div>
-                  <div className="m-col-co">
-                    <Input placeholder="ジユウジン　タロウ" defaultValue={name_kn}  disabled={editable}/>
+                    <Input placeholder={MSG.MSG_FORM_PD_PHONE}  defaultValue={pwd} disabled={editable}/>
                   </div>
                 </div>
                 <div className="m-row">
-                  <div className="m-col-tl">生年月日</div>
+                  <div className="m-col-tl">{MSG.MSG_FORM_NAME_KJ}</div>
+                  <div className="m-col-co">
+                    <Input placeholder={MSG.MSG_FORM_PD_NAKJ} defaultValue={name_kj} disabled={editable}/>
+                  </div>
+                  <div className="m-col-tl">{MSG.MSG_FORM_NAME_KN}</div>
+                  <div className="m-col-co">
+                    <Input placeholder={MSG.MSG_FORM_PD_NAKN} defaultValue={name_kn}  disabled={editable}/>
+                  </div>
+                </div>
+                <div className="m-row">
+                  <div className="m-col-tl">{MSG.MSG_FORM_BIRTH}</div>
                   <div className="m-col-co">
                     <DatePicker className="m-form-text"  defaultValue={moment(birth)} placeholder='年/月/日'  format= {cd.DATE_FORMAT}  disabled={editable}/>
                   </div>
-                  <div className="m-col-tl">カテゴリー</div>
+                  <div className="m-col-tl">{MSG.MSG_FORM_PS_TYPE}</div>
                   <div className="m-col-co">
                     <Select className="m-form-text" defaultValue={pers_type}  disabled={editable}>
-                      <Option value="0">フリーランス</Option>
-                      <Option value="1">副業</Option>
+                      {personType.map((item,index)=>{
+                        return (<Option key={index} value={item.val}>{item.txt}</Option>)
+                      })}
                     </Select>
                   </div>
                 </div>
 
                 <div className="m-row">
                   <div className="m-tl">
-                    <span>稼働希望</span>
+                    <span>{MSG.MSG_FORM_HOPE}</span>
                   </div>
                 </div>
                 <div className="m-row">
-                  <div className="m-col-tl">勤務希望エリア</div>
+                  <div className="m-col-tl">{MSG.MSG_FORM_HP_AREA}</div>
                   <div className="m-col-co">
                     <MSelect className="m-form-text" data={cd.workareaList} defaultValue={workareaList}  disabled={editable}/>
                   </div>
-                  <div className="m-col-tl">希望稼働時期</div>
+                  <div className="m-col-tl">{MSG.MSG_FORM_HP_TIME}</div>
                   <div className="m-col-co">
                     <MSelect className="m-form-text" data={cd.worktimeList} defaultValue={worktimeList}  disabled={editable}/>
                   </div>
                 </div>
                 <div className="m-row">
-                  <div className="m-col-tl">希望月額報酬（万円）</div>
+                  <div className="m-col-tl">{MSG.MSG_FORM_HP_MONEY}</div>
                   <div className="m-col-co">
-                    <InputNumber placeholder="数字（単位：万円）" defaultValue={work_money}   disabled={editable}/>
+                    <InputNumber placeholder={MSG.MSG_FORM_PD_MONEY} defaultValue={work_money}   disabled={editable}/>
                   </div>
-                  <div className="m-col-tl">希望働き方</div>
+                  <div className="m-col-tl">{MSG.MSG_FORM_HP_TYPE}</div>
                   <div className="m-col-co">
                     <MSelect className="m-form-text" data={cd.worktypeList} defaultValue={worktypeList}  disabled={editable}/>
                   </div>
@@ -149,39 +149,39 @@ class Homeuser extends React.Component {
 
                 <div className="m-row">
                   <div className="m-tl">
-                    <span>経験・スキル登録</span>
+                    <span>{MSG.MSG_FORM_EXP}</span>
                   </div>
                 </div>
                 <Tabs defaultActiveKey="1">
                   <TabPane tab="Tab 1" key="1">
                     <div className="m-row">
-                      <div className="m-col-tl">案件名</div>
+                      <div className="m-col-tl">{MSG.MSG_FORM_PR_NAME}</div>
                       <div className="m-col-co">
-                        <Input placeholder="案件名"  disabled={editable}/>
+                        <Input placeholder={MSG.MSG_FORM_PR_NAME}  disabled={editable}/>
                       </div>
                     </div>
                     <div className="m-row">
-                      <div className="m-col-tl">期間</div>
+                      <div className="m-col-tl">{MSG.MSG_FORM_PR_PERD}</div>
                       <div className="m-col-co">
                         <RangePicker format={cd.DATE_FORMAT}  className="m-form-text"  disabled={editable}/>
                       </div>
-                      <div className="m-col-tl">経験言語</div>
+                      <div className="m-col-tl">{MSG.MSG_FORM_PR_LANG}</div>
                       <div className="m-col-co">
                         <MSelect className="m-form-text" data={cd.worklangList}  disabled={editable}/>
                       </div>
                     </div>
                     <div className="m-row">
-                      <div className="m-col-tl">経験職種</div>
+                      <div className="m-col-tl">{MSG.MSG_FORM_PR_ROLE}</div>
                       <div className="m-col-co">
                         <MSelect className="m-form-text" data={cd.workroleList}  disabled={editable}/>
                       </div>
-                      <div className="m-col-tl">経験工程</div>
+                      <div className="m-col-tl">{MSG.MSG_FORM_PR_PROJ}</div>
                       <div className="m-col-co">
                         <MSelect className="m-form-text" data={cd.workprojList}  disabled={editable}/>
                       </div>
                     </div>
                     <div className="m-row">
-                      <div className="m-col-tl">詳細</div>
+                      <div className="m-col-tl">{MSG.MSG_FORM_PR_DETL}</div>
                       <div className="m-col-co">
                         <TextArea rows={4}  disabled={editable}/>
                       </div>
@@ -196,16 +196,55 @@ class Homeuser extends React.Component {
                 </Tabs>
               </Form>
             </TabPane>
-            <TabPane tab="応募案件" key="2">
-              Content of Tab Pane 2
-            </TabPane>
-            <TabPane tab="気になる案件" key="3">
-              {list.map((e,index)=>{
-                return( <div key={index}>{e.proj_name}</div>)
+            <TabPane tab={MSG.TAB_HOME_APP_PR} key="2">
+              <div className="m-fav">
+                <div className="m-row m-row-tl">
+                  <span>ID</span>
+                  <span>プロジェクト名</span>
+                  <span>開始日-締め切り</span>
+                  <span>勤務地</span>
+                  <span>業界</span>
+                  <span>気になる</span>
+                </div>
+              {appList.map((e,index)=>{
+                return( 
+                  <div className="m-row" key={index} >
+                    <span>{e.pid}</span>
+                    <span>{e.proj_name}</span>
+                    <span>{e.date_from}-{e.date_to}</span>
+                    <span>{e.proj_area}</span>
+                    <span>{e.proj_domn}</span>
+                    <span><Button type="primary">終わり</Button></span>
+                  </div>
+                )
               })}
-              
+              </div>
             </TabPane>
-            <TabPane tab="メッセージ" key="4">
+            <TabPane tab={MSG.TAB_HOME_FAV_PR} key="3">
+              <div className="m-fav">
+                <div className="m-row m-row-tl">
+                  <span>ID</span>
+                  <span>プロジェクト名</span>
+                  <span>開始日-締め切り</span>
+                  <span>勤務地</span>
+                  <span>業界</span>
+                  <span>気になる</span>
+                </div>
+              {favList.map((e,index)=>{
+                return( 
+                  <div className="m-row" key={index} >
+                    <span>{e.pid}</span>
+                    <span>{e.proj_name}</span>
+                    <span>{e.date_from}-{e.date_to}</span>
+                    <span>{e.proj_area}</span>
+                    <span>{e.proj_domn}</span>
+                    <span><Button type="primary">キャンセル</Button></span>
+                  </div>
+                )
+              })}
+              </div>
+            </TabPane>
+            <TabPane tab={MSG.TAB_HOME_MSG} key="4">
               Content of Tab Pane 3
             </TabPane>
           </Tabs>

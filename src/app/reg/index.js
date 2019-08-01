@@ -173,8 +173,6 @@ class Reg extends React.Component {
   }
 
   setType = (type,e)=>{
-    console.log(e)
-    console.log(type)
     this.setState({ regtype: type })
   }
 

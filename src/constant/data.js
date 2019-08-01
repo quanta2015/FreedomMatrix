@@ -2,29 +2,19 @@ export const DATE_FORMAT  = 'YYYY/MM/DD'
 export const MONTH_FORMAT = 'YYYY/MM'
 
 
-export const MAIN_MENU = [{
-                       title:'案件検索', icon:'search', path:'/projquery', type: 0
-                    },{
-                       title:'案件登録', icon:'addproj', path:'/projadd', type: 2
-                    },{
-                        title:'会員HOME', icon:'user', path:'/homeuser', type: 0
-                    },{
-                        title:'会社HOME', icon:'user', path:'/homecomp', type: 2
-                    },{
-                        title:'お問い合わせ', icon:'question-circle', path:'/ask', type: 0
-                    },{
-                        title: 'その他', icon:'user', type: 0,
-                        submenu: [{
-                          title:'運営企業', icon:'profile', path:'/management', type: 0
-                        },{
-                          title:'利用規約', icon:'profile', path:'/rule', type: 0
-                        },{
-                          title:'プライバシーポリシー', icon:'profile', path:'/privacy', type: 0
-                        },{
-                          title:'お役たち情報', icon:'profile', path:'/news', type: 0
-                        }]
-                      }
-                    ]
+export const MAIN_MENU = [{ title:'案件検索', icon:'search',  path:'/projquery', type: 0 },{
+                            title:'案件登録', icon:'addproj', path:'/projadd',   type: 2 },{
+                            title:'会員HOME', icon:'user',    path:'/homeuser',  type: 0 },{
+                            title:'会社HOME', icon:'user',    path:'/homecomp',  type: 2 },{
+                            title:'お問い合わせ', icon:'question-circle', path:'/ask', type: 0 },{
+                            title: 'その他', icon:'user', type: 0, submenu:  
+                              [{ title:'運営企業', icon:'profile', path:'/management', type: 0 },
+                               { title:'利用規約', icon:'profile', path:'/rule', type: 0 },
+                               { title:'プライバシーポリシー', icon:'profile', path:'/privacy', type: 0 },
+                               { title:'お役たち情報', icon:'profile', path:'/news', type: 0 }]
+                          }]
+
+export const personType = [{ val:"0", txt:'フリーランス' }, { val:"1", txt:'副業' }]
 
 export const workareaList = [{val:"0",txt:'23区'    },
                              {val:"1",txt:'都内その他'}, 
@@ -83,20 +73,20 @@ export const workprojList = [{txt: '保険',val:'0'},
                              {txt: '情報',val:'10'},
                              {txt: 'その他',val:'11'}]
 
-export const projdomnList = [{txt: '自動車（部品）',          val:'0'},
-                             {txt: '製造・機械',             val:'1'},
-                             {txt: '運輸',                  val:'2'},
-                             {txt: '通信',                  val:'3'},
-                             {txt: '金融・保険',             val:'4'},
-                             {txt: '飲食・小売',             val:'5'},
-                             {txt: '製薬',                  val:'6'},
-                             {txt: 'ＥＣ・ポータル',          val:'7'},
+export const projdomnList = [{txt: '自動車（部品）', val:'0'},
+                             {txt: '製造・機械', val:'1'},
+                             {txt: '運輸', val:'2'},
+                             {txt: '通信', val:'3'},
+                             {txt: '金融・保険', val:'4'},
+                             {txt: '飲食・小売', val:'5'},
+                             {txt: '製薬', val:'6'},
+                             {txt: 'ＥＣ・ポータル', val:'7'},
                              {txt: '電力・ガス・その他インフラ',val:'8'},
-                             {txt: 'サービス',               val:'9'},
-                             {txt: '不動産',                 val:'10'},
-                             {txt: '食品・飲料',             val:'11'},
-                             {txt: '農林水産',               val:'12'},
-                             {txt: 'その他',                val:'13'}]
+                             {txt: 'サービス', val:'9'},
+                             {txt: '不動産', val:'10'},
+                             {txt: '食品・飲料', val:'11'},
+                             {txt: '農林水産', val:'12'},
+                             {txt: 'その他', val:'13'}]
 
 export const projprefList = [{txt: '新着',                 val:'0'},
                              {txt: '長期稼働',              val:'1'},

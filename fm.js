@@ -48,16 +48,33 @@ var hbs = exphbs.create({
 app.engine('hbs', hbs.engine);
 
 app.get('/', function(req, res, next) {
-  res.sendfile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/index.html');
 });
+
+app.post('/apply/query', function(req, res) {
+  var {id} = req.body
+  let sql = `CALL FUNC_GET_APPLY(?)`;
+  db.procedureSQL(sql,id,(err,ret)=>{
+      if (err) {
+        res.status(500).json({
+          code: -1,
+          msg: '获取apply失败',
+          data: null,
+        })
+      }else{
+        res.status(200).json({
+          code: 200,
+          msg: '获取apply成功',
+          data: ret
+        })
+      }
+  })
+})
 
 
 app.post('/fav/query', function(req, res) {
-
-
   var {id} = req.body
-  let sql = `CALL GET_FAV(?)`;
-
+  let sql = `CALL FUNC_GET_FAV(?)`;
   db.procedureSQL(sql,id,(err,ret)=>{
       if (err) {
         res.status(500).json({
