@@ -4,8 +4,9 @@ import './index.less'
 import * as urls from 'constant/urls'
 import { Input,DatePicker,Modal, InputNumber,Select,Switch,Tabs,Button,Form,message  } from 'antd';
 import moment  from 'moment'
-import clone from 'util/clone'
+import clone   from 'util/clone'
 import MSelect from 'util/MSelect'
+import * as DT from 'util/date'
 import * as cd from 'constant/data'
 
 const { Option } = Select;
@@ -26,8 +27,8 @@ class Reg extends React.Component {
     this.newTabIndex = 0;
     const panes = [{
         proj_name:"",
-        date_from:moment(new Date()).format("YYYY/MM/DD"),
-        date_to:  moment(new Date()).format("YYYY/MM/DD"),
+        date_from:DT.newDate(),
+        date_to:  DT.newDate(),
         work_lang:["0"],
         work_role:["0"],
         work_proj:["0"],
@@ -56,14 +57,15 @@ class Reg extends React.Component {
     const activeKey = `newTab${this.newTabIndex++}`;
     let expItem = {
       proj_name:"",
-      date_from:moment(new Date()).format(cd.DATE_FORMAT),
-      date_to:  moment(new Date()).format(cd.DATE_FORMAT),
+      date_from:DT.newDate(),
+      date_to:  DT.newDate(),
       work_lang:["0"],
       work_role:["0"],
       work_proj:["0"],
       work_detl:"",
       key:activeKey
     }
+
     panes.push(expItem);
     this.setState({ panes, activeKey });
   };
@@ -123,11 +125,11 @@ class Reg extends React.Component {
 
   regUser = async (params) => {
     params.count = this.state.panes.length
-    params.birth = moment(params.birth).format("YYYY/MM/DD")
+    params.birth = DT.convertD2I(params.birth)
     if (this.state.showexp) {
       for(let i=1;i<this.state.panes.length+1;i++) {
-        params[`date_from_${i},date_to_${i}`][0] = moment(params[`date_from_${i},date_to_${i}`][0]).format("YYYY/MM/DD")
-        params[`date_from_${i},date_to_${i}`][1] = moment(params[`date_from_${i},date_to_${i}`][1]).format("YYYY/MM/DD")
+        params[`date_from_${i},date_to_${i}`][0] = DT.convertD2I(params[`date_from_${i},date_to_${i}`][0])
+        params[`date_from_${i},date_to_${i}`][1] = DT.convertD2I(params[`date_from_${i},date_to_${i}`][1])
       }
     }else{
       params.count = 0
