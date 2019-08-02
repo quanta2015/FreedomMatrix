@@ -1,0 +1,128 @@
+
+.m-regcomp {
+    display: flex;
+    margin: 20px auto 10px;
+    padding: 20px 15px;
+    width: 900px;
+    background: #fff;
+    flex-direction: column;
+
+  .m-reg {
+    background: #fff;
+    padding: 20px 15px;
+    margin: 20px auto;
+    width: 900px;
+  }
+
+
+  .m-reg_h1 {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .m-reg_h2 {
+    padding: 5px 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    &:after {
+      content: " ";
+      display: block;
+      height: 2px;
+      width: 100%;
+      border-radius: 1px;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      background: linear-gradient(to right, #3d74aa, #eee);
+    }
+  }
+
+
+  .m-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .m-ti {
+      width: 200px;
+      padding: 10px;
+      font-size: 12px;
+  }
+
+  .m-co {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      flex-direction: column;
+  }
+
+  .m-gp {
+    width: 50px;
+  }
+
+  .m-tx {
+    padding: 0 10px;
+  }
+
+  .m-reg-form {
+      padding: 20px 0;
+  }
+
+
+  .m-h2-ti {
+    flex: 1;
+}
+
+.m-reg-type {
+  display: flex;
+  margin:20px auto 10px; 
+  height: 40px;
+  width: 900px;
+}
+
+.m-reg-type>.m-type-btn {
+  height: 100%;
+  flex: 1!important;
+}
+
+
+
+
+} 
+/* end of g-reg */
+
+
+
+@media only screen and (max-width: 768px) {
+
+.g-reg {
+
+    .ant-calendar {
+      width: 100%;
+    }
+
+    .ant-row {     
+      display: flex;     
+      flex-direction: column; 
+    }
+    .ant-row > div {     
+      width: 100%; 
+    }
+
+    .m-reg {
+      width: calc( 100% - 20px)!important;
+      margin-top: 10px!important;
+    }
+
+    .m-reg-type {
+      width: 100%!important;
+      margin:20px 0 10px 0; 
+      padding:0 10px;
+    }
+
+
+  }
+}
