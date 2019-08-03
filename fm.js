@@ -126,9 +126,11 @@ app.post('/user/login', function(req, res) {
 
 app.post('/user/reg', function(req, res, next) {
   let data = req.body
+  let expList = []
 
-  // init account data
-  let account = {
+  console.log(data)
+
+  let ret = {
     email:data.email,
     pwd:data.pwd,
     name_kj:data.name_kj,
@@ -136,72 +138,39 @@ app.post('/user/reg', function(req, res, next) {
     birth:data.birth,
     phone:data['input-number-phone'],
     pers_type:data.pers_type,
-    work_area:data['select-multiple-work_area'],
-    work_time:data['select-multiple-work_time'],
+    work_area:data['select-multiple-work_area'].join('|'),
+    work_time:data['select-multiple-work_time'].join('|'),
     work_mony:data.work_mony,
-    work_type:data['select-multiple-work_type']
+    work_type:data['select-multiple-work_type'].join('|'),
+    exp: [],
   }
 
-  let sqlList   = []
-  let fieldList = []
-  let valList   = []
-
-  // insert account table
-  db.add('account',account, (err,ret)=>{
-    if (ret.code == 0) { 
-      
-
-      if (data.count>0) {
-        // exp data
-        let expList = []
-        for(let i=1;i<data.count+1;i++) {
-          let item = {}
-          item[`pid`] = ret.rows.insertId
-          item[`proj_name`] = data[`proj_name_${i}`]
-          item[`date_from`] = data[`date_from_${i},date_to_${i}`][0]
-          item[  `date_to`] = data[`date_from_${i},date_to_${i}`][1]
-          item[`work_lang`] = data[`select-multiple-work_lang_${i}`]
-          item[`work_role`] = data[`select-multiple-work_role_${i}`]
-          item[`work_proj`] = data[`select-multiple-work_proj_${i}`]
-          item[`work_detl`] = data[`work_detl_${i}`]
-          expList.push(item)
-        }
-
-        // create exp sql
-        for(let i=0;i<expList.length;i++) {
-          fieldList = []
-          valList   = []
-          db.prepareParm(expList[i],fieldList,valList,[])
-          sql = `insert into exp (${fieldList.join(',')}) values(${valList.join(',')})`
-          sqlList.push(sql)
-        }
-        sql = sqlList.join(';') + ';'
-
-        // insert account table
-        db.querySQL(sql, (err,ret)=>{
-          if (ret.code == 0) { 
-            token = jwt.sign({ email: account.email, pwd: account.pwd }, secret);
-            res.status(200).json({
-              code: 200,
-              msg: '保存成功',
-              data: {token: token, user: account, exp: expList}
-            })
-          }else{
-            res.status(500).json({ code: -1, msg: '保存失败', data: null })
-          }
-        })
-      }else{
-        token = jwt.sign({ email: account.email, pwd: account.pwd }, secret);
-        res.status(200).json({
-          code: 200,
-          msg: '保存成功',
-          data: {token: token, user: account, exp: []}
-        })
-      }
-    }else{
-      res.status(500).json({ code: -1, msg: '保存失败', data: null })
+  if (data.count>0) {
+    for(let i=1;i<data.count+1;i++) {
+      let item = {}
+      // item[`pid`] = ret.rows.insertId
+      item[`proj_name`] = data[`proj_name_${i}`]
+      item[`date_from`] = data[`date_from_${i},date_to_${i}`][0]
+      item[  `date_to`] = data[`date_from_${i},date_to_${i}`][1]
+      item[`work_lang`] = data[`select-multiple-work_lang_${i}`].join('|')
+      item[`work_role`] = data[`select-multiple-work_role_${i}`].join('|')
+      item[`work_proj`] = data[`select-multiple-work_proj_${i}`].join('|')
+      item[`work_detl`] = data[`work_detl_${i}`]
+      ret.exp.push(item)
     }
+  }
+
+  let params = JSON.stringify(ret)
+  let sql = `CALL FUNC_REG_USER(?)`;
+  db.procedureSQL(sql,params,(err,ret)=>{
+      if (err) {
+        res.status(500).json({ code: -1, msg: 'reg failed ......', data: null })
+      }else{
+        res.status(200).json({ code: 200, msg: 'reg successful ......', data: ret })
+      }
   })
+
+
 });
 
 
