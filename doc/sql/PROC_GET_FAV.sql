@@ -1,8 +1,9 @@
+
+
 -- ----------------------------
 -- Procedure structure for GET_APPLY
 -- ----------------------------
-DROP PROCEDURE IF EXISTS `GET_APPLY`;
-delimiter ;;
+DROP PROCEDURE IF EXISTS `PROC_GET_APPLY`;
 CREATE PROCEDURE `GET_APPLY`(IN `cid` int)
 BEGIN
 	select f.id, 

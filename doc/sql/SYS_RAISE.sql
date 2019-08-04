@@ -1,0 +1,8 @@
+CREATE DEFINER=`root`@`%` PROCEDURE `SYS_RAISE`(`errno` BIGINT UNSIGNED, `message` VARCHAR(256))
+BEGIN
+SIGNAL SQLSTATE
+    'ERR0R'
+SET
+    MESSAGE_TEXT = `message`,
+    MYSQL_ERRNO = `errno`;
+END

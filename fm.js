@@ -53,7 +53,7 @@ app.get('/', function(req, res, next) {
 
 app.post('/apply/query', function(req, res) {
   var {id} = req.body
-  let sql = `CALL FUNC_GET_APPLY(?)`;
+  let sql = `CALL PROC_GET_APPLY(?)`;
   db.procedureSQL(sql,id,(err,ret)=>{
       if (err) {
         res.status(500).json({
@@ -74,7 +74,7 @@ app.post('/apply/query', function(req, res) {
 
 app.post('/fav/query', function(req, res) {
   var {id} = req.body
-  let sql = `CALL FUNC_GET_FAV(?)`;
+  let sql = `CALL PROC_GET_FAV(?)`;
   db.procedureSQL(sql,id,(err,ret)=>{
       if (err) {
         res.status(500).json({
@@ -161,16 +161,19 @@ app.post('/user/reg', function(req, res, next) {
   }
 
   let params = JSON.stringify(ret)
-  let sql = `CALL FUNC_REG_USER(?)`;
+  let sql = `CALL PROC_SAVE_USER(?)`;
   db.procedureSQL(sql,params,(err,ret)=>{
       if (err) {
-        res.status(500).json({ code: -1, msg: 'reg failed ......', data: null })
+        res.status(500).json({ code: -1, msg: 'reg failed', data: null })
       }else{
-        res.status(200).json({ code: 200, msg: 'reg successful ......', data: ret })
+        if (ret[0].err_code===0) {
+          res.status(200).json({ code: 200, msg: 'reg successful', data: ret })
+        }else{
+          res.status(200).json({ code: 201, msg: 'user exist', data: null })
+        }
+        
       }
   })
-
-
 });
 
 

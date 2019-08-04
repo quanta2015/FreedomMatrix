@@ -145,6 +145,8 @@ class Reg extends React.Component {
           window.location.assign(`${window.location.origin}${window.location.pathname}#/homeuser`)
         }
       })
+    }else if(r && r.code === 201) {
+      message.success('该用户已经存在。')
     }
   }
 
