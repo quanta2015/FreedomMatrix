@@ -127,10 +127,12 @@ app.post('/user/login', function(req, res) {
 app.post('/user/reg', function(req, res, next) {
   let data = req.body
   let expList = []
+  let exp = []
+  let sql = `CALL PROC_SAVE_USER(?)`;
 
   console.log(data)
 
-  let ret = {
+  let account = {
     email:data.email,
     pwd:data.pwd,
     name_kj:data.name_kj,
@@ -142,7 +144,6 @@ app.post('/user/reg', function(req, res, next) {
     work_time:data['select-multiple-work_time'].join('|'),
     work_mony:data.work_mony,
     work_type:data['select-multiple-work_type'].join('|'),
-    exp: [],
   }
 
   if (data.count>0) {
@@ -156,18 +157,23 @@ app.post('/user/reg', function(req, res, next) {
       item[`work_role`] = data[`select-multiple-work_role_${i}`].join('|')
       item[`work_proj`] = data[`select-multiple-work_proj_${i}`].join('|')
       item[`work_detl`] = data[`work_detl_${i}`]
-      ret.exp.push(item)
+      expList.push(item)
     }
   }
 
-  let params = JSON.stringify(ret)
-  let sql = `CALL PROC_SAVE_USER(?)`;
-  db.procedureSQL(sql,params,(err,ret)=>{
+  account['exp'] = expList
+  db.procedureSQL(sql,JSON.stringify(account),(err,ret)=>{
       if (err) {
-        res.status(500).json({ code: -1, msg: 'reg failed', data: null })
+        res.status(500).json({ code: -1, msg: 'reg failed', data: null})
       }else{
         if (ret[0].err_code===0) {
-          res.status(200).json({ code: 200, msg: 'reg successful', data: ret })
+          delete account.exp
+          let data = {
+            token: jwt.sign({ email: account.email, pwd: account.pwd }, secret),
+            user:account, 
+            exp: expList
+          }
+          res.status(200).json({ code: 200, msg: 'reg successful', data: data  })
         }else{
           res.status(200).json({ code: 201, msg: 'user exist', data: null })
         }

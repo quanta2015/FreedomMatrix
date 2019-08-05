@@ -8,49 +8,48 @@ import clone from 'util/clone'
 
 
 
+
 class UserActions extends BaseActions {
   constructor(store) {
     super()
     this.store = store
   }
 
-  @action
-  async regUser(params) {
-    let r = await this.post(urls.API_USER_REG, params, true)
-    if (r && r.code === 200) {
-      let { token, user, exp } = r.data
+  saveData(ret, st) {
+    let { token, user, exp } = ret.data
+    if (ret && ret.code === 200) {
       jwt.saveToken(token)
       jwt.saveUser(user)
       jwt.saveExp(exp)
 
-      this.store.user = {
-        token: token,
-        user: user,
-        exp: exp 
-      }
-      this.store.isLogin = 1
+      runInAction(() => {
+        st.isLogin = 1
+        st.user = {
+          token: token,
+          user: user,
+          exp: exp 
+        }
+      })
+      
     }
+  }
+
+
+  @action
+  async regUser(params) {
+    let r = await this.post(urls.API_USER_REG, params, true)
+    this.saveData(r, this.store)
     return r
   }
+
 
   @action
   async login(params) {
     let r = await this.post(urls.API_USER_LOGIN, params, true)
-    if (r && r.code === 200) {
-      let { token, user, exp } = r.data
-      jwt.saveToken(token)
-      jwt.saveUser(user)
-      jwt.saveExp(exp)
-
-      this.store.user = {
-        token: token,
-        user: user,
-        exp: exp
-      }
-      this.store.isLogin = 1
-    }
+    this.saveData(r, this.store)
     return r
   }
+
 
   @action
   async logout() {
@@ -65,26 +64,10 @@ class UserActions extends BaseActions {
   @action
   async autoLogin() {
     const data = jwt.decodeToken()
-    let params = {
-      usr: data.usr,
-      pwd: data.pwd
-    }
-
+    let params = { email: data.email, pwd: data.pwd }
     let r = await this.post(urls.API_USER_LOGIN, params, true)
-    if (r && r.code === 200) {
-      jwt.saveLangdb(r.data.langdb)
-      jwt.saveConfig(r.data.config)
-      
-      runInAction(() => {
-        this.store.user = {
-          usr: data.usr,
-          pwd: data.pwd,
-          token: data.token,
-          langdb: r.data.langdb,
-          config: r.data.config
-        }
-      })
-    }
+    this.saveData(r, this.store)
+    window.location.assign(`${window.location.origin}${window.location.pathname}#/homeuser`)
     return
   }
 

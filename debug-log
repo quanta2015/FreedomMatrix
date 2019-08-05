@@ -1,0 +1,12 @@
+'{"email":"liyangtom@163.com","pwd":"aaa","name_kj":"liyangtom","name_kn":"tom","birth":20190808,"phone":12345678901,"pers_type":"0","work_area":"0","work_time":"0","work_mony":10,"work_type":"0","exp":[{"proj_name":"aaaaaaaaa","date_from":20190804,"date_to":20190804,"work_lang":"0|4|2","work_role":"0|2|4","work_proj":"0|3|5","work_detl":"rtrt"},{"proj_name":"wewewe","date_from":20190903,"date_to":20190918,"work_lang":"0","work_role":"0|1|5","work_proj":"0|1|3","work_detl":"wttttt"}]}'
+
+
+
+
+SELECT FIND_IN_SET('3',authorid);
+
+
+
+
+
+

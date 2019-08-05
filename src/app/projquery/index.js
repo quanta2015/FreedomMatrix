@@ -20,9 +20,7 @@ class Projquery extends React.Component {
 
     return (
       <div className='g-projquery'>
-        query
-
-        aaaaaaaa
+        home query
       </div>
     )
   }

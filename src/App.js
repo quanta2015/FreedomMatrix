@@ -1,7 +1,8 @@
 import React from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom'
+import { inject, observer } from 'mobx-react'
 import * as urls from 'constant/urls.js'
-
+import jwt from './util/token'
 import Dashboard  from 'component/Dashboard'
 
 import reg        from 'app/reg'
@@ -12,10 +13,23 @@ import projquery  from 'app/projquery'
 import projadd    from 'app/projadd'
 import question   from 'app/question'
 
+
+@inject('userActions')
+@observer
 class App extends React.Component {
   constructor(props) {
     super(props)
+    let token = jwt.getToken()
+    if (token && token!=='undefined') {
+      props.userActions.autoLogin()
+    } else {
+      window.location.assign(
+        location.origin + location.pathname + '#' + '/login'
+      )
+    }
   }
+
+
 
   render() {
     return (
