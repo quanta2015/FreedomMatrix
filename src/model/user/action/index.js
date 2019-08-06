@@ -86,7 +86,14 @@ class UserActions extends BaseActions {
     let params = { email: data.email, pwd: data.pwd }
     let r = await this.post(urls.API_USER_LOGIN, params, true)
     this.saveData(r, this.store)
-    window.location.assign(`${window.location.origin}${window.location.pathname}#/homeuser`)
+    if(r.data.user.usertype == 0){
+      window.location.assign(`${window.location.origin}${window.location.pathname}#/homeuser`)
+    }else{
+      window.location.assign(`${window.location.origin}${window.location.pathname}#/homecomp`)
+    }
+
+
+    
     return
   }
 

@@ -63,9 +63,11 @@ class Reg extends React.Component {
         content: 'クリックして企業ページにジャンプします。',
         okText:"確認",
         onOk() {
-          window.location.assign(`${window.location.origin}${window.location.pathname}#/homeuser`)
+          window.location.assign(`${window.location.origin}${window.location.pathname}#/homecomp`)
         }
       })
+    }else if(r && r.code === 201) {
+      message.success('该用户已经存在。')
     }
   }
 
@@ -105,9 +107,9 @@ class Reg extends React.Component {
             })(<Input placeholder="ジユウジン　タロウ"/>)}
           </Form.Item>
           <Form.Item label="電話番号">
-            {getFieldDecorator('phone', {
+            {getFieldDecorator('input-number-phone', {
               rules: [{ required: true, type:'number', min:10000000000, max:99999999999,  message: '電話番号を入力してください' }],
-              initialValue: '12345678901' 
+              initialValue: 12345678901
             })(<InputNumber placeholder="01234567890（ハイフン不要）" style={{width:'100%'}} />)}
           </Form.Item>
           <Form.Item label="メールアドレス">
