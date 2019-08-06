@@ -46,3 +46,7 @@ export const MSG_UPDATE         = '修改'
 export const MSG_SAVE           = '保存'
 
 
+export const TYPE_PHONE           = 1
+export const TYPE_EMAIL           = 2
+export const TYPE_NULL            = 3
+export const TYPE_DATE            = 4
