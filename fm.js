@@ -182,6 +182,45 @@ app.post('/user/reg', function(req, res, next) {
   })
 });
 
+app.post('/user/regcomp', function(req, res, next) {
+  let data = req.body
+  // let expList = []
+  // let exp = []
+  let sql = `CALL PROC_REG_COMP(?)`;
+
+  console.log(data)
+
+  let account = {
+    email:data.email,
+    pwd:data.pwd,
+    name_kj:data.name_kj,
+    name_kn:data.name_kn,
+    phone:data['input-number-phone'],
+    name_comp:data.name_comp,
+    name_dept:data.name_dept,
+    usertype:1
+  }
+
+  // account['exp'] = expList
+  db.procedureSQL(sql,JSON.stringify(account),(err,ret)=>{
+      if (err) {
+        res.status(500).json({ code: -1, msg: 'reg failed', data: null})
+      }else{
+        if (ret[0].err_code===0) {
+          // delete account.exp
+          let data = {
+            token: jwt.sign({ email: account.email, pwd: account.pwd }, secret),
+            user:account, 
+            // exp: expList
+          }
+          res.status(200).json({ code: 200, msg: 'reg successful', data: data  })
+        }else{
+          res.status(200).json({ code: 201, msg: 'user exist', data: null })
+        }
+        
+      }
+  })
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
