@@ -1,6 +1,6 @@
 import React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Input,Tabs,Form,Button,DatePicker,Select,InputNumber } from 'antd';
+import { Input,Tabs,Form,Button,DatePicker,Select,InputNumber, message } from 'antd';
 import './index.less'
 import * as urls from 'constant/urls'
 import * as cd   from 'constant/data'
@@ -21,11 +21,13 @@ const { TextArea } = Input;
 
 
 @Form.create()
-@inject('favActions', 'favStore', 'applyActions', 'applyStore', 'userStore')
+@inject('favActions', 'favStore', 'applyActions', 'applyStore', 'userActions', 'userStore')
 @observer
 class Homeuser extends React.Component {
   constructor(props) {
     super(props)
+
+    regex.va_start()
 
     this.state = {
       editable: false,
@@ -45,7 +47,7 @@ class Homeuser extends React.Component {
   }
 
 
-  handleSubmit = (e) =>{
+  handleSubmit = async (e) =>{
     e.preventDefault();
 
     let email     = document.getElementById('email').value
@@ -59,27 +61,42 @@ class Homeuser extends React.Component {
     let workmoney = document.getElementById('workmoney').value
     let worktype  = document.getElementById('worktype').innerText.split('\n')
 
-    if (regex.va_email(email)) {
-      console.log('ok')
+
+
+    if (regex.va_check()) {
+      // save data
+
+      let params = {
+        email:email,
+        name_kj:name_kj,
+        name_kn:name_kn,
+        birth:data.birth,
+        phone:data['input-number-phone'],
+        pers_type:data.pers_type,
+        work_area:data['select-multiple-work_area'].join('|'),
+        work_time:data['select-multiple-work_time'].join('|'),
+        work_mony:data.work_mony,
+        work_type:data['select-multiple-work_type'].join('|'),
+      }
+
+
+
+
+      let r = await props.userActions.saveUser(params)
+      if (r && r.code === 200) {
+        Modal.success({
+          title: '保存成功！',
+          okText:"確認"
+        })
+      }
     }else{
-      document.getElementById('email').parentNode.classList.add("has-error")
+      message.success('表单数据错误！')
     }
 
-    if (regex.va_phone(phone)) {
-      // console.log('ok')
-      document.getElementById('phone').parentNode.classList.remove("has-error")
-    }else{
-      document.getElementById('phone').parentNode.classList.add("has-error")
-    }
 
-    
-
-    // 'ja-JP': /^(\+?81|0)\d{1,4}[ \-]?\d{1,4}[ \-]?\d{4}$/
-    
-
-    this.setState({
-      editable: false
-    })
+    // this.setState({
+    //   editable: false
+    // })
   }
 
   doChangeMenu=(e)=>{
@@ -90,10 +107,11 @@ class Homeuser extends React.Component {
   }
 
 
+
+
   render() {
     const { editable } = this.state
     const { user } = this.props.userStore
-    // const { getFieldDecorator } = this.props.form
     const ptList = cd.personType
 
     const workareaList = getValue(user, 'user.work_area', '').split("|")
@@ -106,7 +124,7 @@ class Homeuser extends React.Component {
     const name_kj      = getValue(user, 'user.name_kj', '')
     const name_kn      = getValue(user, 'user.name_kn', '')
     const pers_type    = getValue(user, 'user.pers_type', '') 
-    const work_money   = getValue(user, 'user.work_money', '') 
+    const work_money   = getValue(user, 'user.work_mony', '') 
     const expList      = clone(getValue(user, 'exp', []))
 
     let favList = getValue(this.props.favStore.fav, 'data', [])
@@ -135,35 +153,60 @@ class Homeuser extends React.Component {
                 </div>
                 <div className="m-row">
                   <div className="m-col-tl">{MSG.MSG_FORM_EMAIL}</div>
-                  <div className="m-col-co has-feedback has-success">
-                    {(user !== null) && <Input placeholder={MSG.MSG_FORM_PD_EMAIL} id='email' defaultValue={email} disabled={!editable}/>}
-                    <span className="ant-form-item-children-icon"><i aria-label="图标: check-circle" className="anticon anticon-check-circle"><svg viewBox="64 64 896 896" focusable="false" className="" data-icon="check-circle" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm193.5 301.7l-210.6 292a31.8 31.8 0 0 1-51.7 0L318.5 484.9c-3.8-5.3 0-12.7 6.5-12.7h46.9c10.2 0 19.9 4.9 25.9 13.3l71.2 98.8 157.2-218c6-8.3 15.6-13.3 25.9-13.3H699c6.5 0 10.3 7.4 6.5 12.7z"></path></svg></i></span>
+                  <div className="m-col-co">
+                    {(user !== null) && <Input placeholder={MSG.MSG_FORM_PD_EMAIL} 
+                                                id='email' 
+                                                defaultValue={email} 
+                                                disabled={!editable}
+                                                onChange={ regex.va_field.bind(this,MSG.TYPE_EMAIL) }/>}
+                    <div className="ant-form-explain">请输入正确的email</div>
                   </div>
                   <div className="m-col-tl">{MSG.MSG_FORM_PHONE}</div>
                   <div className="m-col-co">
-                    {(user !== null) && <Input placeholder={MSG.MSG_FORM_PD_PHONE} id='phone'  defaultValue={phone} disabled={!editable}/>}
-                    <div class="ant-form-explain">Please select the correct date</div>
+                    {(user !== null) && <Input placeholder={MSG.MSG_FORM_PD_PHONE} 
+                                                id='phone'  
+                                                defaultValue={phone} 
+                                                disabled={!editable}
+                                                onChange={ regex.va_field.bind(this,MSG.TYPE_PHONE) } /> }
+                    <div className="ant-form-explain">请输入正确的电话号码</div>
                   </div>
                 </div>
                 <div className="m-row">
                   <div className="m-col-tl">{MSG.MSG_FORM_NAME_KJ}</div>
                   <div className="m-col-co">
-                    {(user !== null) && <Input placeholder={MSG.MSG_FORM_PD_NAKJ} id='name_kj' defaultValue={name_kj} disabled={!editable}/>}
+                    {(user !== null) && <Input placeholder={MSG.MSG_FORM_PD_NAKJ} 
+                                                id='name_kj' 
+                                                defaultValue={name_kj} 
+                                                disabled={!editable}
+                                                onChange={ regex.va_field.bind(this,MSG.TYPE_NULL) } />}
+                    <div className="ant-form-explain">请输入名字</div>
                   </div>
                   <div className="m-col-tl">{MSG.MSG_FORM_NAME_KN}</div>
                   <div className="m-col-co">
-                    {(user !== null) && <Input placeholder={MSG.MSG_FORM_PD_NAKN} id='name_kn' defaultValue={name_kn}  disabled={!editable}/>}
+                    {(user !== null) && <Input placeholder={MSG.MSG_FORM_PD_NAKN} 
+                                                id='name_kn' 
+                                                defaultValue={name_kn}  
+                                                disabled={!editable}
+                                                onChange={ regex.va_field.bind(this,MSG.TYPE_NULL) } />}
+                    <div className="ant-form-explain">请输入名字</div>
                   </div>
                 </div>
                 <div className="m-row">
                   <div className="m-col-tl">{MSG.MSG_FORM_BIRTH}</div>
                   <div className="m-col-co">
-                    {(user !== null) && <DatePicker className="m-form-text" id='birth'  defaultValue={birth} placeholder='年/月/日'  format= {cd.DATE_FORMAT}  disabled={!editable}/>}
+                    {(user !== null) && <DatePicker className="m-form-text" 
+                                                    id='birth'  
+                                                    defaultValue={birth} 
+                                                    placeholder='年/月/日'  
+                                                    format= {cd.DATE_FORMAT}  
+                                                    disabled={!editable} />}
                   </div>
                   <div className="m-col-tl">{MSG.MSG_FORM_PS_TYPE}</div>
                   <div className="m-col-co">
                     {(user !== null) && 
-                      <Select className="m-form-text" defaultValue={`'${pers_type}'`} id='pers_type'  disabled={!editable}>
+                      <Select className="m-form-text" defaultValue={`'${pers_type}'`} 
+                                                      id='pers_type'  
+                                                      disabled={!editable} >
                         {ptList.map((item,index)=>{
                           return (<Select.Option key={`select_pers_type${index}`} value={`'${item.val}'`}>{item.txt}</Select.Option>)
                         })}
@@ -179,11 +222,23 @@ class Homeuser extends React.Component {
                 <div className="m-row">
                   <div className="m-col-tl">{MSG.MSG_FORM_HP_AREA}</div>
                   <div className="m-col-co">
-                    {(user !== null) && <MSelect className="m-form-text" data={cd.workareaList} defaultValue={workareaList} id='workarea'  disabled={!editable}/> }
+                    {(user !== null) && <MSelect className="m-form-text" 
+                                                  data={cd.workareaList} 
+                                                  defaultValue={workareaList} 
+                                                  id='workarea'  
+                                                  disabled={!editable}
+                                                  onChange={ regex.va_field_msel.bind(this,'workarea') } /> }
+                    <div className="ant-form-explain">请选择工作地区</div>
                   </div>
                   <div className="m-col-tl">{MSG.MSG_FORM_HP_TIME}</div>
                   <div className="m-col-co">
-                    {(user !== null) && <MSelect className="m-form-text" data={cd.worktimeList} defaultValue={worktimeList} id='worktime' disabled={!editable}/> }
+                    {(user !== null) && <MSelect className="m-form-text" 
+                                                  data={cd.worktimeList} 
+                                                  defaultValue={worktimeList} 
+                                                  id='worktime' 
+                                                  disabled={!editable}
+                                                  onChange={ regex.va_field_msel.bind(this,'workarea') } /> }
+                    <div className="ant-form-explain">请选择工作时间</div>
                   </div>
                 </div>
                 <div className="m-row">
@@ -193,7 +248,13 @@ class Homeuser extends React.Component {
                   </div>
                   <div className="m-col-tl">{MSG.MSG_FORM_HP_TYPE}</div>
                   <div className="m-col-co">
-                    {(user !== null) && <MSelect className="m-form-text" data={cd.worktypeList} defaultValue={worktypeList} id='worktype'  disabled={!editable}/> }
+                    {(user !== null) && <MSelect className="m-form-text" 
+                                                  data={cd.worktypeList} 
+                                                  defaultValue={worktypeList} 
+                                                  id='worktype'  
+                                                  disabled={!editable}
+                                                  onChange={ regex.va_field_msel.bind(this,'worktype') } /> }
+                    <div className="ant-form-explain">请选择工作方式</div>
                   </div>
                 </div>
 
@@ -209,7 +270,11 @@ class Homeuser extends React.Component {
                         <div className="m-row">
                           <div className="m-col-tl">{MSG.MSG_FORM_PR_NAME}</div>
                           <div className="m-col-co">
-                            <Input placeholder={MSG.MSG_FORM_PR_NAME} disabled={!editable} defaultValue={item.proj_name}/>
+                            <Input placeholder={MSG.MSG_FORM_PR_NAME} 
+                                    disabled={!editable} 
+                                    defaultValue={item.proj_name}
+                                    onChange={ regex.va_field.bind(this,MSG.TYPE_NULL) } />
+                            <div className="ant-form-explain">请输入项目名字</div>
                           </div>
                         </div>
                         <div className="m-row">
@@ -219,17 +284,33 @@ class Homeuser extends React.Component {
                           </div>
                           <div className="m-col-tl">{MSG.MSG_FORM_PR_LANG}</div>
                           <div className="m-col-co">
-                            <MSelect className="m-form-text" data={cd.worklangList} defaultValue={item.work_lang.split('|')} disabled={!editable}/>
+                            <MSelect className="m-form-text" 
+                                      data={cd.worklangList} 
+                                      defaultValue={item.work_lang.split('|')} 
+                                      id = {`work_lang_${index+1}`}
+                                      disabled={!editable}
+                                      onChange={ regex.va_field_msel.bind(this,`work_lang_${index+1}`) }  />
                           </div>
                         </div>
                         <div className="m-row">
                           <div className="m-col-tl">{MSG.MSG_FORM_PR_ROLE}</div>
                           <div className="m-col-co">
-                            <MSelect className="m-form-text" data={cd.workroleList} defaultValue={item.work_role.split('|')}  disabled={!editable}/>
+                            <MSelect className="m-form-text" 
+                                      data={cd.workroleList} 
+                                      defaultValue={item.work_role.split('|')}  
+                                      id = {`work_role_${index+1}`}
+                                      disabled={!editable}
+                                      onChange={ regex.va_field_msel.bind(this,`work_role_${index+1}`) } />
+                            <div className="ant-form-explain">请选择项目角色</div>
                           </div>
                           <div className="m-col-tl">{MSG.MSG_FORM_PR_PROJ}</div>
                           <div className="m-col-co">
-                            <MSelect className="m-form-text" data={cd.workprojList} defaultValue={item.work_proj.split('|')}  disabled={!editable}/>
+                            <MSelect className="m-form-text" 
+                                      data={cd.workprojList} 
+                                      defaultValue={item.work_proj.split('|')}  
+                                      id = {`work_proj_${index+1}`}
+                                      disabled={!editable}
+                                      onChange={ regex.va_field_msel.bind(this,`work_proj_${index+1}`) } />
                           </div>
                         </div>
                         <div className="m-row">
