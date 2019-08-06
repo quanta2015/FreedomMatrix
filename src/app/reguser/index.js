@@ -232,7 +232,7 @@ class Reg extends React.Component {
           <Form.Item label="電話番号">
             {getFieldDecorator('input-number-phone', {
               rules: [{ required: true, type:'number', min:10000000000, max:99999999999,  message: '電話番号を入力してください' }],
-              initialValue: 12345678901 
+              initialValue: 12345678901
             })(<InputNumber placeholder="01234567890（ハイフン不要）" style={{width:'100%'}} />)}
           </Form.Item>
           <Form.Item label="カテゴリー">

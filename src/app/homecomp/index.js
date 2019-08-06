@@ -4,12 +4,12 @@ import './index.less'
 import * as urls from 'constant/urls'
 import { Input } from 'antd';
 
-@inject('carlActions', 'userStore')
+@inject('userActions', 'userStore')
 @observer
 class Homecomp extends React.Component {
   constructor(props) {
     super(props)
-    this.actions = props.carlActions
+    this.actions = props.userActions
     this.store = props.userStore
   }
 

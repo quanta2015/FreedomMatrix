@@ -22,8 +22,12 @@ class Login extends React.Component {
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
         let r = await this.actions.login(values)
-        if (r && r.code === 200) {
-          window.location.assign(`${window.location.origin}${window.location.pathname}#/homeuser`)
+        if (r && r.code === 200) {   
+          if(r.data.user.usertype == 1){
+            window.location.assign(`${window.location.origin}${window.location.pathname}#/homecomp`)
+          }else{
+            window.location.assign(`${window.location.origin}${window.location.pathname}#/homeuser`)
+          }  
         }
       }
     })
