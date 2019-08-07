@@ -61,7 +61,7 @@ class Dashboard extends React.Component {
     return (
       <Layout className="layout">
         <Header>
-          <div className="logo">自由阵</div>
+          <div className="logo">自由陣</div>
           <div className="m-hd-btn m-login">
             <NavLink to='login'>
               <span>ログイン</span>

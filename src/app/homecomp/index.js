@@ -14,7 +14,6 @@ class Homecomp extends React.Component {
   }
 
   render() {
-   
     return (
       <div className='g-homecomp'>
         home comp

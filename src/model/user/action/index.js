@@ -23,7 +23,7 @@ class UserActions extends BaseActions {
       jwt.saveExp(exp)
 
       runInAction(() => {
-        st.isLogin = 1
+        st.isLogin = user.usertype == 0?1:2
         st.user = {
           token: token,
           user: user,
