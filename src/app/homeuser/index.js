@@ -47,12 +47,8 @@ class Homeuser extends React.Component {
 
   handleSubmit = async (e) =>{
     e.preventDefault();
-
     if (regex.va_check()) {
-
       let params = toJS(this.props.userStore.user)
-      console.log(params)
-
       let r = await this.props.userActions.saveUser(params)
       if (r && r.code === 200) {
         Modal.success({
@@ -66,11 +62,6 @@ class Homeuser extends React.Component {
     }else{
       message.success('表单数据错误！')
     }
-
-
-    // this.setState({
-    //   editable: false
-    // })
   }
 
   doChangeMenu=(e)=>{
@@ -81,14 +72,10 @@ class Homeuser extends React.Component {
   }
 
 
-
-
   render() {
     const { editable } = this.state
     const { user } = this.props.userStore
     const ptList = cd.personType
-
-
     const workareaList = getValue(user, 'user.work_area', '').split("|")
     const worktimeList = getValue(user, 'user.work_time', '') .split("|")
     const worktypeList = getValue(user, 'user.work_type', '') .split("|")
