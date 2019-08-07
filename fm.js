@@ -103,7 +103,7 @@ app.post('/user/login', function(req, res) {
     let account = ret[0]
     if (ret.length > 0) {
       where = `where pid=${account.id}`
-      db.select('exp',where,'','', (err,exp)=>{
+      db.select('expr',where,'','', (err,exp)=>{
           // let exp = eret
           
           res.status(200).json({
@@ -185,43 +185,14 @@ app.post('/user/reg', function(req, res, next) {
 
 
 app.post('/user/save', function(req, res, next) {
-  let data = req.body
-  let expList = []
-  let exp = []
+  
   let sql = `CALL PROC_SAVE_USER(?)`;
 
-  console.log(data)
 
-  let account = {
-    email:data.email,
-    pwd:data.pwd,
-    name_kj:data.name_kj,
-    name_kn:data.name_kn,
-    birth:data.birth,
-    phone:data['input-number-phone'],
-    pers_type:data.pers_type,
-    work_area:data['select-multiple-work_area'].join('|'),
-    work_time:data['select-multiple-work_time'].join('|'),
-    work_mony:data.work_mony,
-    work_type:data['select-multiple-work_type'].join('|'),
-  }
+  let account = clone(req.body.user)
+  let expList = clone(req.body.exp)
+  account.exp = expList
 
-  if (data.count>0) {
-    for(let i=1;i<data.count+1;i++) {
-      let item = {}
-      // item[`pid`] = ret.rows.insertId
-      item[`proj_name`] = data[`proj_name_${i}`]
-      item[`date_from`] = data[`date_from_${i},date_to_${i}`][0]
-      item[  `date_to`] = data[`date_from_${i},date_to_${i}`][1]
-      item[`work_lang`] = data[`select-multiple-work_lang_${i}`].join('|')
-      item[`work_role`] = data[`select-multiple-work_role_${i}`].join('|')
-      item[`work_proj`] = data[`select-multiple-work_proj_${i}`].join('|')
-      item[`work_detl`] = data[`work_detl_${i}`]
-      expList.push(item)
-    }
-  }
-
-  account['exp'] = expList
   db.procedureSQL(sql,JSON.stringify(account),(err,ret)=>{
       if (err) {
         res.status(500).json({ code: -1, msg: 'reg failed', data: null})
