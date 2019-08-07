@@ -1,5 +1,5 @@
 import * as MSG from 'constant/msg'
-
+import * as date  from 'util/date'
 
 const VALID_KEY = 'VALID_TOKEN'
 
@@ -24,8 +24,8 @@ export let va_null = (data)=>{
 //验证手机格式  
 export let va_phone = (data)=>{
   if (data !== "") {
-    if (!REG_PHONE.test(data)) {
-      return false;
+    if (REG_PHONE.test(data)) {
+      return true;
     }
   }
   return false;
@@ -60,11 +60,12 @@ export let va_date = (data)=>{
 }
 
 
-export let va_field = (type,e)=>{
+export let va_field = (type,act,level,index,e)=>{
+  let ret  
   let self = e.currentTarget
   let val  = e.currentTarget.value
   let id   = e.currentTarget.id
-  let ret  
+  act.setVal(id,val,level,index)
 
   switch(type) {
     case MSG.TYPE_PHONE: ret = va_phone(val); break;
@@ -82,8 +83,22 @@ export let va_field = (type,e)=>{
   }
 }
 
-export let va_field_msel = (id,val)=>{
+export let va_field_dsel = (id,act,level,index,mo,val)=>{
   let self = document.getElementById(id)
+  let ret = val.split('/').join('')
+  act.setVal(id,ret,level,index)
+}
+
+export let va_field_ssel = (id,act,level,index,val)=>{
+  let self = document.getElementById(id)
+  let nv = parseInt(val.split("'").join(''))
+  act.setVal(id,nv,level,index)
+}
+
+export let va_field_msel = (id,act,level,index,val)=>{
+  let self = document.getElementById(id)
+  let ret=val.join("|")
+  act.setVal(id,ret,level,index)
   if (val.length>0) {
     self.parentNode.classList.remove("has-error")
     va_rm(id)
@@ -91,6 +106,13 @@ export let va_field_msel = (id,val)=>{
     self.parentNode.classList.add("has-error")
     va_add(id)
   }
+}
+
+export let va_field_rsel = (id,act,level,index,val)=>{
+  let self = document.getElementById(id)
+
+  act.setVal('date_from_0',date.formatDate(val[0]).split('/').join(''),level,index)
+  act.setVal('date_to_0'  ,date.formatDate(val[1]).split('/').join(''),level,index)
 }
 
 

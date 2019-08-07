@@ -11,10 +11,6 @@ var url = require('url')
 var db = require("./db/db")
 var jwt= require('jsonwebtoken')
 
-// var formidable = require('formidable'); 
-
-// const configFile = `${__dirname}/data/config.json`
-// const config = JSON.parse(fs.readFileSync(configFile,'utf-8'))
 
 const clone = (e) =>{ return JSON.parse(JSON.stringify(e))}
 
@@ -103,7 +99,7 @@ app.post('/user/login', function(req, res) {
     let account = ret[0]
     if (ret.length > 0) {
       where = `where pid=${account.id}`
-      db.select('exp',where,'','', (err,exp)=>{
+      db.select('expr',where,'','', (err,exp)=>{
           // let exp = eret
           
           res.status(200).json({
@@ -182,13 +178,40 @@ app.post('/user/reg', function(req, res, next) {
   })
 });
 
+
+
+app.post('/user/save', function(req, res, next) {
+  
+  let sql = `CALL PROC_SAVE_USER(?)`;
+
+
+  let account = clone(req.body.user)
+  let expList = clone(req.body.exp)
+  account.exp = expList
+
+  db.procedureSQL(sql,JSON.stringify(account),(err,ret)=>{
+    if (err) {
+      res.status(500).json({ code: -1, msg: 'reg failed', data: null})
+    }else{
+      if (ret[0].err_code===0) {
+        // delete account.exp
+        let data = {
+          token: jwt.sign({ email: account.email, pwd: account.pwd }, secret),
+          user:account, 
+          exp: expList
+        }
+        res.status(200).json({ code: 200, msg: 'reg successful', data: data  })
+      }else{
+        res.status(200).json({ code: 201, msg: 'user exist', data: null })
+      }
+    }
+  })
+})
+
+
 app.post('/user/regcomp', function(req, res, next) {
   let data = req.body
-  // let expList = []
-  // let exp = []
   let sql = `CALL PROC_REG_COMP(?)`;
-
-  console.log(data)
 
   let account = {
     email:data.email,
@@ -201,24 +224,21 @@ app.post('/user/regcomp', function(req, res, next) {
     usertype:1
   }
 
-  // account['exp'] = expList
   db.procedureSQL(sql,JSON.stringify(account),(err,ret)=>{
-      if (err) {
-        res.status(500).json({ code: -1, msg: 'reg failed', data: null})
-      }else{
-        if (ret[0].err_code===0) {
-          // delete account.exp
-          let data = {
-            token: jwt.sign({ email: account.email, pwd: account.pwd }, secret),
-            user:account, 
-            // exp: expList
-          }
-          res.status(200).json({ code: 200, msg: 'reg successful', data: data  })
-        }else{
-          res.status(200).json({ code: 201, msg: 'user exist', data: null })
+    if (err) {
+      res.status(500).json({ code: -1, msg: 'reg failed', data: null})
+    }else{
+      if (ret[0].err_code===0) {
+        let data = {
+          token: jwt.sign({ email: account.email, pwd: account.pwd }, secret),
+          user:account, 
         }
-        
+        res.status(200).json({ code: 200, msg: 'reg successful', data: data  })
+      }else{
+        res.status(200).json({ code: 201, msg: 'user exist', data: null })
       }
+      
+    }
   })
 });
 

@@ -1,5 +1,5 @@
 import moment  from 'moment'
-
+import cheerio from 'cheerio'
 
 
 let prefixInteger = (num, length) => {
@@ -29,4 +29,13 @@ export let convertI2D = (date) => {
   let month = prefixInteger(_date.substring(4,6), 2)
   let day   = prefixInteger(_date.substring(6,8), 2)
   return	moment(`${year}/${month}/${day}`,'YYYY/MM/DD')
+}
+
+
+export let html2RagDate = (html) => {
+  const $ = cheerio.load(html)
+  let ret = []
+  ret.push($('input')[0].attribs.value)
+  ret.push($('input')[1].attribs.value)
+  return ret
 }
