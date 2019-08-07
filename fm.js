@@ -126,8 +126,6 @@ app.post('/user/reg', function(req, res, next) {
   let exp = []
   let sql = `CALL PROC_REG_USER(?)`;
 
-  console.log(data)
-
   let account = {
     email:data.email,
     pwd:data.pwd,
@@ -140,12 +138,12 @@ app.post('/user/reg', function(req, res, next) {
     work_time:data['select-multiple-work_time'].join('|'),
     work_mony:data.work_mony,
     work_type:data['select-multiple-work_type'].join('|'),
+    usertype: 0
   }
 
   if (data.count>0) {
     for(let i=1;i<data.count+1;i++) {
       let item = {}
-      // item[`pid`] = ret.rows.insertId
       item[`proj_name`] = data[`proj_name_${i}`]
       item[`date_from`] = data[`date_from_${i},date_to_${i}`][0]
       item[  `date_to`] = data[`date_from_${i},date_to_${i}`][1]
@@ -164,6 +162,7 @@ app.post('/user/reg', function(req, res, next) {
       }else{
         if (ret[0].err_code===0) {
           delete account.exp
+          account.id = ret[0].id
           let data = {
             token: jwt.sign({ email: account.email, pwd: account.pwd }, secret),
             user:account, 
