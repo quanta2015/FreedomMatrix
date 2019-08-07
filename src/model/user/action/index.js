@@ -52,6 +52,15 @@ class UserActions extends BaseActions {
     return r
   }
 
+  @action
+  async regComp(params) {
+    let r = await this.post(urls.API_COMP_REG, params, true)
+    // this.store.exp = null
+    if(r.code === 200){
+      this.saveData(r, this.store)
+    }
+    return r
+  }
 
   @action
   async login(params) {
@@ -76,9 +85,14 @@ class UserActions extends BaseActions {
     const data = jwt.decodeToken()
     let params = { email: data.email, pwd: data.pwd }
     let r = await this.post(urls.API_USER_LOGIN, params, true)
+
     if (r && r.code === 200) {
       this.saveData(r, this.store)
-      window.location.assign(`${window.location.origin}${window.location.pathname}#/homeuser`)
+      if(r.data.user.usertype === 1){
+        window.location.assign(`${window.location.origin}${window.location.pathname}#/homecomp`)
+      }else{
+        window.location.assign(`${window.location.origin}${window.location.pathname}#/homeuser`)
+      }
     }else{
       message.success('获取自动登录数据失败！')
     }

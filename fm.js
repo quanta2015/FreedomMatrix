@@ -11,10 +11,6 @@ var url = require('url')
 var db = require("./db/db")
 var jwt= require('jsonwebtoken')
 
-// var formidable = require('formidable'); 
-
-// const configFile = `${__dirname}/data/config.json`
-// const config = JSON.parse(fs.readFileSync(configFile,'utf-8'))
 
 const clone = (e) =>{ return JSON.parse(JSON.stringify(e))}
 
@@ -194,25 +190,57 @@ app.post('/user/save', function(req, res, next) {
   account.exp = expList
 
   db.procedureSQL(sql,JSON.stringify(account),(err,ret)=>{
-      if (err) {
-        res.status(500).json({ code: -1, msg: 'reg failed', data: null})
-      }else{
-        if (ret[0].err_code===0) {
-          delete account.exp
-          let data = {
-            token: jwt.sign({ email: account.email, pwd: account.pwd }, secret),
-            user:account, 
-            exp: expList
-          }
-          res.status(200).json({ code: 200, msg: 'reg successful', data: data  })
-        }else{
-          res.status(200).json({ code: 201, msg: 'user exist', data: null })
+    if (err) {
+      res.status(500).json({ code: -1, msg: 'reg failed', data: null})
+    }else{
+      if (ret[0].err_code===0) {
+        // delete account.exp
+        let data = {
+          token: jwt.sign({ email: account.email, pwd: account.pwd }, secret),
+          user:account, 
+          exp: expList
         }
+        res.status(200).json({ code: 200, msg: 'reg successful', data: data  })
+      }else{
+        res.status(200).json({ code: 201, msg: 'user exist', data: null })
       }
+    }
+  })
+})
+
+
+app.post('/user/regcomp', function(req, res, next) {
+  let data = req.body
+  let sql = `CALL PROC_REG_COMP(?)`;
+
+  let account = {
+    email:data.email,
+    pwd:data.pwd,
+    name_kj:data.name_kj,
+    name_kn:data.name_kn,
+    phone:data['input-number-phone'],
+    name_comp:data.name_comp,
+    name_dept:data.name_dept,
+    usertype:1
+  }
+
+  db.procedureSQL(sql,JSON.stringify(account),(err,ret)=>{
+    if (err) {
+      res.status(500).json({ code: -1, msg: 'reg failed', data: null})
+    }else{
+      if (ret[0].err_code===0) {
+        let data = {
+          token: jwt.sign({ email: account.email, pwd: account.pwd }, secret),
+          user:account, 
+        }
+        res.status(200).json({ code: 200, msg: 'reg successful', data: data  })
+      }else{
+        res.status(200).json({ code: 201, msg: 'user exist', data: null })
+      }
+      
+    }
   })
 });
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
