@@ -7,7 +7,7 @@ import moment  from 'moment'
 import clone   from 'util/clone'
 import MSelect from 'util/MSelect'
 import * as DT from 'util/date'
-import * as cd from 'constant/data'
+import * as CD from 'constant/data'
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -163,8 +163,8 @@ class Reg extends React.Component {
 
   saveRange = (id,v)=>{
     const { panes } = this.state;
-    panes[id]['date_from'] = v[0].format(cd.DATE_FORMAT)
-    panes[id]['date_to']   = v[1].format(cd.DATE_FORMAT)
+    panes[id]['date_from'] = v[0].format(CD.DATE_FORMAT)
+    panes[id]['date_to']   = v[1].format(CD.DATE_FORMAT)
     this.setState({ panes});
   }
 
@@ -226,7 +226,7 @@ class Reg extends React.Component {
               rules: [{ required: true,　message: '生年月日を入力してください' }],
             })(<DatePicker className="m-form-text"          
                             placeholder='年/月/日'              
-                            format= {cd.DATE_FORMAT}              
+                            format= {CD.DATE_FORMAT}              
             />)}
           </Form.Item>
           <Form.Item label="電話番号">
@@ -251,13 +251,13 @@ class Reg extends React.Component {
             {getFieldDecorator('select-multiple-work_area', {
               rules: [{ required: true, type: 'array', message: '勤務希望エリアを選択してください' }],
               initialValue: ['0']
-            })(<MSelect className="m-form-text" data={cd.workareaList}/> )}
+            })(<MSelect className="m-form-text" data={CD.workareaList}/> )}
           </Form.Item>
           <Form.Item label="希望稼働時期">
             {getFieldDecorator('select-multiple-work_time', {
               rules: [{ required: true, type: 'array', message: '希望稼働時期を選択してください' }],
               initialValue: ["0"]
-            })(<MSelect className="m-form-text" data={cd.worktimeList}/> )}
+            })(<MSelect className="m-form-text" data={CD.worktimeList}/> )}
           </Form.Item>
           <Form.Item label="希望月額報酬（万円）">
             {getFieldDecorator('work_mony', {
@@ -269,7 +269,7 @@ class Reg extends React.Component {
             {getFieldDecorator('select-multiple-work_type', {
               rules: [{ required: true, type: 'array', message: '希望働き方を選択してください' }],
               initialValue: ["0"]
-            })(<MSelect className="m-form-text" data={cd.worktypeList}/>)}
+            })(<MSelect className="m-form-text" data={CD.worktypeList}/>)}
           </Form.Item>
 
       
@@ -301,8 +301,8 @@ class Reg extends React.Component {
                   <Form.Item label="期間">
                     {getFieldDecorator([`date_from_${index+1}`,`date_to_${index+1}`], {
                       rules: [{ required: true,  message: '期間を選択してください' }],
-                      initialValue: [moment(item.date_from,cd.DATE_FORMAT), moment(item.date_to,cd.DATE_FORMAT)]
-                    })(<RangePicker format={cd.DATE_FORMAT}  className="m-form-text" 
+                      initialValue: [moment(item.date_from,CD.DATE_FORMAT), moment(item.date_to,CD.DATE_FORMAT)]
+                    })(<RangePicker format={CD.DATE_FORMAT}  className="m-form-text" 
                                     onChange={this.saveRange.bind(this,index)}/>)}
                   </Form.Item>
 
@@ -310,21 +310,21 @@ class Reg extends React.Component {
                     {getFieldDecorator(`select-multiple-work_lang_${index+1}`, {
                       rules: [{ required: true, type: 'array', message: '経験言語を選択してください' }],
                       initialValue: ["0"]
-                    })(<MSelect className="m-form-text" data={cd.worklangList}/>)}
+                    })(<MSelect className="m-form-text" data={CD.worklangList}/>)}
                   </Form.Item>
 
                   <Form.Item label="経験職種">
                     {getFieldDecorator(`select-multiple-work_role_${index+1}`, {
                       rules: [{ required: true, type: 'array', message: '経験職種を選択してください' }],
                       initialValue: ["0"]
-                    })(<MSelect className="m-form-text" data={cd.workroleList}/>)}
+                    })(<MSelect className="m-form-text" data={CD.workroleList}/>)}
                   </Form.Item>
 
                   <Form.Item label="経験工程">
                     {getFieldDecorator(`select-multiple-work_proj_${index+1}`, {
                       rules: [{ required: true, type: 'array', message: '経験工程を選択してください' }],
                       initialValue: ["0"]
-                    })(<MSelect className="m-form-text" data={cd.workprojList}/>)}
+                    })(<MSelect className="m-form-text" data={CD.workprojList}/>)}
                   </Form.Item>
 
                   <Form.Item label="詳細">

@@ -241,6 +241,19 @@ app.post('/user/regcomp', function(req, res, next) {
   })
 });
 
+
+
+app.post('/proj/query', function(req, res, next) {
+  // let data = req.body
+  db.select('project','','','', (err,ret)=>{
+    res.status(200).json({
+      code: 200,
+      msg: '取案例数据成功',
+      data: ret
+    })
+  })
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

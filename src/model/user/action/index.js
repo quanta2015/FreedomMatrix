@@ -65,7 +65,9 @@ class UserActions extends BaseActions {
   @action
   async login(params) {
     let r = await this.post(urls.API_USER_LOGIN, params, true)
-    this.saveData(r, this.store)
+    if (r && r.code === 200) {
+      this.saveData(r, this.store)
+    }
     return r
   }
 
@@ -88,11 +90,12 @@ class UserActions extends BaseActions {
 
     if (r && r.code === 200) {
       this.saveData(r, this.store)
-      if(r.data.user.usertype === 1){
-        window.location.assign(`${window.location.origin}${window.location.pathname}#/homecomp`)
-      }else{
-        window.location.assign(`${window.location.origin}${window.location.pathname}#/homeuser`)
-      }
+      // if(r.data.user.usertype === 1){
+      //   window.location.assign(`${window.location.origin}${window.location.pathname}#/homecomp`)
+      // }else{
+      //   // window.location.assign(`${window.location.origin}${window.location.pathname}#/homeuser`)
+      //   window.location.assign(`${window.location.origin}${window.location.pathname}#/projquery`)
+      // }
     }else{
       message.success('获取自动登录数据失败！')
     }

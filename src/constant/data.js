@@ -16,6 +16,8 @@ export const MAIN_MENU = [{ title:'案件検索', icon:'search',  path:'/projque
 
 export const personType = [{ val:"0", txt:'フリーランス' }, { val:"1", txt:'副業' }]
 
+export const projTarget = [{ val:"0", txt:'フリーランス' }, { val:"1", txt:'協力パートナー' },{ val:"2", txt:'副業' }]
+
 export const workareaList = [{val:"0",txt:'23区'    },
                              {val:"1",txt:'都内その他'}, 
                              {val:"2",txt:'横浜市'   },
@@ -117,3 +119,4 @@ export const projrespList = [{txt: '計画調査',  val:'0'},
                              {txt: '運営保守', val:'6'},
                              {txt: 'その他',   val:'7'}]
                              
+
