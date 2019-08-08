@@ -93,7 +93,7 @@ class UserActions extends BaseActions {
       // if(r.data.user.usertype === 1){
       //   window.location.assign(`${window.location.origin}${window.location.pathname}#/homecomp`)
       // }else{
-      //   // window.location.assign(`${window.location.origin}${window.location.pathname}#/homeuser`)
+      //   window.location.assign(`${window.location.origin}${window.location.pathname}#/homeuser`)
       //   window.location.assign(`${window.location.origin}${window.location.pathname}#/projquery`)
       // }
     }else{
