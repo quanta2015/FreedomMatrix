@@ -20,7 +20,7 @@ export const MSG_FORM_PR_LANG   = '経験言語'
 export const MSG_FORM_PR_ROLE   = '経験職種'
 export const MSG_FORM_PR_PROJ   = '経験工程'
 export const MSG_FORM_PR_DETL   = '详细内容'
-
+export const MSG_FORM_NAME_COMP = '会社名'
 
 /*----  placeholder message define  ----*/
 export const MSG_FORM_PD_EMAIL   = 'email@address.com'
@@ -28,7 +28,7 @@ export const MSG_FORM_PD_MONEY   = '数字（単位：万円）'
 export const MSG_FORM_PD_PHONE   = "01234567890（ハイフン不要）"
 export const MSG_FORM_PD_NAKJ   = "自由陣　太郎"
 export const MSG_FORM_PD_NAKN   = "ジユウジン　タロウ"
-
+export const MSG_FORM_PD_NAME_COMP = '自由陣株式会社'
 
 
 /*----  form message define  ----*/

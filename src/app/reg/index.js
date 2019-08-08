@@ -44,7 +44,7 @@ class Reg extends React.Component {
           <Button className="m-type-btn c-blue" onClick={this.setType.bind(this,0)}>会員様へ無料登録</Button>
           <Button className="m-type-btn c-blue" onClick={this.setType.bind(this,1)}>企業様へ無料登録</Button>
         </div>
-        { regtype === 0 && <RegUser/>  }
+        { regtype === 0 && <RegUser/> }
         { regtype === 1 && <RegComp/> }
       </div>
     )
