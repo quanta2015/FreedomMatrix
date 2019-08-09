@@ -114,7 +114,7 @@ class Projquery extends React.Component {
 
           {projList.map((item,index)=>{
             return (
-                <div className="m-proj-item">
+                <div className="m-proj-item" key={index}>
                   <div className="m-proj-row">
                     <span className="m-proj-id">{item.pid}</span>
                     <span className="m-proj-name">{item.proj_name}</span>
