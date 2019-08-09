@@ -241,6 +241,70 @@ app.post('/user/regcomp', function(req, res, next) {
   })
 });
 
+app.post('/user/projadd', function(req, res, next) {
+  let data = req.body
+  let posList = []
+  let pos = []
+  let sql = `CALL PROC_ADD_PROJ(?)`;
+
+  let project = {
+    proj_name:data.proj_name,
+    proj_domn:data.proj_domn,
+    date_from:data.date_from,
+    date_to:data.date_to,
+    proj_area:data['select-multiple-proj_area'].join('|'),
+
+
+
+
+
+
+    
+    proj_pref:data.proj_pref,
+    pers_type:data.pers_type,
+    work_area:data['select-multiple-work_area'].join('|'),
+    work_time:data['select-multiple-work_time'].join('|'),
+    work_mony:data.work_mony,
+    work_type:data['select-multiple-work_type'].join('|'),
+    usertype: 0
+  }
+
+  if (data.count>0) {
+    for(let i=1;i<data.count+1;i++) {
+      let item = {}
+      item[`proj_name`] = data[`proj_name_${i}`]
+      item[`date_from`] = data[`date_from_${i},date_to_${i}`][0]
+      item[  `date_to`] = data[`date_from_${i},date_to_${i}`][1]
+      item[`work_lang`] = data[`select-multiple-work_lang_${i}`].join('|')
+      item[`work_role`] = data[`select-multiple-work_role_${i}`].join('|')
+      item[`work_proj`] = data[`select-multiple-work_proj_${i}`].join('|')
+      item[`work_detl`] = data[`work_detl_${i}`]
+      expList.push(item)
+    }
+  }
+
+  project['pos'] = expList
+  db.procedureSQL(sql,JSON.stringify(account),(err,ret)=>{
+      if (err) {
+        res.status(500).json({ code: -1, msg: 'reg failed', data: null})
+      }else{
+        if (ret[0].err_code===0) {
+          delete account.exp
+          account.id = ret[0].id
+          let data = {
+            token: jwt.sign({ email: account.email, pwd: account.pwd }, secret),
+            user:account, 
+            exp: expList
+          }
+          res.status(200).json({ code: 200, msg: 'reg successful', data: data  })
+        }else{
+          res.status(200).json({ code: 201, msg: 'user exist', data: null })
+        }
+        
+      }
+  })
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -256,6 +320,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 
 app.set('port', port);

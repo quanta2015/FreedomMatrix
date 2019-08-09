@@ -271,8 +271,7 @@ class Reg extends React.Component {
               initialValue: ["0"]
             })(<MSelect className="m-form-text" data={cd.worktypeList}/>)}
           </Form.Item>
-
-      
+          
           <h2 className="m-reg_h2">
             <span className="m-h2-ti">経験・スキル登録</span>
             <Switch onChange={this.showExp} />
