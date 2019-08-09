@@ -3,10 +3,13 @@ import { observer, inject } from 'mobx-react'
 import { Input } from 'antd';
 import getNode from 'util/getNode'
 import './index.less'
-import { message,Button,Select,Switch } from 'antd'
+import { message,Button,Select,Switch,Pagination } from 'antd'
 import MSelect from 'util/MSelect'
+import * as DATE from 'util/date'
+import * as CT from 'util/convert'
 import * as CD from 'constant/data'
 import { toJS } from 'mobx'
+
 
 
 @inject('projectActions', 'projectStore', 'userStore')
@@ -16,13 +19,14 @@ class Projquery extends React.Component {
   constructor(props) {
     super(props)
 
+
     this.action = props.projectActions
     this.store = props.projectStore
 
-    
 
     this.state = {
-      showAdv: false
+      showAdv: false,
+      curPage: 1
     }
 
   }
@@ -38,17 +42,28 @@ class Projquery extends React.Component {
     })
   }
 
+  showPageData =(index)=>{
+    this.setState({
+      curPage: index
+    })
+  }
+
   render() {
 
-    let { showAdv } = this.state
-    let projList
-    // let projList =  toJS(this.store.projectStore.project)
+    let { showAdv,curPage } = this.state
+    let projList,projdomnList,pageList=[]
+    let PAGESIZE = 10
 
     if (!this.store.project && typeof(this.store.project)!="undefined" && this.store.project!=0) {
       projList = []
     }else{
       projList =  toJS(getValue(this.store, 'project', '[]'))
+      let last = (PAGESIZE*curPage>projList.length)?projList.length:PAGESIZE*curPage
+      for(let i=PAGESIZE*(curPage-1);i<last;i++) {
+        pageList.push(projList[i])
+      }
     }
+
 
     return (
       <div className='g-projquery'>
@@ -112,25 +127,67 @@ class Projquery extends React.Component {
 
         </div>
 
-          {projList.map((item,index)=>{
+          {pageList.map((item,index)=>{
             return (
                 <div className="m-proj-item" key={index}>
                   <div className="m-proj-row">
-                    <span className="m-proj-id">{item.pid}</span>
-                    <span className="m-proj-name">{item.proj_name}</span>
+                    <div className="m-proj-id">{item.pid}</div>
+                    <div className="m-proj-name">{item.proj_name}</div>
                   </div>
                   <div className="m-proj-row">
-                    <span className="m-proj-tl">项目时间</span>
-                    <span className="m-proj-co m-date">{item.date_from}-{item.date_from}</span>
-                    <span className="m-proj-tl">项目技术</span>
-                    <span className="m-proj-co">{item.proj_domn}</span>
+                    <div className="m-proj-tl">项目时间</div>
+                    <div className="m-proj-co m-date">{DATE.convertI2S(item.date_from)} ~ {DATE.convertI2S(item.date_from)}</div>
+                    <div className="m-proj-tl">業界</div>
+                    <div className="m-proj-co">
+                    { (projList.length !== 0) &&
+                      CT.strToNameList(item.proj_domn, CD.projdomnList).map((item_domn,j)=>
+                        <span className="m-proj-item-d" key={j}>{item_domn}</span>
+                     ) }
+                    </div>
+                  </div>
+                  <div className="m-proj-row">
+                    <div className="m-proj-tl">勤務エリア</div>
+                    <div className="m-proj-co">
+                    { (projList.length !== 0) &&
+                      CT.strToNameList(item.proj_area, CD.workareaList).map((item_area,j)=>
+                        <span className="m-proj-item-d" key={j}>{item_area}</span>
+                     ) }
+                    </div>
+                    <div className="m-proj-tl">こだわり</div>
+                    <div className="m-proj-co">
+                    { (projList.length !== 0) &&
+                      CT.strToNameList(item.proj_pref, CD.projprefList).map((item_pref,j)=>
+                        <span className="m-proj-item-d" key={j}>{item_pref}</span>
+                     ) }
+                    </div>
+                  </div>
+                  <div className="m-proj-row">
+                    <div className="m-proj-tl">応募対象</div>
+                    <div className="m-proj-co">
+                      { (projList.length !== 0) &&
+                      CT.strToNameList(item.proj_targ, CD.projTarget).map((item_targ,j)=>
+                        <span className="m-proj-item-d" key={j}>{item_targ}</span>
+                      )}
+                    </div>
+                    <div className="m-proj-tl">働き方</div>
+                    <div className="m-proj-co">
+                      { (projList.length !== 0) &&
+                        CT.strToNameList(item.proj_styl, CD.worktypeList).map((item_styl,j)=>
+                          <span className="m-proj-item-d" key={j}>{item_styl}</span>
+                        )}
+
+                    </div>
+                  </div>
+                  <div className="m-proj-row m-proj-row-f">
+                    <Button type="default" htmlType="submit" onClick={this.doReg}>気になる</Button>
+                    <Button type="danger" htmlType="submit" onClick={this.doReg}>応募する</Button>
+                    <Button type="default" htmlType="submit" className="c-green" onClick={this.doReg}>詳細を見る</Button> 
                   </div>
                 </div>
               )
           })}
 
-
-        
+          <Pagination defaultCurrent={1} total={projList.length} onChange={this.showPageData} />
       </div>
     )
   }
