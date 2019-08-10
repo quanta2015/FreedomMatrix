@@ -46,8 +46,6 @@ class Dashboard extends React.Component {
       isLogin = 0;
     }
 
-    console.log(isLogin)
-
     const dropdownMenu = (
       <Menu>
         <Menu.Item>
@@ -96,16 +94,20 @@ class Dashboard extends React.Component {
                 )}
               })}
             </Menu>
+
+            {(isLogin===1) &&
             <Dropdown overlay={dropdownMenu}>
               <span className='account'>
                 <Avatar className='avatar' icon='user' />
               </span>
-            </Dropdown>
+            </Dropdown>}
+            
+
           </div>
           <div className="m-hd-mobile">
             <Drawer
               className="m-mobile-menu"
-              title={<Icon type="codepen" />}
+              title={ <div><Icon type="codepen" /><span>自由阵</span></div>}
               placement="left"
               closable={false}
               onClose={this.onClose}
@@ -136,6 +138,15 @@ class Dashboard extends React.Component {
                   </p>
                 )}
               })}
+
+              {(isLogin===1) &&
+              <p className="fn-show m-menu_h" onClick={this.logout}>
+                <a href="#/homeuser">
+                  <i aria-label="图标: user" className="anticon anticon-user"></i>
+                  <span>退出登录</span>
+                </a>
+              </p>}
+
             </Drawer>
           </div>
           <Button type="primary" className="m-hd-mobile" onClick={this.showDrawer}>

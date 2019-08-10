@@ -40,15 +40,10 @@ class ProjectActions extends BaseActions {
   }
 
   @action
-  async addProj(params) {
+  async projAdd(params) {
     let r = await this.post(urls.API_PROJ_ADD, params, true)
-
-    if (r.code === 200) {
-      this.saveProj(r, this.store)
-    }
     return r
   }
-
 }
 
 export default new ProjectActions(store)
