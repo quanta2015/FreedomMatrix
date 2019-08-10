@@ -117,6 +117,25 @@
 }
 
 
+.m-proj-row-f {
+    padding: 10px;
+    justify-content: center;
+    border-top: 1px dashed #eee;
+}
+
+.m-proj-row-f>button {
+    margin: 0 5px;
+}
+
+.m-proj-item-d {
+    border-radius: 36px;
+    border: 1px solid #4A79A9;
+    padding: 2px 10px;
+    font-size: 10px;
+    color: #4A79A9;
+    margin: 2px 5px 2px 0;
+}
+
 
 @media only screen and (max-width: 768px) {
 
@@ -149,9 +168,12 @@
     align-items: center;
   }
 
-  .m-proj-co {
-      width: 70%;
-  }
+.m-proj-co {
+    width: 70%;
+    flex: unset;
+    display: flex;
+    flex-wrap: wrap;
+}
 
   .m-proj-row {
       flex-wrap: wrap;
