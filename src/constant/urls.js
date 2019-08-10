@@ -19,6 +19,4 @@ export const API_PROJ_ADD    = API_SERVER + '/proj/add'
 
 
 
-
-
 export const HOST_IMG = API_SERVER + '/'

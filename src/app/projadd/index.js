@@ -256,6 +256,8 @@ class Projadd extends React.Component {
                           initialValue: "XXXXXXXXを行なっている企業にて、XXXX案件に携わっていただきます。\n具体的な業務としてXXXXXXXXXXXXXXXXXXXです。\n＜作業工程＞\nXXXX〜XXXXXまで\n＜開発環境＞\nXXXXXXXXXXXXXXX\nご興味を持って頂いた方はぜひ一度お話しましょう！\n「応募する」を押して頂くと、ダイレクトメッセージができますので、\nお待ちしております！"
                         })(<TextArea rows={4} onChange={this.saveVal.bind(this, index, 'work_cont')} />)}
                       </Form.Item>
+                      
+
                       <h1>求める経験</h1>
 
                       <Form.Item label="必須">
