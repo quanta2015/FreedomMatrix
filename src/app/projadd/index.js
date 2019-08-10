@@ -118,8 +118,7 @@ class Projadd extends React.Component {
     let r = await this.actions.addProj(params)
     if (r && r.code === 200) {
       Modal.success({
-        title: '登録成功！',
-        content: 'クリックして企業ページにジャンプします。',
+        title: '添加工程成功！',
         okText: "確認",
         onOk() {
           window.location.assign(`${window.location.origin}${window.location.pathname}#/homecomp`)
@@ -222,7 +221,7 @@ class Projadd extends React.Component {
                     <TabPane key={item.key} tab={`案件 ${index + 1}`}
                     >
                       <Form.Item label="単価（万円）">
-                        {getFieldDecorator('proj_mony', {
+                        {getFieldDecorator(`input-number-proj_mony_${index + 1}`, {
                           rules: [{ type: 'integer', required: true, min: 1, max: 200, message: '単価を入力してください（最大200万円）' }],
                           initialValue: 10
                         })(<InputNumber placeholder="数字（単位：万円）" />)}
@@ -238,6 +237,12 @@ class Projadd extends React.Component {
                           rules: [{ required: true, type: 'array', message: '担当工程を選択してください' }],
                           initialValue: ["0"]
                         })(<MSelect className="m-form-text" data={cd.projrespList} />)}
+                      </Form.Item>
+                      <Form.Item label="言語スキル">
+                        {getFieldDecorator(`select-multiple-proj_lang_${index + 1}`, {
+                          rules: [{ required: true, type: 'array', message: '言語スキルを選択してください' }],
+                          initialValue: ["0"]
+                        })(<MSelect className="m-form-text" data={cd.worklangList} />)}
                       </Form.Item>
                       <Form.Item label="作業内容">
                         {getFieldDecorator(`proj_cont_${index + 1}`, {
