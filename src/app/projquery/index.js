@@ -18,11 +18,8 @@ class Projquery extends React.Component {
 
   constructor(props) {
     super(props)
-
-
     this.action = props.projectActions
     this.store = props.projectStore
-
 
     this.state = {
       showAdv: false,
@@ -104,25 +101,24 @@ class Projquery extends React.Component {
  
 
           {showAdv && 
-
-          <div className="m-row m-row-adv">
-            <div className="m-col">
-              <span>職種</span>
-              <MSelect className="m-form-text" placeholder="職種" data={CD.workroleList}/>
+            <div className="m-row m-row-adv">
+              <div className="m-col">
+                <span>職種</span>
+                <MSelect className="m-form-text" placeholder="職種" data={CD.workroleList}/>
+              </div>
+              <div className="m-col">
+                <span>担当工程</span>
+                <MSelect className="m-form-text" placeholder="担当工程" data={CD.workprojList}/>
+              </div>
+              <div className="m-col">
+                <span>言語スキル</span>
+                <MSelect className="m-form-text" placeholder="言語スキル" data={CD.worklangList}/>
+              </div>
+              <div className="m-col">
+                <span>作業内容</span>
+                <MSelect className="m-form-text" placeholder="作業内容" data={CD.projrespList}/>
+              </div>
             </div>
-            <div className="m-col">
-              <span>担当工程</span>
-              <MSelect className="m-form-text" placeholder="担当工程" data={CD.workprojList}/>
-            </div>
-            <div className="m-col">
-              <span>言語スキル</span>
-              <MSelect className="m-form-text" placeholder="言語スキル" data={CD.worklangList}/>
-            </div>
-            <div className="m-col">
-              <span>作業内容</span>
-              <MSelect className="m-form-text" placeholder="作業内容" data={CD.projrespList}/>
-            </div>
-          </div>
           }
 
           <div className="m-row m-row-mobile"> 

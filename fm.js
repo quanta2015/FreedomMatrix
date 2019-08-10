@@ -292,28 +292,20 @@ app.post('/proj/add', function(req, res, next) {
 
   project['pos'] = posList
   db.procedureSQL(sql,JSON.stringify(project),(err,ret)=>{
-      if (err) {
-        res.status(500).json({ code: -1, msg: 'reg failed', data: null})
-      }else{
-        if (ret[0].err_code===0) {
-          delete project.pos
-          project.id = ret[0].id
-          let data = {
-            project:project, 
-            pos: posList
-          }
-          res.status(200).json({ code: 200, msg: 'reg successful', data: data  })
-        }else{
-          res.status(200).json({ code: 201, msg: 'user exist', data: null })
+    if (err) {
+      res.status(500).json({ code: -1, msg: 'reg failed', data: null})
+    }else{
+      if (ret[0].err_code===0) {
+        delete project.pos
+        project.id = ret[0].id
+        let data = {
+          project:project, 
+          pos: posList
         }
-        
+        res.status(200).json({ code: 200, msg: 'add project succ' })
       }
+    }
   })
-
-
-
-
-
 
 });
 
