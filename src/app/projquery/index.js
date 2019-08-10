@@ -125,7 +125,12 @@ class Projquery extends React.Component {
           </div>
           }
 
+          <div className="m-row m-row-mobile"> 
+              <Button type="primary" className="m-btn-search-m"> 案件を探す</Button>
+          </div>
+
         </div>
+          <Pagination defaultCurrent={1} total={projList.length} onChange={this.showPageData} />
 
           {pageList.map((item,index)=>{
             return (

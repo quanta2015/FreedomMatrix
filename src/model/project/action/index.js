@@ -22,6 +22,23 @@ class ProjectActions extends BaseActions {
     return r
   }
 
+  @action
+  async projAdd(params) {
+    let r = await this.post(urls.API_PROJ_ADD, params, true)
+
+    runInAction(() => {
+      this.store.project = r.data
+    })
+    return r
+  }
+
+
+
+
+
+
+  
+
 }
 
 export default new ProjectActions(store)

@@ -54,143 +54,170 @@
     color: #fff;
   }
 
+  .m-row-mobile {
+      display: none;
+  }
 
-}
 
-
-
-.m-proj-item {
+  .m-proj-item {
     margin: 10px 0;
     border-radius: 3px;
     box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.05);
     background: #fff;
-}
+  }
 
 
-.m-proj-row:first-child {
-    background: #eee;
-    border-radius: 5px 5px 0 0;
-    font-size: 16px;
-    margin: 0;
-    padding: 10px 20px;
-    border-bottom: none;
-    display: flex;
-    align-items: center;
-}
+  .m-proj-row:first-child {
+      background: #eee;
+      border-radius: 5px 5px 0 0;
+      font-size: 16px;
+      margin: 0;
+      padding: 10px 20px;
+      border-bottom: none;
+      display: flex;
+      align-items: center;
+  }
 
-.m-proj-id {
-    padding: 2px 10px;
-    margin-right: 10px;
-    color: #333;
-    width: 60px;
-    display: inline-block;
-    text-align: center;
-}
-
-
-.m-proj-row {
-    display: flex;
-}
-
-.m-proj-tl {
-    display: flex;
-    padding: 10px;
-    width: 150px;
-    color: #666;
-    justify-content: flex-end;
-}
-
-.m-proj-co {
-    flex: 1;
-    padding: 10px;
-}
+  .m-proj-id {
+      padding: 2px 10px;
+      margin-right: 10px;
+      color: #333;
+      width: 60px;
+      display: inline-block;
+      text-align: center;
+  }
 
 
-.m-date {
-  color: #EA6464;
+  .m-proj-row {
+      display: flex;
+      min-height: 40px;
+  }
+
+  .m-proj-tl {
+      display: flex;
+      padding: 0 10px;
+      width: 150px;
+      color: #666;
+      align-items: center;
+      justify-content: flex-end;
+  }
+
+  .m-proj-co {
+      flex: 1;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+  }
+
+
+  .m-date {
+    color: #EA6464;
     font-family: 'Rajdhani', sans-serif;
+    font-size: 20px;
+  }
+
+
+  .m-row:last-child {
+      margin: 0;
+  }
+
+
+  .m-proj-row-f {
+      padding: 10px;
+      justify-content: center;
+      border-top: 1px dashed #eee;
+  }
+
+  .m-proj-row-f>button {
+      margin: 0 5px;
+  }
+
+  .m-proj-item-d {
+      border-radius: 36px;
+      border: 1px solid #4A79A9;
+      padding: 2px 10px;
+      font-size: 10px;
+      color: #4A79A9;
+      margin: 2px 5px 2px 0;
+  }
+
+
 }
 
 
-.m-row:last-child {
-    margin: 0;
-}
 
 
-.m-proj-row-f {
-    padding: 10px;
-    justify-content: center;
-    border-top: 1px dashed #eee;
-}
 
-.m-proj-row-f>button {
-    margin: 0 5px;
-}
 
-.m-proj-item-d {
-    border-radius: 36px;
-    border: 1px solid #4A79A9;
-    padding: 2px 10px;
-    font-size: 10px;
-    color: #4A79A9;
-    margin: 2px 5px 2px 0;
-}
 
 
 @media only screen and (max-width: 768px) {
 
   .g-projquery {
       width: 100%;
-  }
+  
 
-  .g-projquery .m-query-form {
+    .m-query-form {
       border: none;
       border-radius: 0;
-  }
+    }
 
-  .m-btn-search {
+    .m-btn-search {
       display: none;
-  }
+    }
 
-  .m-col {
-      width: 50%;
-      flex: unset!important;
-  }
+    .m-col {
+        width: 50%;
+        flex: unset!important;
+    }
 
-  .m-row {
+    .m-row {
+        flex-wrap: wrap;
+    }
+
+    .m-proj-tl {
+      width: 30%;
+      justify-content: flex-start;
+      padding: 0 0 0 20px;
+      align-items: center;
+    }
+
+    .m-proj-co {
+      width: 70%;
+      flex: unset;
+      display: flex;
       flex-wrap: wrap;
-  }
+    }
 
-  .m-proj-tl {
-    width: 30%;
-    justify-content: flex-start;
-    padding: 0 0 0 20px;
-    align-items: center;
-  }
+    .m-proj-row {
+        flex-wrap: wrap;
 
-.m-proj-co {
-    width: 70%;
-    flex: unset;
-    display: flex;
-    flex-wrap: wrap;
-}
+    }
 
-  .m-proj-row {
-      flex-wrap: wrap;
-  }
+    .m-proj-item {
+        margin: 8px;
+        border-radius: 0;
+    }
 
-  .m-proj-item {
-      margin: 8px;
-      border-radius: 0;
-  }
+    .m-proj-row:first-child {
+        font-size: 14px;
+    }
 
-  .m-proj-row:first-child {
-      font-size: 14px;
-  }
+    .m-proj-id {
+        padding: 2px 0;
+        width: 40px;
+    }
 
-  .m-proj-id {
-      padding: 2px 0;
-      width: 40px;
+
+    .m-row-mobile {
+      display: block;
+    }
+
+    .m-btn-search-m {
+      width: 100%;
+      height: 40px;
+    }
+
   }
 
 }

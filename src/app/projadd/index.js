@@ -16,13 +16,13 @@ const { TextArea } = Input;
 
 
 
-@inject('userActions', 'userStore')
+@inject('projectActions', 'projectStore', 'userStore')
 @observer
 class Projadd extends React.Component {
   constructor(props) {
     super(props)
-    this.actions = props.userActions
-    this.store = props.userStore
+    this.actions = props.projectActions
+    this.store = props.projectStore
 
     this.newTabIndex = 0;
     const panes = [{
@@ -108,21 +108,23 @@ class Projadd extends React.Component {
         Modal.confirm({
           title: 'データを確認してください',
           onOk: () => {
-            this.regUser(params)
+            this.addProj(params)
           }
         });
       }
     })
   }
 
-  regUser = async (params) => {
+  addProj = async (params) => {
     params.count = this.state.panes.length
+    params.pid = this.props.userStore.user.user.id
+    params[`date_from,date_to`][0] = DT.convertD2I(params[`date_from,date_to`][0])
+    params[`date_from,date_to`][1] = DT.convertD2I(params[`date_from,date_to`][1])
 
-    let r = await this.actions.addProj(params)
+    let r = await this.actions.projAdd(params)
     if (r && r.code === 200) {
       Modal.success({
-        title: '登録成功！',
-        content: 'クリックして企業ページにジャンプします。',
+        title: '添加工程成功！',
         okText: "確認",
         onOk() {
           window.location.assign(`${window.location.origin}${window.location.pathname}#/homecomp`)
@@ -169,7 +171,7 @@ class Projadd extends React.Component {
               })(<TextArea rows={4} />)}
             </Form.Item>
             <Form.Item label="業界">
-              {getFieldDecorator(`proj_domn`, {
+              {getFieldDecorator(`select-multiple-proj_domn`, {
                 rules: [{ required: true, type: 'array', message: '業界を選択してください' }],
                 initialValue: ["0"]
               })(<MSelect className="m-form-text" data={cd.projdomnList} />)}
@@ -181,19 +183,19 @@ class Projadd extends React.Component {
               />)}
             </Form.Item>
             <Form.Item label="勤務エリア">
-              {getFieldDecorator('proj_area', {
+              {getFieldDecorator('select-multiple-proj_area', {
                 rules: [{ required: true, type: 'array', message: '勤務エリアを選択してください' }],
                 initialValue: ["0"]
               })(<MSelect className="m-form-text" data={cd.workareaList} />)}
             </Form.Item>
             <Form.Item label="こだわり">
-              {getFieldDecorator('proj_pref', {
+              {getFieldDecorator('select-multiple-proj_pref', {
                 rules: [{ required: true, type: 'array', message: 'こだわりを選択してください' }],
                 initialValue: ["0"]
               })(<MSelect className="m-form-text" data={cd.projprefList} />)}
             </Form.Item>
             <Form.Item label="応募対象">
-              {getFieldDecorator('proj-targ', {
+              {getFieldDecorator('proj_targ', {
                 initialValue: "0",
                 rules: [{ required: true, type: 'string', message: 'カテゴリーを選択してください' }]
               })(<Select className="m-form-text">
@@ -203,7 +205,7 @@ class Projadd extends React.Component {
               </Select>)}
             </Form.Item>
             <Form.Item label="働き方">
-              {getFieldDecorator('proj_styl', {
+              {getFieldDecorator('select-multiple-proj_styl', {
                 rules: [{ required: true, type: 'array', message: '働き方を選択してください' }],
                 initialValue: ["0"]
               })(<MSelect className="m-form-text" data={cd.worktypeList} />)}
@@ -225,22 +227,28 @@ class Projadd extends React.Component {
                     <TabPane key={item.key} tab={`案件 ${index + 1}`}
                     >
                       <Form.Item label="単価（万円）">
-                        {getFieldDecorator('proj_mony', {
+                        {getFieldDecorator(`input-number-proj_mony_${index + 1}`, {
                           rules: [{ type: 'integer', required: true, min: 1, max: 200, message: '単価を入力してください（最大200万円）' }],
                           initialValue: 10
                         })(<InputNumber placeholder="数字（単位：万円）" />)}
                       </Form.Item>
                       <Form.Item label="職種">
-                        {getFieldDecorator(`proj_role_${index + 1}`, {
+                        {getFieldDecorator(`select-multiple-proj_role_${index + 1}`, {
                           rules: [{ required: true, type: 'array', message: '職種を選択してください' }],
                           initialValue: ["0"]
                         })(<MSelect className="m-form-text" data={cd.workroleList} />)}
                       </Form.Item>
                       <Form.Item label="担当工程">
-                        {getFieldDecorator(`proj_resp_${index + 1}`, {
+                        {getFieldDecorator(`select-multiple-proj_resp_${index + 1}`, {
                           rules: [{ required: true, type: 'array', message: '担当工程を選択してください' }],
                           initialValue: ["0"]
                         })(<MSelect className="m-form-text" data={cd.projrespList} />)}
+                      </Form.Item>
+                      <Form.Item label="言語スキル">
+                        {getFieldDecorator(`select-multiple-proj_lang_${index + 1}`, {
+                          rules: [{ required: true, type: 'array', message: '言語スキルを選択してください' }],
+                          initialValue: ["0"]
+                        })(<MSelect className="m-form-text" data={cd.worklangList} />)}
                       </Form.Item>
                       <Form.Item label="作業内容">
                         {getFieldDecorator(`proj_cont_${index + 1}`, {
@@ -248,12 +256,7 @@ class Projadd extends React.Component {
                           initialValue: "XXXXXXXXを行なっている企業にて、XXXX案件に携わっていただきます。\n具体的な業務としてXXXXXXXXXXXXXXXXXXXです。\n＜作業工程＞\nXXXX〜XXXXXまで\n＜開発環境＞\nXXXXXXXXXXXXXXX\nご興味を持って頂いた方はぜひ一度お話しましょう！\n「応募する」を押して頂くと、ダイレクトメッセージができますので、\nお待ちしております！"
                         })(<TextArea rows={4} onChange={this.saveVal.bind(this, index, 'work_cont')} />)}
                       </Form.Item>
-                      <Form.Item label="言語スキル">
-                        {getFieldDecorator(`proj_lang_${index + 1}`, {
-                          rules: [{ required: true, type: 'array', message: '言語スキルを選択してください' }],
-                          initialValue: ["0"]
-                        })(<MSelect className="m-form-text" data={cd.worklangList} />)}
-                      </Form.Item>
+                      
 
                       <h1>求める経験</h1>
 
