@@ -14,14 +14,12 @@ const { TabPane } = Tabs;
 const { MonthPicker, RangePicker } = DatePicker;
 const { TextArea } = Input;
 
-
-
-@inject('userActions', 'userStore')
+@inject('userActions', 'userStore', 'projectActions')
 @observer
 class Projadd extends React.Component {
   constructor(props) {
     super(props)
-    this.actions = props.userActions
+    this.actions = props.projectActions
     this.store = props.userStore
 
     this.newTabIndex = 0;
@@ -116,7 +114,7 @@ class Projadd extends React.Component {
   }
     addProj = async (params) => {
     params.count = this.state.panes.length
-    params.email = this.store.user.email
+    params.email = this.store.user.user.email
     let r = await this.actions.addProj(params)
     if (r && r.code === 200) {
       Modal.success({
@@ -273,7 +271,6 @@ class Projadd extends React.Component {
                 })}
               </Tabs>
             }
-
             <div className="m-row fn-frc">
               <Button type="primary" htmlType="submit" onClick={this.doAdd}>登録</Button>
             </div>

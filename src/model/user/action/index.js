@@ -32,39 +32,12 @@ class UserActions extends BaseActions {
     }
   }
 
-  saveProj(ret, st) {
-    let { token, user, pos} = ret.data
-    if (ret && ret.code === 200) {
-      jwt.saveToken(token)
-      jwt.saveUser(user)
-      jwt.saveExp(exp)
-      runInAction(() => {
-        st.isLogin = user.usertype == 0?1:2
-        st.user = {
-          token: token,
-          user: user,
-          exp: exp 
-        }
-      }) 
-    }
-  }
-
   @action
   async regUser(params) {
     let r = await this.post(urls.API_USER_REG, params, true)
 
     if (r.code === 200) {
       this.saveData(r, this.store)
-    }
-    return r
-  }
-
-  @action
-  async addProj(params) {
-    let r = await this.post(urls.API_PROJ_ADD, params, true)
-
-    if (r.code === 200) {
-      this.saveProj(r, this.store)
     }
     return r
   }
@@ -99,7 +72,9 @@ class UserActions extends BaseActions {
   @action
   async login(params) {
     let r = await this.post(urls.API_USER_LOGIN, params, true)
-    this.saveData(r, this.store)
+    if (r && r.code === 200) {
+      this.saveData(r, this.store)
+    }
     return r
   }
 
@@ -126,6 +101,7 @@ class UserActions extends BaseActions {
       //   window.location.assign(`${window.location.origin}${window.location.pathname}#/homecomp`)
       // }else{
       //   window.location.assign(`${window.location.origin}${window.location.pathname}#/homeuser`)
+      //   window.location.assign(`${window.location.origin}${window.location.pathname}#/projquery`)
       // }
     }else{
       message.success('获取自动登录数据失败！')

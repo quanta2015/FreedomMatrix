@@ -249,59 +249,54 @@ app.post('/user/projadd', function(req, res, next) {
 
   let project = {
     proj_name:data.proj_name,
-    proj_domn:data.proj_domn,
-    date_from:data.date_from,
-    date_to:data.date_to,
+    proj_detl:data.proj_detl,
+    proj_domn:data['select-multiple-proj_domn'].join('|'),
+    date_from:data[`date_from,date_to`][0],
+    date_to:data[`date_from,date_to`][1],
     proj_area:data['select-multiple-proj_area'].join('|'),
-
-
-
-
-
-
-    
-    proj_pref:data.proj_pref,
-    pers_type:data.pers_type,
-    work_area:data['select-multiple-work_area'].join('|'),
-    work_time:data['select-multiple-work_time'].join('|'),
-    work_mony:data.work_mony,
-    work_type:data['select-multiple-work_type'].join('|'),
-    usertype: 0
+    proj_pref:data['select-multiple-proj_pref'].join('|'),
+    proj_targ:data.proj_targ,
+    proj_styl:data['select-multiple-proj_styl'].join('|'),
   }
 
-  if (data.count>0) {
-    for(let i=1;i<data.count+1;i++) {
-      let item = {}
-      item[`proj_name`] = data[`proj_name_${i}`]
-      item[`date_from`] = data[`date_from_${i},date_to_${i}`][0]
-      item[  `date_to`] = data[`date_from_${i},date_to_${i}`][1]
-      item[`work_lang`] = data[`select-multiple-work_lang_${i}`].join('|')
-      item[`work_role`] = data[`select-multiple-work_role_${i}`].join('|')
-      item[`work_proj`] = data[`select-multiple-work_proj_${i}`].join('|')
-      item[`work_detl`] = data[`work_detl_${i}`]
-      expList.push(item)
-    }
+  for(let i=1;i<data.count+1;i++) {
+    let item = {}
+    item[`proj_mony`] = data[`proj_mony_${i}`]
+    item[`proj_role`] = data[`select-multiple-proj_role_${i}`].join('|')
+    item[`proj_resp`] = data[`select-multiple-proj_resp_${i}`].join('|')
+    item[`proj_cont`] = data[`select-multiple-proj_cont_${i}`].join('|')
+    item[`proj_lang`] = data[`select-multiple-proj_lang_${i}`].join('|')
+    item[`reqr_exp`] = data[`reqr_exp_${i}`]
+    item[`pref_exp`] = data[`pref_exp_${i}`]
+    posList.push(item)
   }
 
-  project['pos'] = expList
-  db.procedureSQL(sql,JSON.stringify(account),(err,ret)=>{
+  project['pos'] = posList
+  db.procedureSQL(sql,JSON.stringify(project),(err,ret)=>{
       if (err) {
-        res.status(500).json({ code: -1, msg: 'reg failed', data: null})
+        res.status(500).json({ code: -1, msg: 'add failed', data: null})
       }else{
         if (ret[0].err_code===0) {
-          delete account.exp
-          account.id = ret[0].id
+          delete account.pos
+          project.id = ret[0].id
           let data = {
-            token: jwt.sign({ email: account.email, pwd: account.pwd }, secret),
-            user:account, 
-            exp: expList
+            proj: project,
+            pos: posList
           }
-          res.status(200).json({ code: 200, msg: 'reg successful', data: data  })
-        }else{
-          res.status(200).json({ code: 201, msg: 'user exist', data: null })
+          res.status(200).json({ code: 200, msg: 'add successful', data: data })
         }
-        
       }
+    })
+});
+
+app.post('/proj/query', function(req, res, next) {
+  // let data = req.body
+  db.select('project','','','', (err,ret)=>{
+    res.status(200).json({
+      code: 200,
+      msg: '取案例数据成功',
+      data: ret
+    })
   })
 });
 

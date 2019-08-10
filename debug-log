@@ -1,5 +1,23 @@
-'{"email":"liyangtom@163.com","pwd":"aaa","name_kj":"liyangtom","name_kn":"tom","birth":20190808,"phone":12345678901,"pers_type":"0","work_area":"0","work_time":"0","work_mony":10,"work_type":"0","exp":[{"proj_name":"aaaaaaaaa","date_from":20190804,"date_to":20190804,"work_lang":"0|4|2","work_role":"0|2|4","work_proj":"0|3|5","work_detl":"rtrt"},{"proj_name":"wewewe","date_from":20190903,"date_to":20190918,"work_lang":"0","work_role":"0|1|5","work_proj":"0|1|3","work_detl":"wttttt"}]}'
+{"id":67,"email":"liy@163.com","pwd":"aaa","name_kj":"green","name_kn":"tom","birth":20190704,"phone":"012990121","pers_type":0,"work_area":"0|2|3|4","work_mony":45,"work_time":"0|2|3|4","work_type":"0|2|3|4","name_comp":null,"name_dept":null,"usertype":null,"exp":[{"id":122,"pid":67,"proj_name":"东都建筑网站","date_from":20180801,"date_to":20180901,"work_role":"2|3","work_lang":"5|6|11","work_proj":"6|4|10","work_detl":"aaaaa不不"},{"id":123,"pid":67,"proj_name":"Bizplus网站建设","date_from":20190701,"date_to":20190910,"work_role":"6|7|8|9","work_lang":"1|2|3|7","work_proj":"2|3|9|10|11","work_detl":"kkknn"}]}
 
+
+
+
+
+
+
+
+
+{"id":67,"email":"liy@163.com","pwd":"aaa","name_kj":"green","name_kn":"tom","birth":20190704,"phone":"012990121","pers_type":0,"work_area":"0|2|3|4","work_mony":45,"work_time":"0|2|3|4","work_type":"0|2|3|4","name_comp":null,"name_dept":null,"usertype":null,"exp":[{"id":122,"pid":67,"proj_name":"东都建筑网站","date_from":20180801,"date_to":20180901,"work_role":"2|3","work_lang":"5|6|11","work_proj":"6|4|10","work_detl":"aaaaa不不"},{"id":123,"pid":67,"proj_name":"Bizplus网站建设","date_from":20190701,"date_to":20190910,"work_role":"6|7|8|9","work_lang":"1|2|3|7","work_proj":"2|3|9|10|11","work_detl":"kkknn"}]}
+
+
+
+
+
+	
+	
+	
+	select e.err_code,e.err_name from error e where e.err_code =0; 
 
 
 

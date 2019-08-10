@@ -105,7 +105,7 @@ class Homeuser extends React.Component {
 
     return (
       <div className='g-homeuser'>
-          <Tabs className="m-home-menu" type="card" onChange={this.doChangeMenu}>
+          <Tabs className="m-home-menu" type="card" size="small" onChange={this.doChangeMenu}>
             <TabPane tab={MSG.TAB_HOME_USR_IF} key="1" className="m-tab-userinfo">
               <Form className="m-reg-form" onSubmit={this.handleSubmit} >
                 <div className="m-row">
