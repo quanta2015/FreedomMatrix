@@ -34,6 +34,7 @@ export const MSG_FORM_PD_NAME_COMP = '自由陣株式会社'
 /*----  form message define  ----*/
 export const MSG_FORM_BASIC     = '基本情報'
 export const MSG_FORM_HOPE      = '稼働希望'
+export const MSG_FORM_PROJ      = '案件一覧'
 export const MSG_FORM_EXP       = '経験・スキル登録'
 
 export const TAB_HOME_USR_IF    = '用户信息'
@@ -50,3 +51,4 @@ export const TYPE_PHONE           = 1
 export const TYPE_EMAIL           = 2
 export const TYPE_NULL            = 3
 export const TYPE_DATE            = 4
+

@@ -42,7 +42,6 @@ class Homecomp extends React.Component {
     })
   }
 
-
   handleSubmit = async (e) =>{
     e.preventDefault();
     if (regex.va_check()) {
@@ -58,7 +57,7 @@ class Homecomp extends React.Component {
         })
       }
     }else{
-      message.success('表单数据错误！')
+      message.error('表单数据错误！')
     }
   }
 
@@ -72,9 +71,7 @@ class Homecomp extends React.Component {
   render() {
     const { editable } = this.state
     const { user } = this.props.userStore
-    const ptList = cd.personType
     const name_comp        = getValue(user, 'user.name_comp', '')
-    const name_dept        = getValue(user, 'user.name_dept', '')
     const email        = getValue(user, 'user.email', '')
     const phone        = getValue(user, 'user.phone', '')
     const name_kj      = getValue(user, 'user.name_kj', '')
@@ -158,9 +155,31 @@ class Homecomp extends React.Component {
                   </div>
                 </div>
 
+
+                <div className="m-row">
+                  <div className="m-col-tl">{MSG.MSG_FORM_NAME_KJ}</div>
+                  <div className="m-col-co">
+                    {(user !== null) && <Input placeholder={MSG.MSG_FORM_PD_NAKJ} 
+                                                id='name_kj' 
+                                                defaultValue={name_kj} 
+                                                disabled={!editable}
+                                                onChange={ regex.va_field.bind(this,MSG.TYPE_NULL,act, 0, null) } />}
+                    <div className="ant-form-explain">请输入名字</div>
+                  </div>
+                  <div className="m-col-tl">{MSG.MSG_FORM_NAME_KN}</div>
+                  <div className="m-col-co">
+                    {(user !== null) && <Input placeholder={MSG.MSG_FORM_PD_NAKN} 
+                                                id='name_kn' 
+                                                defaultValue={name_kn}  
+                                                disabled={!editable}
+                                                onChange={ regex.va_field.bind(this,MSG.TYPE_NULL,act, 0, null) } />}
+                    <div className="ant-form-explain">请输入名字</div>
+                  </div>
+                </div>
+
                 <div className="m-row">
                   <div className="m-tl">
-                    <span>{MSG.MSG_FORM_HOPE}</span>
+                    <span>{MSG.MSG_FORM_PROJ}</span>
                   </div>
                 </div>
          
