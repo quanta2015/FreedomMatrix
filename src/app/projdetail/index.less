@@ -1,0 +1,183 @@
+.g-projdetail {
+
+
+  .m-proj-detail {
+    position: fixed;
+    background: rgba(0,0,0,.6);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99999;
+  }
+
+  .m-proj-detail-wrap {
+    width: 1000px;
+    height: calc( 100vh - 40px );
+    background: #fff;
+    margin: 20px auto;
+    position: relative;
+  }
+
+  .m-close {
+    position: absolute;
+    height: 26px;
+    width: 26px;
+    border-radius: 15px;
+    background: #222;
+    right: -13px;
+    top: -13px;
+    cursor: pointer;
+    transition: .5s;
+  }
+
+  .m-close:hover {
+    background: #333;
+  }
+
+  .m-close:before,.m-close:after {
+    content: ' ';
+    position: absolute;
+    right: 12px;
+    top: 5px;
+    border-left: 2px solid #eee;
+    height: 15px;
+    width: 0;
+  }
+
+  .m-close:before {
+    transform: rotate(45deg);
+  }
+
+  .m-close:after {
+    transform: rotate(-45deg);
+  }
+
+
+  .m-detail {
+    margin: 0 0 20px;
+
+
+    .md-row {
+      display: flex;
+      margin: 0 20px;
+      border-right: 1px solid #ccc;
+      border-top: 1px solid #ccc;
+    }
+
+    .md-row:last-child {
+      border-bottom: 1px solid #ccc;
+    }
+
+    .m-proj-title {
+        font-size: 20px;
+        flex: 1;
+    }
+
+    .m-proj-pd {
+        padding: 0 20px;
+    }
+
+    .md-row-tl {
+      background: #eee;
+      padding: 10px 20px;
+      margin: 0 0 10px 0;
+    }
+
+    .md-proj-tl {
+      padding: 10px 20px;
+      width: 150px;
+      background: #ddd;
+      text-align: center;
+    }
+
+    .md-proj-co {
+      padding: 10px 20px;
+      color: #3d74aa;
+      text-align: center;
+      flex: 1;
+    }
+  }
+
+
+  .m-pos {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 20px;
+    font-size: 12px;
+
+
+
+    .m-pos-item + .m-pos-item {
+      margin-left: 10px;
+    }
+
+    .m-pos-item {
+      display: flex;
+      flex-direction: column;
+      width: calc( ( 100% - 10px )/2 );
+      box-shadow: 2px 2px 2px rgba(0,0,0,.1), -2px 2px 2px rgba(0,0,0,.1);
+      margin: 0 0 10px 0;
+      padding-bottom: 40px;
+          position: relative;
+    }
+
+    .m-tl {
+        padding: 10px 15px;
+        flex:2;
+    }
+
+    .m-co {
+        padding: 10px 15px;
+        flex:3;
+    }
+
+    .m-row {
+        flex-wrap: wrap;
+        display: flex;
+        margin: 0;
+    }
+
+    .m-row:first-child {
+      background: #666;
+      color: #fff;
+    }
+
+    .m-money {
+        display: block;
+        background: #eee;
+        color: #EA6464;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100px;
+    }
+
+    .m-fun>button {
+        width: 120px;
+        margin: 10px;
+    }
+
+    .m-fun {
+        justify-content: center;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+            border-top: 1px dashed #ddd;
+    }
+
+
+
+  }
+
+
+
+  
+
+
+
+
+
+}

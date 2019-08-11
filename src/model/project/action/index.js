@@ -28,6 +28,14 @@ class ProjectActions extends BaseActions {
     return r
   }
 
+  @action
+  async projDetail(params) {
+    let r = await this.post(urls.API_PROJ_DETAIL, params, true)
+    return r
+  }
+
+
+
 
 
 

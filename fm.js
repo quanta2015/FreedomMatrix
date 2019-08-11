@@ -252,9 +252,19 @@ app.post('/proj/query', function(req, res, next) {
       data: ret
     })
   })
-});
+})
 
-
+app.post('/proj/detail', function(req, res, next) {
+  let { id } = req.body
+  let where = `where pid=${id}`
+  db.select('position',where,'','', (err,ret)=>{
+    res.status(200).json({
+      code: 200,
+      msg: '取案例数据成功',
+      data: ret
+    })
+  })
+})
 
 
 app.post('/proj/add', function(req, res, next) {
