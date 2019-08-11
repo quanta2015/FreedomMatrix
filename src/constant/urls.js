@@ -16,6 +16,7 @@ export const API_QUERY_APPLY  = API_SERVER + '/apply/query'
 
 export const API_PROJ_QUERY  = API_SERVER + '/proj/query'
 export const API_PROJ_ADD    = API_SERVER + '/proj/add'
+export const API_PROJ_DETAIL = API_SERVER + '/proj/detail'
 
 
 

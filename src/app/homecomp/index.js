@@ -185,6 +185,13 @@ class Homecomp extends React.Component {
          
               </Form>
             </TabPane>
+
+
+            <TabPane tab={MSG.TAB_HOME_PROJ} key="2" className="m-tab-userinfo">
+              
+            </TabPane>
+
+
           </Tabs>
       </div>
     )

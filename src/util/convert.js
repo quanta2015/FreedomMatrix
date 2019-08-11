@@ -1,5 +1,6 @@
 
 export let strToNameList = (data,list) => {
+
   let d = data.split('|')
   let ret  = []
 

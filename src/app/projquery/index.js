@@ -10,6 +10,7 @@ import * as CT from 'util/convert'
 import * as CD from 'constant/data'
 import { toJS } from 'mobx'
 
+import ProjDetail from 'app/projdetail'
 
 
 @inject('projectActions', 'projectStore', 'userStore')
@@ -23,7 +24,10 @@ class Projquery extends React.Component {
 
     this.state = {
       showAdv: false,
-      curPage: 1
+      curPage: 1,
+      showDetail: false,
+      detail: [],
+      curProj: {}
     }
 
   }
@@ -45,9 +49,28 @@ class Projquery extends React.Component {
     })
   }
 
+  showDetail = async (item)=>{
+    let r = await this.action.projDetail({id:item.pid})
+    if (r && r.code === 200) {
+      this.setState({
+        showDetail: true,
+        detail: r.data,
+        curProj: item,
+      })
+
+    }
+  }
+
+
+  closeDetail = (e) => {
+    this.setState({
+        showDetail: false,
+      })
+  }
+
   render() {
 
-    let { showAdv,curPage } = this.state
+    let { showAdv,curPage,curProj,showDetail,detail } = this.state
     let projList,projdomnList,pageList=[]
     let PAGESIZE = 10
 
@@ -64,6 +87,10 @@ class Projquery extends React.Component {
 
     return (
       <div className='g-projquery'>
+
+        {showDetail && <ProjDetail show={showDetail} project={curProj} detail={detail} close={this.closeDetail}/>}
+
+
         <div className="m-query-form">
           <div className="m-row m-row-t">
             <div className="m-tl">項目のキーワードを入力してください</div>
@@ -132,7 +159,7 @@ class Projquery extends React.Component {
             return (
                 <div className="m-proj-item" key={index}>
                   <div className="m-proj-row">
-                    <div className="m-proj-id">{item.pid}</div>
+                    <div className="m-proj-id">{(index+1) + (curPage-1)*PAGESIZE}.</div>
                     <div className="m-proj-name">{item.proj_name}</div>
                   </div>
                   <div className="m-proj-row">
@@ -181,8 +208,7 @@ class Projquery extends React.Component {
                   </div>
                   <div className="m-proj-row m-proj-row-f">
                     <Button type="default" htmlType="submit" onClick={this.doReg}>気になる</Button>
-                    <Button type="danger" htmlType="submit" onClick={this.doReg}>応募する</Button>
-                    <Button type="default" htmlType="submit" className="c-green" onClick={this.doReg}>詳細を見る</Button> 
+                    <Button type="default" htmlType="submit" className="c-green" onClick={this.showDetail.bind(this,item)}>詳細を見る</Button> 
                   </div>
                 </div>
               )
