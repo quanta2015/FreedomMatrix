@@ -118,7 +118,7 @@
       width: calc( ( 100% - 10px )/2 );
       box-shadow: 2px 2px 2px rgba(0,0,0,.1), -2px 2px 2px rgba(0,0,0,.1);
       margin: 0 0 10px 0;
-      padding-bottom: 40px;
+      padding-bottom: 60px;
           position: relative;
     }
 
@@ -157,6 +157,8 @@
     .m-fun>button {
         width: 120px;
         margin: 10px;
+        height: 40px;
+        border-radius: 5px;
     }
 
     .m-fun {
@@ -167,17 +169,98 @@
         text-align: center;
             border-top: 1px dashed #ddd;
     }
-
-
-
-  }
-
-
-
-  
-
-
-
+  }  
 
 
 }
+
+
+
+@media only screen and (max-width: 768px) {
+
+
+  .g-projdetail {
+
+    .m-proj-detail-wrap {
+      width: 100%;
+      height: 100vh;
+      margin: 0;
+      overflow: scroll;
+    }
+
+    .m-close {
+      display: none;
+    }
+
+    .m-detail {
+
+      .m-proj-pd {
+        padding: 0;
+      }
+
+      .md-row-tl {
+        margin: 0 0 10px 0!important;
+      }
+
+
+      .md-row {
+        flex-direction: column;
+        margin: 0 10px;
+        border: none!important;
+      }
+
+      .md-proj-tl,.md-proj-co {
+        padding: 5px 15px;
+        width: 100%;
+        text-align: left;
+      }
+    }
+
+
+    .m-pos {
+      flex-direction: column;
+      padding: 0 10px;
+
+      .m-pos-item {
+        width: 100%;
+      }
+
+      .m-row:first-child {
+        flex-direction: row!important;
+      }
+
+      .m-row:first-child .m-tl {
+        background: #666;
+        padding: 10px 15px!important;
+      }
+
+      .m-row {
+        flex-direction: column;
+      }
+
+
+
+      .m-tl {
+        background: #eee;
+        padding: 5px 15px!important;
+      }
+
+      .m-fun {
+        flex-direction: row!important;
+        border: none;
+      }
+
+      .m-pos-item + .m-pos-item {
+        margin-left: 0;
+      }
+    }
+
+
+
+
+  }  /*  end of g-projdetail */
+
+
+
+}  /*  end of media */
+

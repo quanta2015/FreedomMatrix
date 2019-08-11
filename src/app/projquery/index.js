@@ -208,7 +208,6 @@ class Projquery extends React.Component {
                   </div>
                   <div className="m-proj-row m-proj-row-f">
                     <Button type="default" htmlType="submit" onClick={this.doReg}>気になる</Button>
-                    <Button type="danger" htmlType="submit" onClick={this.doReg}>応募する</Button>
                     <Button type="default" htmlType="submit" className="c-green" onClick={this.showDetail.bind(this,item)}>詳細を見る</Button> 
                   </div>
                 </div>
