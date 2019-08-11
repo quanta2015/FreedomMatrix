@@ -100,7 +100,7 @@ class Projadd extends React.Component {
     this.setState({ panes, activeKey });
   };
 
-  doReg = (e) => {
+  doAdd = (e) => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
@@ -277,9 +277,8 @@ class Projadd extends React.Component {
                 })}
               </Tabs>
             }
-
             <div className="m-row fn-frc">
-              <Button type="primary" htmlType="submit" onClick={this.doReg}>登録</Button>
+              <Button type="primary" htmlType="submit" onClick={this.doAdd}>登録</Button>
             </div>
           </Form>
         </div>

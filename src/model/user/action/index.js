@@ -16,12 +16,11 @@ class UserActions extends BaseActions {
   }
 
   saveData(ret, st) {
-    let { token, user, exp } = ret.data
+    let { token, user, exp} = ret.data
     if (ret && ret.code === 200) {
       jwt.saveToken(token)
       jwt.saveUser(user)
       jwt.saveExp(exp)
-
       runInAction(() => {
         st.isLogin = user.usertype == 0?1:2
         st.user = {
@@ -29,11 +28,19 @@ class UserActions extends BaseActions {
           user: user,
           exp: exp 
         }
-      })
-      
+      }) 
     }
   }
 
+  @action
+  async regUser(params) {
+    let r = await this.post(urls.API_USER_REG, params, true)
+
+    if (r.code === 200) {
+      this.saveData(r, this.store)
+    }
+    return r
+  }
 
   @action
   async regUser(params) {

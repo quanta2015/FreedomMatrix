@@ -12,6 +12,23 @@ class ProjectActions extends BaseActions {
     this.store = store
   }
 
+  saveProj(ret, st) {
+    let { token, user, pos} = ret.data
+    if (ret && ret.code === 200) {
+      jwt.saveToken(token)
+      jwt.saveUser(user)
+      jwt.saveExp(exp)
+      runInAction(() => {
+        st.isLogin = user.usertype == 0?1:2
+        st.user = {
+          token: token,
+          user: user,
+          exp: exp 
+        }
+      }) 
+    }
+  }
+
   @action
   async projQuery(params) {
     let r = await this.post(urls.API_PROJ_QUERY, params, true)
