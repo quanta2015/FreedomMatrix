@@ -21,7 +21,9 @@ export const MSG_FORM_PR_ROLE   = '経験職種'
 export const MSG_FORM_PR_PROJ   = '経験工程'
 export const MSG_FORM_PR_DETL   = '详细内容'
 export const MSG_FORM_NAME_COMP = '会社名'
-
+export const MSG_FORM_NAME_DEPT = '部署'
+export const MSG_FORM_NAME_KJ_COMP = '担当者氏名（漢字）'
+export const MSG_FORM_NAME_KN_COMP = '担当者氏名（カナ）'
 /*----  placeholder message define  ----*/
 export const MSG_FORM_PD_EMAIL   = 'email@address.com'
 export const MSG_FORM_PD_MONEY   = '数字（単位：万円）'
