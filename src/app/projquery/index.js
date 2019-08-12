@@ -76,11 +76,11 @@ class Projquery extends React.Component {
     this.action.projQuery(query)
   }
 
-  setVal = (e) =>{
+  setVal = (id,e) =>{
+    let {query} = this.state
+    query[id] = e.currentTarget.value
     this.setState({
-      query: {
-        key: e.currentTarget.value
-      }
+      query: query
     })
   }
 
@@ -118,7 +118,7 @@ class Projquery extends React.Component {
           <div className="m-row m-row-t">
             <div className="m-tl">項目のキーワードを入力してください</div>
             <div className="m-co">
-              <Input placeholder="Basic usage" id="proj_key" onChange={this.setVal}/>
+              <Input placeholder="Basic usage" id="proj_key" onChange={this.setVal.bind(this,'proj_key')}/>
               <div className="m-adv">
                 <span className="m-tl" >高级检索 </span>
                 <Switch size="small" onChange={this.showAdv}/>
@@ -154,8 +154,8 @@ class Projquery extends React.Component {
                 <MSelect className="m-form-text" placeholder="職種" id="proj_role" data={CD.workroleList} onChange={this.setMVal.bind(this,'proj_role')}/>
               </div>
               <div className="m-col">
-                <span>proj_resp</span>
-                <MSelect className="m-form-text" placeholder="担当工程" id="proj_porj" data={CD.workprojList} onChange={this.setMVal.bind(this,'proj_porj')}/>
+                <span>担当工程</span>
+                <MSelect className="m-form-text" placeholder="担当工程" id="proj_resp" data={CD.workprojList} onChange={this.setMVal.bind(this,'proj_resp')}/>
               </div>
               <div className="m-col">
                 <span>言語スキル</span>
@@ -163,7 +163,7 @@ class Projquery extends React.Component {
               </div>
               <div className="m-col">
                 <span>作業内容</span>
-                <MSelect className="m-form-text" placeholder="作業内容"  id="proj_resp" data={CD.projrespList} onChange={this.setMVal.bind(this,'proj_resp')}/>
+                <Input placeholder="Basic usage" id="proj_cont" onChange={this.setVal.bind(this,'proj_cont')}/>
               </div>
             </div>
           }
