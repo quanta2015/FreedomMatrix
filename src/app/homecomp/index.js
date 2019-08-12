@@ -12,6 +12,7 @@ import * as date from 'util/date'
 import * as regex from 'util/regex'
 import moment from 'moment'
 import { toJS } from 'mobx'
+import ProjaddApp from 'app/projadd'
 
 const { TabPane } = Tabs;
 const { MonthPicker, RangePicker } = DatePicker;
@@ -64,7 +65,6 @@ class Homecomp extends React.Component {
   doChangeMenu = (e) => {
     let id = getValue(this.props.userStore.user, 'user.id', '')
     let params = { id: id }
-    this.props.favActions.queryFav(params)
     this.props.applyActions.queryApply(params)
   }
 
@@ -112,7 +112,7 @@ class Homecomp extends React.Component {
                     defaultValue={name_dept}
                     disabled={!editable}
                     onChange={regex.va_field.bind(this, MSG.TYPE_NULL, act, 0, null)} />}
-                  <div className="ant-form-explain">请输入正确的部门名</div>
+                  <div className="ant-form-explain">请输入正确的部门</div>
                 </div>
               </div>
 
@@ -165,7 +165,7 @@ class Homecomp extends React.Component {
                   <span>{MSG.MSG_FORM_PROJ}</span>
                 </div>
               </div>
-              <Tabs defaultActiveKey="0" id="tabExp">
+              {/* <Tabs defaultActiveKey="0" id="tabExp">
                 {posList.map((item, index) => {
                   return (
                     <TabPane tab={`案件 ${index + 1}`} key={index}>
@@ -234,13 +234,17 @@ class Homecomp extends React.Component {
                   )
                 })}
 
-              </Tabs>
+              </Tabs> */}
             </Form>
           </TabPane>
 
 
-          <TabPane tab={MSG.TAB_HOME_PROJ} key="2" className="m-tab-userinfo">
+          <TabPane tab={MSG.MSG_FORM_PROJ} key="2" className="m-tab-userinfo">
+                
+          </TabPane>
 
+          <TabPane tab={MSG.TAB_HOME_PROJ} key="3" className="m-tab-userinfo">
+            <ProjaddApp/>
           </TabPane>
 
 
