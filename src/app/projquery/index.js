@@ -223,7 +223,6 @@ class Projquery extends React.Component {
                         CT.strToNameList(item.proj_styl, CD.worktypeList).map((item_styl,j)=>
                           <span className="m-proj-item-d" key={j}>{item_styl}</span>
                         )}
-
                     </div>
                   </div>
                   <div className="m-proj-row m-proj-row-f">

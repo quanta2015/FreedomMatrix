@@ -203,6 +203,33 @@ app.post('/user/save', function(req, res, next) {
   })
 })
 
+app.post('/user/savecomp', function(req, res, next) {
+  
+  let sql = `CALL PROC_SAVE_COMP(?)`;
+
+
+  let account = clone(req.body.user)
+  let expList = clone(req.body.exp)
+  account.exp = expList
+
+  db.procedureSQL(sql,JSON.stringify(account),(err,ret)=>{
+    if (err) {
+      res.status(500).json({ code: -1, msg: 'reg failed', data: null})
+    }else{
+      if (ret[0].err_code===0) {
+        // delete account.exp
+        let data = {
+          token: jwt.sign({ email: account.email, pwd: account.pwd }, secret),
+          user:account, 
+          exp: expList
+        }
+        res.status(200).json({ code: 200, msg: 'reg successful', data: data  })
+      }else{
+        res.status(200).json({ code: 201, msg: 'user exist', data: null })
+      }
+    }
+  })
+})
 
 app.post('/user/regcomp', function(req, res, next) {
   let data = req.body

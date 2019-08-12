@@ -43,7 +43,7 @@ export const TAB_HOME_USR_IF    = '用户信息'
 export const TAB_HOME_APP_PR    = '応募案件'
 export const TAB_HOME_FAV_PR    = '気になる案件'
 export const TAB_HOME_MSG       = 'メッセージ'
-export const TAB_HOME_PROJ      = '登録案件'
+export const TAB_HOME_PROJ      = '案件登録'
 
 
 /*----  button message define  ----*/
