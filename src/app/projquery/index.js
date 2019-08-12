@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react'
 import { Input } from 'antd';
 import getNode from 'util/getNode'
 import './index.less'
-import { message,Button,Select,Switch,Pagination } from 'antd'
+import { message,Button,Select,Switch,Pagination,Skeleton } from 'antd'
 import MSelect from 'util/MSelect'
 import * as DATE from 'util/date'
 import * as CT from 'util/convert'
@@ -23,6 +23,7 @@ class Projquery extends React.Component {
     this.store = props.projectStore
 
     this.state = {
+      loading: false,
       showAdv: false,
       curPage: 1,
       showDetail: false,
@@ -52,12 +53,14 @@ class Projquery extends React.Component {
   }
 
   showDetail = async (item)=>{
+    this.setState({ loading: true });
     let r = await this.action.projDetail({id:item.pid})
     if (r && r.code === 200) {
       this.setState({
         showDetail: true,
         detail: r.data,
         curProj: item,
+        loading: false,
       })
 
     }
@@ -71,9 +74,15 @@ class Projquery extends React.Component {
   }
 
 
-  query = () => {
+  query = async () => {
+    this.setState({ loading: true });
     let query = this.state.query
-    this.action.projQuery(query)
+    let r = await this.action.projQuery(query)
+    if (r && r.code === 200) {
+      this.setState({
+        loading: false,
+      })
+    }
   }
 
   setVal = (id,e) =>{
@@ -173,6 +182,9 @@ class Projquery extends React.Component {
           </div>
 
         </div>
+
+        <Skeleton  loading={this.state.loading}>
+
           <Pagination defaultCurrent={1} total={projList.length} onChange={this.showPageData} />
 
           {pageList.map((item,index)=>{
@@ -233,6 +245,9 @@ class Projquery extends React.Component {
           })}
 
           <Pagination defaultCurrent={1} total={projList.length} onChange={this.showPageData} />
+
+        </Skeleton>
+
       </div>
     )
   }

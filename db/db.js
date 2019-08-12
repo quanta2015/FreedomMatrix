@@ -49,6 +49,8 @@ var select = async (table, where, order, limit, cb)=>{
       console.log('Connect error', err )
     } else {
       let sql = `select * from ${table} ${where} ${order} ${limit}`
+
+      console.log(sql)
       conn.query(sql,  ( err, rows) => {
         if ( err ) {
           console.log('SQL error', err )
