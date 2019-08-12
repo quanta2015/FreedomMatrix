@@ -21,7 +21,9 @@ export const MSG_FORM_PR_ROLE   = '経験職種'
 export const MSG_FORM_PR_PROJ   = '経験工程'
 export const MSG_FORM_PR_DETL   = '详细内容'
 export const MSG_FORM_NAME_COMP = '会社名'
-
+export const MSG_FORM_NAME_DEPT = '部署'
+export const MSG_FORM_NAME_KJ_COMP = '担当者氏名（漢字）'
+export const MSG_FORM_NAME_KN_COMP = '担当者氏名（カナ）'
 /*----  placeholder message define  ----*/
 export const MSG_FORM_PD_EMAIL   = 'email@address.com'
 export const MSG_FORM_PD_MONEY   = '数字（単位：万円）'
@@ -34,6 +36,7 @@ export const MSG_FORM_PD_NAME_COMP = '自由陣株式会社'
 /*----  form message define  ----*/
 export const MSG_FORM_BASIC     = '基本情報'
 export const MSG_FORM_HOPE      = '稼働希望'
+export const MSG_FORM_PROJ      = '案件一覧'
 export const MSG_FORM_EXP       = '経験・スキル登録'
 
 export const TAB_HOME_USR_IF    = '用户信息'
@@ -52,3 +55,4 @@ export const TYPE_PHONE           = 1
 export const TYPE_EMAIL           = 2
 export const TYPE_NULL            = 3
 export const TYPE_DATE            = 4
+
