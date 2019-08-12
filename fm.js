@@ -319,8 +319,12 @@ app.post('/proj/query', function(req, res, next) {
   let where,order,limit
   
   console.log(len)
-
-  if (len>0) {
+  if(typeof(data.pid) != 'undefined'){
+    where = `where pid=${data.pid}`
+    order =  ' order by id desc' 
+    limit =  ""
+  }
+  else if (len>0) {
     let advList = []
     let hasAdv = false
     let proj_name = data.proj_key
