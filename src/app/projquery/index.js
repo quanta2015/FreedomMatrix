@@ -154,7 +154,7 @@ class Projquery extends React.Component {
                 <MSelect className="m-form-text" placeholder="職種" id="proj_role" data={CD.workroleList} onChange={this.setMVal.bind(this,'proj_role')}/>
               </div>
               <div className="m-col">
-                <span>担当工程</span>
+                <span>proj_resp</span>
                 <MSelect className="m-form-text" placeholder="担当工程" id="proj_porj" data={CD.workprojList} onChange={this.setMVal.bind(this,'proj_porj')}/>
               </div>
               <div className="m-col">
