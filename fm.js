@@ -287,7 +287,72 @@ app.post('/user/projadd', function(req, res, next) {
 
 app.post('/proj/query', function(req, res, next) {
   let data = req.body
-  db.select('project','','','', (err,ret)=>{
+  let len = Object.getOwnPropertyNames(data).length
+  let table = 'project'
+  let where,order,limit
+  
+  console.log(len)
+
+  if (len>0) {
+    let advList = []
+    let hasAdv = false
+    let proj_name = data.proj_key
+    let proj_area = data.proj_area
+    let proj_domn = data.proj_domn
+    let proj_pref = data.proj_pref
+    let proj_targ = data.proj_targ
+    let proj_lang = data.proj_lang
+    let proj_resp = data.proj_resp
+    let proj_role = data.proj_role
+    let proj_cont = data.proj_cont
+    order = " order by id"
+    limit = ""
+
+    if (typeof(proj_lang) != 'undefined') {
+      advList.push(`proj_lang ='${proj_lang.sort().join('|')}'`)
+      hasAdv = true
+    } 
+    if (typeof(proj_resp) != 'undefined') {
+      advList.push(`proj_resp ='${proj_resp.sort().join('|')}'`)
+      hasAdv = true
+    } 
+    if (typeof(proj_role) != 'undefined') {
+      advList.push(`proj_role ='${proj_role.sort().join('|')}'`)
+      hasAdv = true
+    } 
+    if (typeof(proj_cont) != 'undefined') {
+      advList.push(`proj_cont like '%${proj_cont}%'`)
+      hasAdv = true
+    } 
+    advSql = advList.join(' and ')
+
+    if (hasAdv) {
+      where = `where id in (select distinct(pid) from position where ${advSql})`
+    }else{
+      where = `where proj_name like '%${proj_name}%'`
+    }
+    
+    if (typeof(proj_area) != 'undefined') {
+      where = where + ` and proj_area = '${proj_area}'`
+    }
+    if (typeof(proj_domn) != 'undefined') {
+      where = where + ` and proj_domn = '${proj_domn}'`
+    }
+
+    if (typeof(proj_pref) != 'undefined') {
+      where = where + ` and proj_pref = '${proj_pref}'`
+    }
+
+    if (typeof(proj_targ) != 'undefined') {
+      where = where + ` and proj_targ = '${proj_targ}'`
+    }
+  }else{
+    where = ''
+    order =  ' order by id desc' 
+    limit =  ' limit 10'
+  }
+
+  db.select(table,where,order,limit, (err,ret)=>{
     res.status(200).json({
       code: 200,
       msg: '取案例数据成功',
