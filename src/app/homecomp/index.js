@@ -177,9 +177,9 @@ class Homecomp extends React.Component {
               </div>
           </TabPane>
 
-          <TabPane tab={MSG.TAB_HOME_PROJ} key="3" className="m-tab-userinfo">
+          {/* <TabPane tab={MSG.TAB_HOME_PROJ} key="3" className="m-tab-userinfo">
             <ProjaddApp/>
-          </TabPane>
+          </TabPane> */}
 
 
         </Tabs>
