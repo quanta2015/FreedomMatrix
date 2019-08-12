@@ -317,8 +317,6 @@ app.post('/proj/query', function(req, res, next) {
   let len = Object.getOwnPropertyNames(data).length
   let table = 'project'
   let where,order,limit
-  
-  console.log(len)
 
   if (len>0) {
     let advList = []
