@@ -53,6 +53,12 @@
     transform: rotate(-45deg);
   }
 
+  .m-detail-wrap {
+    overflow-y: scroll;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
 
   .m-detail {
     margin: 0 0 20px;
@@ -72,6 +78,7 @@
     .m-proj-title {
         font-size: 20px;
         flex: 1;
+        padding: 10px 20px;
     }
 
     .m-proj-pd {
@@ -80,7 +87,6 @@
 
     .md-row-tl {
       background: #eee;
-      padding: 10px 20px;
       margin: 0 0 10px 0;
     }
 
@@ -100,6 +106,8 @@
   }
 
 
+
+
   .m-pos {
     display: flex;
     flex-wrap: wrap;
@@ -107,9 +115,8 @@
     font-size: 12px;
 
 
-
-    .m-pos-item + .m-pos-item {
-      margin-left: 10px;
+    .m-pos-item:nth-child(2n+1) {
+      margin-right: 10px;
     }
 
     .m-pos-item {
@@ -119,7 +126,8 @@
       box-shadow: 2px 2px 2px rgba(0,0,0,.1), -2px 2px 2px rgba(0,0,0,.1);
       margin: 0 0 10px 0;
       padding-bottom: 60px;
-          position: relative;
+      position: relative;
+      overflow: hidden;
     }
 
     .m-tl {
@@ -155,10 +163,11 @@
     }
 
     .m-fun>button {
-        width: 120px;
-        margin: 10px;
+        width: 150px;
+        margin: 10px 5px;
         height: 40px;
         border-radius: 5px;
+        flex: 1
     }
 
     .m-fun {
@@ -240,6 +249,7 @@
 
 
 
+
       .m-tl {
         background: #eee;
         padding: 5px 15px!important;
@@ -250,8 +260,8 @@
         border: none;
       }
 
-      .m-pos-item + .m-pos-item {
-        margin-left: 0;
+      .m-pos-item:nth-child(2n+1) {
+        margin-right: 0;
       }
     }
 

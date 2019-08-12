@@ -286,7 +286,7 @@ app.post('/user/projadd', function(req, res, next) {
 });
 
 app.post('/proj/query', function(req, res, next) {
-  // let data = req.body
+  let data = req.body
   db.select('project','','','', (err,ret)=>{
     res.status(200).json({
       code: 200,

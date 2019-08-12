@@ -27,7 +27,10 @@ class Projquery extends React.Component {
       curPage: 1,
       showDetail: false,
       detail: [],
-      curProj: {}
+      curProj: {},
+      query: {
+        key:''
+      }
     }
 
   }
@@ -36,14 +39,13 @@ class Projquery extends React.Component {
     this.action.projQuery()
   }
 
-
   showAdv = (e)=>{
     this.setState({
       showAdv: e
     })
   }
 
-  showPageData =(index)=>{
+  showPageData = (index) => {
     this.setState({
       curPage: index
     })
@@ -68,6 +70,28 @@ class Projquery extends React.Component {
       })
   }
 
+
+  query = () => {
+    let query = this.state.query
+    this.action.projQuery(query)
+  }
+
+  setVal = (e) =>{
+    this.setState({
+      query: {
+        key: e.currentTarget.value
+      }
+    })
+  }
+
+  setMVal = (id,val) =>{
+    let {query} = this.state
+    query[id] = val
+    this.setState({
+      query: query
+    })
+  }
+
   render() {
 
     let { showAdv,curPage,curProj,showDetail,detail } = this.state
@@ -84,7 +108,6 @@ class Projquery extends React.Component {
       }
     }
 
-
     return (
       <div className='g-projquery'>
 
@@ -95,61 +118,58 @@ class Projquery extends React.Component {
           <div className="m-row m-row-t">
             <div className="m-tl">項目のキーワードを入力してください</div>
             <div className="m-co">
-              <Input placeholder="Basic usage" />
+              <Input placeholder="Basic usage" id="proj_key" onChange={this.setVal}/>
               <div className="m-adv">
-              <span className="m-tl" >高级检索 </span>
-            <Switch size="small" onChange={this.showAdv}/>
+                <span className="m-tl" >高级检索 </span>
+                <Switch size="small" onChange={this.showAdv}/>
               </div>
-              <Button type="primary" className="m-btn-search"> 案件を探す</Button>
+              <Button type="primary" className="m-btn-search" onClick={this.query}> 案件を探す</Button>
             </div>
           </div>
           <div className="m-row">
             <div className="m-col">
               <span>勤務希望エリア</span>
-              <MSelect className="m-form-text" placeholder="勤務希望エリア" data={CD.workareaList}/>
+              <MSelect className="m-form-text" placeholder="勤務希望エリア" id="proj_area"  data={CD.workareaList} onChange={this.setMVal.bind(this,'proj_area')}/>
             </div>
             <div className="m-col">
               <span>希望稼働時期</span>
-              <MSelect className="m-form-text" placeholder="業界" data={CD.projdomnList}/>
+              <MSelect className="m-form-text" placeholder="業界" id="proj_domn" data={CD.projdomnList} onChange={this.setMVal.bind(this,'proj_domn')}/>
             </div>
             <div className="m-col">
               <span>希望働き方</span>
-              <MSelect className="m-form-text" placeholder="こだわり" data={CD.projprefList}/>
+              <MSelect className="m-form-text" placeholder="こだわり" id="proj_pref" data={CD.projprefList} onChange={this.setMVal.bind(this,'proj_pref')}/>
             </div>
             <div className="m-col">
               <span>応募対象</span>
-              <Select className="m-form-text m-form-select">
-                <Select.Option value="0">フリーランス</Select.Option>
-                <Select.Option value="1">副業</Select.Option>
-                <Select.Option value="2">協力パートナー</Select.Option>
+              <Select className="m-form-text m-form-select" id="proj_targ"  onChange={this.setMVal.bind(this,'proj_targ')}>
+                {CD.projTarget.map((item,index)=> <Select.Option value={item.val} key={index}>{item.txt}</Select.Option> )}
               </Select>
             </div>
           </div>
  
-
           {showAdv && 
             <div className="m-row m-row-adv">
               <div className="m-col">
                 <span>職種</span>
-                <MSelect className="m-form-text" placeholder="職種" data={CD.workroleList}/>
+                <MSelect className="m-form-text" placeholder="職種" id="proj_role" data={CD.workroleList} onChange={this.setMVal.bind(this,'proj_role')}/>
               </div>
               <div className="m-col">
                 <span>担当工程</span>
-                <MSelect className="m-form-text" placeholder="担当工程" data={CD.workprojList}/>
+                <MSelect className="m-form-text" placeholder="担当工程" id="proj_porj" data={CD.workprojList} onChange={this.setMVal.bind(this,'proj_porj')}/>
               </div>
               <div className="m-col">
                 <span>言語スキル</span>
-                <MSelect className="m-form-text" placeholder="言語スキル" data={CD.worklangList}/>
+                <MSelect className="m-form-text" placeholder="言語スキル" id="proj_lang" data={CD.worklangList} onChange={this.setMVal.bind(this,'proj_lang')}/>
               </div>
               <div className="m-col">
                 <span>作業内容</span>
-                <MSelect className="m-form-text" placeholder="作業内容" data={CD.projrespList}/>
+                <MSelect className="m-form-text" placeholder="作業内容"  id="proj_resp" data={CD.projrespList} onChange={this.setMVal.bind(this,'proj_resp')}/>
               </div>
             </div>
           }
 
           <div className="m-row m-row-mobile"> 
-              <Button type="primary" className="m-btn-search-m"> 案件を探す</Button>
+              <Button type="primary" className="m-btn-search-m" onClick={this.query}> 案件を探す</Button>
           </div>
 
         </div>
@@ -207,7 +227,6 @@ class Projquery extends React.Component {
                     </div>
                   </div>
                   <div className="m-proj-row m-proj-row-f">
-                    <Button type="default" htmlType="submit" onClick={this.doReg}>気になる</Button>
                     <Button type="default" htmlType="submit" className="c-green" onClick={this.showDetail.bind(this,item)}>詳細を見る</Button> 
                   </div>
                 </div>
