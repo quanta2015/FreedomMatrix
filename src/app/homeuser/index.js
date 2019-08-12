@@ -60,7 +60,7 @@ class Homeuser extends React.Component {
         })
       }
     }else{
-      message.error('表单数据错误！')
+      message.success('表单数据错误！')
     }
   }
 

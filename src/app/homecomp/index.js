@@ -47,7 +47,7 @@ class Homecomp extends React.Component {
     e.preventDefault();
     if (regex.va_check()) {
       let params = toJS(this.props.userStore.user)
-      let r = await this.props.userActions.saveUser(params)
+      let r = await this.props.userActions.saveComp(params)
       if (r && r.code === 200) {
         Modal.success({
           title: '保存成功！',
@@ -159,88 +159,22 @@ class Homecomp extends React.Component {
                   <div className="ant-form-explain">请输入正确的email</div>
                 </div>
               </div>
-
-              <div className="m-row">
-                <div className="m-tl">
-                  <span>{MSG.MSG_FORM_PROJ}</span>
-                </div>
-              </div>
-              {/* <Tabs defaultActiveKey="0" id="tabExp">
-                {posList.map((item, index) => {
-                  return (
-                    <TabPane tab={`案件 ${index + 1}`} key={index}>
-                      <div className="m-row">
-                        <div className="m-col-tl">{MSG.MSG_FORM_PR_NAME}</div>
-                        <div className="m-col-co">
-                          <Input placeholder={MSG.MSG_FORM_PR_NAME}
-                            disabled={!editable}
-                            id={`proj_name_${index + 1}`}
-                            defaultValue={item.proj_name}
-                            onChange={regex.va_field.bind(this, MSG.TYPE_NULL, act, 1, index)} />
-                          <div className="ant-form-explain">请输入项目名字</div>
-                        </div>
-                      </div>
-                      <div className="m-row">
-                        <div className="m-col-tl">{MSG.MSG_FORM_PR_PERD}</div>
-                        <div className="m-col-co">
-                          <RangePicker format={cd.DATE_FORMAT}
-                            className="m-form-text"
-                            id={`proj_perd_${index + 1}`}
-                            defaultValue={item.proj_date}
-                            disabled={!editable}
-                            onChange={regex.va_field_rsel.bind(this, `proj_perd_${index + 1}`, act, 1, index)} />
-                        </div>
-                        <div className="m-col-tl">{MSG.MSG_FORM_PR_LANG}</div>
-                        <div className="m-col-co">
-                          <MSelect className="m-form-text"
-                            data={cd.worklangList}
-                            defaultValue={item.work_lang.split('|')}
-                            id={`work_lang_${index + 1}`}
-                            disabled={!editable}
-                            onChange={regex.va_field_msel.bind(this, `work_lang_${index + 1}`, act, 1, index)} />
-                        </div>
-                      </div>
-                      <div className="m-row">
-                        <div className="m-col-tl">{MSG.MSG_FORM_PR_ROLE}</div>
-                        <div className="m-col-co">
-                          <MSelect className="m-form-text"
-                            data={cd.workroleList}
-                            defaultValue={item.work_role.split('|')}
-                            id={`work_role_${index + 1}`}
-                            disabled={!editable}
-                            onChange={regex.va_field_msel.bind(this, `work_role_${index + 1}`, act, 1, index)} />
-                          <div className="ant-form-explain">请选择项目角色</div>
-                        </div>
-                        <div className="m-col-tl">{MSG.MSG_FORM_PR_PROJ}</div>
-                        <div className="m-col-co">
-                          <MSelect className="m-form-text"
-                            data={cd.workprojList}
-                            defaultValue={item.work_proj.split('|')}
-                            id={`work_proj_${index + 1}`}
-                            disabled={!editable}
-                            onChange={regex.va_field_msel.bind(this, `work_proj_${index + 1}`, act, 1, index)} />
-                        </div>
-                      </div>
-                      <div className="m-row">
-                        <div className="m-col-tl">{MSG.MSG_FORM_PR_DETL}</div>
-                        <div className="m-col-co">
-                          <TextArea rows={4} defaultValue={item.work_detl}
-                            id={`work_detl_${index + 1}`}
-                            disabled={!editable}
-                            onChange={regex.va_field.bind(this, MSG.TYPE_NULL, act, 1, index)} />
-                        </div>
-                      </div>
-                    </TabPane>
-                  )
-                })}
-
-              </Tabs> */}
             </Form>
           </TabPane>
 
 
           <TabPane tab={MSG.MSG_FORM_PROJ} key="2" className="m-tab-userinfo">
-                
+          <div className="m-fav">
+                <div className="m-row-f m-row-tl">
+                  <span>ID</span>
+                  <span>プロジェクト名</span>
+                  <span>開始日-締め切り</span>
+                  <span>勤務地</span>
+                  <span>業界</span>
+                  <span>削除</span>
+                </div>
+        
+              </div>
           </TabPane>
 
           <TabPane tab={MSG.TAB_HOME_PROJ} key="3" className="m-tab-userinfo">

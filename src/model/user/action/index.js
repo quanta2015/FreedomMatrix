@@ -60,6 +60,13 @@ class UserActions extends BaseActions {
   }
 
   @action
+  async saveComp(params) {
+    let r = await this.post(urls.API_COMP_SAVE, params, true)
+    this.saveData(r, this.store)
+    return r
+  }
+
+  @action
   async regComp(params) {
     let r = await this.post(urls.API_COMP_REG, params, true)
     // this.store.exp = null
