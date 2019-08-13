@@ -24,6 +24,19 @@ class ApplyActions extends BaseActions {
   }
 
 
+  async addApply(params) {
+    let r = await this.post(urls.API_ADD_APPLY, params, true)
+    if (r && r.code === 200) {
+      runInAction(() => {
+        this.store.apply = {
+          data: r.data
+        }
+      })
+    }
+    return r
+  }
+
+
 }
 
 export default new ApplyActions(store)

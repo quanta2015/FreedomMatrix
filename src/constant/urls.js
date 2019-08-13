@@ -12,7 +12,12 @@ export const API_USER_LOGIN   = API_SERVER + '/user/login'
 
 
 export const API_QUERY_FAV    = API_SERVER + '/fav/query'
-export const API_QUERY_APPLY  = API_SERVER + '/apply/query'
+
+
+
+export const API_QUERY_APPLY = API_SERVER + '/apply/query'
+export const API_ADD_APPLY   = API_SERVER + '/apply/add'
+
 
 
 export const API_PROJ_QUERY  = API_SERVER + '/proj/query'

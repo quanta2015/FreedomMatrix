@@ -95,7 +95,7 @@ class Dashboard extends React.Component {
               })}
             </Menu>
 
-            {(isLogin===1) &&
+            {((isLogin===1)||(isLogin===2)) &&
             <Dropdown overlay={dropdownMenu}>
               <span className='account'>
                 <Avatar className='avatar' icon='user' />
@@ -139,7 +139,7 @@ class Dashboard extends React.Component {
                 )}
               })}
 
-              {(isLogin===1) &&
+              {((isLogin===1)||(isLogin===2)) &&
               <p className="fn-show m-menu_h" onClick={this.logout}>
                 <a href="#/homeuser">
                   <i aria-label="图标: user" className="anticon anticon-user"></i>

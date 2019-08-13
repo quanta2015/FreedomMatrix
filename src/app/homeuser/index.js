@@ -3,8 +3,9 @@ import { observer, inject } from 'mobx-react'
 import { Input,Tabs,Form,Button,DatePicker,Select,InputNumber,Modal, message } from 'antd';
 import './index.less'
 import * as urls from 'constant/urls'
-import * as cd   from 'constant/data'
+import * as CD   from 'constant/data'
 import * as MSG  from 'constant/msg'
+import * as CT from 'util/convert'
 import clone   from 'util/clone'
 import MSelect from 'util/MSelect'
 import getNode from 'util/getNode'
@@ -75,7 +76,7 @@ class Homeuser extends React.Component {
   render() {
     const { editable } = this.state
     const { user } = this.props.userStore
-    const ptList = cd.personType
+    const ptList = CD.personType
     const workareaList = getValue(user, 'user.work_area', '').split("|")
     const worktimeList = getValue(user, 'user.work_time', '') .split("|")
     const worktypeList = getValue(user, 'user.work_type', '') .split("|")
@@ -164,7 +165,7 @@ class Homeuser extends React.Component {
                                                     id='birth'  
                                                     defaultValue={birth} 
                                                     placeholder='年/月/日'  
-                                                    format= {cd.DATE_FORMAT}  
+                                                    format= {CD.DATE_FORMAT}  
                                                     disabled={!editable} 
                                                     onChange={ regex.va_field_dsel.bind(this,'birth',act, 0, null) } />}
                   </div>
@@ -191,7 +192,7 @@ class Homeuser extends React.Component {
                   <div className="m-col-tl">{MSG.MSG_FORM_HP_AREA}</div>
                   <div className="m-col-co">
                     {(user !== null) && <MSelect className="m-form-text" 
-                                                  data={cd.workareaList} 
+                                                  data={CD.workareaList} 
                                                   defaultValue={workareaList} 
                                                   id='work_area'  
                                                   disabled={!editable}
@@ -201,7 +202,7 @@ class Homeuser extends React.Component {
                   <div className="m-col-tl">{MSG.MSG_FORM_HP_TIME}</div>
                   <div className="m-col-co">
                     {(user !== null) && <MSelect className="m-form-text" 
-                                                  data={cd.worktimeList} 
+                                                  data={CD.worktimeList} 
                                                   defaultValue={worktimeList} 
                                                   id='work_time' 
                                                   disabled={!editable}
@@ -221,7 +222,7 @@ class Homeuser extends React.Component {
                   <div className="m-col-tl">{MSG.MSG_FORM_HP_TYPE}</div>
                   <div className="m-col-co">
                     {(user !== null) && <MSelect className="m-form-text" 
-                                                  data={cd.worktypeList} 
+                                                  data={CD.worktypeList} 
                                                   defaultValue={worktypeList} 
                                                   id='work_type'  
                                                   disabled={!editable}
@@ -253,7 +254,7 @@ class Homeuser extends React.Component {
                         <div className="m-row">
                           <div className="m-col-tl">{MSG.MSG_FORM_PR_PERD}</div>
                           <div className="m-col-co">
-                            <RangePicker format={cd.DATE_FORMAT}  
+                            <RangePicker format={CD.DATE_FORMAT}  
                                           className="m-form-text" 
                                           id = {`proj_perd_${index+1}`}
                                           defaultValue={item.proj_date} 
@@ -263,7 +264,7 @@ class Homeuser extends React.Component {
                           <div className="m-col-tl">{MSG.MSG_FORM_PR_LANG}</div>
                           <div className="m-col-co">
                             <MSelect className="m-form-text" 
-                                      data={cd.worklangList} 
+                                      data={CD.worklangList} 
                                       defaultValue={item.work_lang.split('|')} 
                                       id = {`work_lang_${index+1}`}
                                       disabled={!editable}
@@ -274,7 +275,7 @@ class Homeuser extends React.Component {
                           <div className="m-col-tl">{MSG.MSG_FORM_PR_ROLE}</div>
                           <div className="m-col-co">
                             <MSelect className="m-form-text" 
-                                      data={cd.workroleList} 
+                                      data={CD.workroleList} 
                                       defaultValue={item.work_role.split('|')}  
                                       id = {`work_role_${index+1}`}
                                       disabled={!editable}
@@ -284,7 +285,7 @@ class Homeuser extends React.Component {
                           <div className="m-col-tl">{MSG.MSG_FORM_PR_PROJ}</div>
                           <div className="m-col-co">
                             <MSelect className="m-form-text" 
-                                      data={cd.workprojList} 
+                                      data={CD.workprojList} 
                                       defaultValue={item.work_proj.split('|')}  
                                       id = {`work_proj_${index+1}`}
                                       disabled={!editable}
@@ -314,7 +315,6 @@ class Homeuser extends React.Component {
                   <span>プロジェクト名</span>
                   <span>開始日-締め切り</span>
                   <span>勤務地</span>
-                  <span>業界</span>
                   <span>気になる</span>
                 </div>
               {appList.map((e,index)=>{
@@ -322,10 +322,15 @@ class Homeuser extends React.Component {
                   <div className="m-row-f" key={index} >
                     <span>{e.pid}</span>
                     <span>{e.proj_name}</span>
-                    <span>{e.date_from}-{e.date_to}</span>
-                    <span>{e.proj_area}</span>
-                    <span>{e.proj_domn}</span>
-                    <span><Button type="primary">終わり</Button></span>
+                    <span>{date.convertI2S(e.date_from)} ~ {date.convertI2S(e.date_to)}</span>
+                    <span>
+                      { CT.strToNameList(e.proj_area, CD.workareaList).map((item_area,j)=>
+                        <span className="m-proj-item-d" key={j}>{item_area}</span> ) }
+                    </span>
+                    <span>
+                      <Button type="primary">進捗</Button>
+                      <Button type="primary">辞退</Button>
+                    </span>
                   </div>
                 )
               })}
@@ -338,7 +343,6 @@ class Homeuser extends React.Component {
                   <span>プロジェクト名</span>
                   <span>開始日-締め切り</span>
                   <span>勤務地</span>
-                  <span>業界</span>
                   <span>気になる</span>
                 </div>
               {favList.map((e,index)=>{
@@ -346,9 +350,11 @@ class Homeuser extends React.Component {
                   <div className="m-row-f" key={index} >
                     <span>{e.pid}</span>
                     <span>{e.proj_name}</span>
-                    <span>{e.date_from}-{e.date_to}</span>
-                    <span>{e.proj_area}</span>
-                    <span>{e.proj_domn}</span>
+                    <span>{date.convertI2S(e.date_from)} ~ {date.convertI2S(e.date_to)}</span>
+                    <span>
+                      { CT.strToNameList(e.proj_area, CD.workareaList).map((item_area,j)=>
+                        <span className="m-proj-item-d" key={j}>{item_area}</span> ) }
+                    </span>
                     <span><Button type="primary">キャンセル</Button></span>
                   </div>
                 )

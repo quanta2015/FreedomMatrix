@@ -1,7 +1,7 @@
 import React from 'react'
 import { toJS } from 'mobx'
 import { observer, inject } from 'mobx-react'
-import { Input,message,Button,Select,Switch,Pagination,Icon } from 'antd'
+import { Input,message,Button,Select,Switch,Pagination,Icon,Modal } from 'antd'
 import getNode   from 'util/getNode'
 import MSelect   from 'util/MSelect'
 import * as DATE from 'util/date'
@@ -10,6 +10,9 @@ import * as CD   from 'constant/data'
 import './index.less'
 
 
+
+@inject('applyActions','applyStore', 'userStore')
+@observer
 class Projdetail extends React.Component {
 
   constructor(props) {
@@ -17,8 +20,8 @@ class Projdetail extends React.Component {
     this.state = {
       show: props.show
     }
-
-
+    this.action = props.applyActions
+    this.store = props.applyStore
   }
 
 
@@ -26,9 +29,28 @@ class Projdetail extends React.Component {
     this.props.close()
   }
 
+  doApply = async (cid, pid)=>{
+    let r = await this.action.addApply({cid:cid, pid:pid})
+    if (r && r.code === 200) {
+      console.log(r)
+      Modal.confirm({
+        title: '应募成功！',
+        onOk:()=> {
+          this.props.close()
+        }
+      });
+    }else{
+      message.success('您已经应募该职位')
+    }
+  }
+
   render() {
     let { show } = this.state
+
+    console.log(show)
     let { detail, project } = this.props
+    let { id } = this.props.userStore.user.user
+    // console.log(uid)
 
     return (
       <div className='g-projdetail'> 
@@ -142,8 +164,8 @@ class Projdetail extends React.Component {
                       </div>
 
                       <div className="m-row m-fun">
-                        <Button type="default" htmlType="submit" onClick={this.doReg}>気になる</Button>
-                        <Button type="danger" htmlType="submit" onClick={this.doApply}>応募する</Button>
+                        <Button type="default" htmlType="submit" onClick={this.doFav}>気になる</Button>
+                        <Button type="danger" htmlType="submit" onClick={this.doApply.bind(this,id,item.id)}>応募する</Button>
                       </div>
 
                     </div>
