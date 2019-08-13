@@ -1,6 +1,6 @@
 import React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Input, Tabs, Form, Button, DatePicker, Select, InputNumber, Modal, message } from 'antd';
+import { Input, Tabs, Form, Button, DatePicker, Select, InputNumber, Modal, message, Pagination } from 'antd';
 import './index.less'
 import * as urls from 'constant/urls'
 import * as cd from 'constant/data'
@@ -13,7 +13,8 @@ import * as regex from 'util/regex'
 import moment from 'moment'
 import { toJS } from 'mobx'
 import ProjaddApp from 'app/projadd'
-
+import * as DATE from 'util/date'
+import Homeproj from 'app/homeproj'
 const { TabPane } = Tabs;
 const { MonthPicker, RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -24,7 +25,7 @@ const { TextArea } = Input;
 class Homecomp extends React.Component {
   constructor(props) {
     super(props)
-
+    this.store = props.projectStore
     regex.va_start()
     this.state = {
       editable: false
@@ -69,7 +70,7 @@ class Homecomp extends React.Component {
   }
 
   render() {
-    const { editable } = this.state
+    const { editable} = this.state
     const { user } = this.props.userStore
     const name_comp = getValue(user, 'user.name_comp', '')
     const name_dept = getValue(user, 'user.name_dept', '')
@@ -162,19 +163,10 @@ class Homecomp extends React.Component {
             </Form>
           </TabPane>
 
-
           <TabPane tab={MSG.MSG_FORM_PROJ} key="2" className="m-tab-userinfo">
-          <div className="m-fav">
-                <div className="m-row-f m-row-tl">
-                  <span>ID</span>
-                  <span>プロジェクト名</span>
-                  <span>開始日-締め切り</span>
-                  <span>勤務地</span>
-                  <span>業界</span>
-                  <span>削除</span>
-                </div>
-        
-              </div>
+            <div className="m-fav">
+              <Homeproj />
+            </div>
           </TabPane>
 
           {/* <TabPane tab={MSG.TAB_HOME_PROJ} key="3" className="m-tab-userinfo">

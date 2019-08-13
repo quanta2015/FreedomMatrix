@@ -13,7 +13,7 @@ import { toJS } from 'mobx'
 import ProjDetail from 'app/projdetail'
 
 
-@inject('projectActions', 'projectStore', 'userStore')
+@inject('projectActions','projectStore', 'userStore')
 @observer
 class Projquery extends React.Component {
 

@@ -318,8 +318,14 @@ app.post('/proj/query', function(req, res, next) {
   let len = Object.getOwnPropertyNames(data).length
   let table = 'project'
   let where,order,limit
-
-  if (len>0) {
+  
+  console.log(len)
+  if(typeof(data.pid) != 'undefined'){
+    where = `where pid=${data.pid}`
+    order =  ' order by id desc' 
+    limit =  ""
+  }
+  else if (len>0) {
     let advList = []
     let hasAdv = false
     let proj_name = (typeof(data.proj_key)==='undefined')?'':data.proj_key
