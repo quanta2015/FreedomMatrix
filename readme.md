@@ -26,3 +26,18 @@ set sql_mode='NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES';
 
 user: ezt70888
 pwd: bizlab1201
+
+
+apply -> status
+-----------------
+0 应募
+1 辞退
+2 成約
+3 見送り
+
+
+project -> status
+------------------
+0 未发布
+1 应募中
+2 结束

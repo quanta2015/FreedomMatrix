@@ -68,8 +68,14 @@ class Homeuser extends React.Component {
   doChangeMenu=(e)=>{
     let id = getValue(this.props.userStore.user, 'user.id', '')
     let params = { id: id }
-    this.props.favActions.queryFav(params) 
-    this.props.applyActions.queryApply(params) 
+
+    if (parseInt(e) === 2) {
+      this.props.applyActions.queryApply(params) 
+    }else if (parseInt(e)===3) {
+      this.props.favActions.queryFav(params) 
+    }
+    
+    
   }
 
 
