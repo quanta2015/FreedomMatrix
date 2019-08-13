@@ -11,7 +11,8 @@ var url = require('url')
 var db = require("./db/db")
 var jwt= require('jsonwebtoken')
 
-
+const valid = (d) => { return ((typeof(d) != 'undefined')&&(d.length !== 0))?true:false }
+const frmat = (d) => { return d.sort().join('|') }
 const clone = (e) =>{ return JSON.parse(JSON.stringify(e))}
 
 var port = 1080;
@@ -321,7 +322,7 @@ app.post('/proj/query', function(req, res, next) {
   if (len>0) {
     let advList = []
     let hasAdv = false
-    let proj_name = data.proj_key
+    let proj_name = (typeof(data.proj_key)==='undefined')?'':data.proj_key
     let proj_area = data.proj_area
     let proj_domn = data.proj_domn
     let proj_pref = data.proj_pref
@@ -333,19 +334,19 @@ app.post('/proj/query', function(req, res, next) {
     order = " order by id"
     limit = ""
 
-    if (typeof(proj_lang) != 'undefined') {
-      advList.push(`proj_lang ='${proj_lang.sort().join('|')}'`)
+    if (valid(proj_lang)) {
+      advList.push(`proj_lang ='${frmat(proj_lang)}'`)
       hasAdv = true
     } 
-    if (typeof(proj_resp) != 'undefined') {
-      advList.push(`proj_resp ='${proj_resp.sort().join('|')}'`)
+    if (valid(proj_resp)) {
+      advList.push(`proj_resp ='${frmat(proj_resp)}'`)
       hasAdv = true
     } 
-    if (typeof(proj_role) != 'undefined') {
-      advList.push(`proj_role ='${proj_role.sort().join('|')}'`)
+    if (valid(proj_role)) {
+      advList.push(`proj_role ='${frmat(proj_role)}'`)
       hasAdv = true
     } 
-    if (typeof(proj_cont) != 'undefined') {
+    if (valid(proj_cont)) {
       advList.push(`proj_cont like '%${proj_cont}%'`)
       hasAdv = true
     } 
@@ -357,18 +358,18 @@ app.post('/proj/query', function(req, res, next) {
       where = `where proj_name like '%${proj_name}%'`
     }
     
-    if (typeof(proj_area) != 'undefined') {
-      where = where + ` and proj_area = '${proj_area}'`
+    if (valid(proj_area)) {
+      where = where + ` and proj_area = '${frmat(proj_area)}'`
     }
-    if (typeof(proj_domn) != 'undefined') {
-      where = where + ` and proj_domn = '${proj_domn}'`
-    }
-
-    if (typeof(proj_pref) != 'undefined') {
-      where = where + ` and proj_pref = '${proj_pref}'`
+    if (valid(proj_domn)) {
+      where = where + ` and proj_domn = '${frmat(proj_domn)}'`
     }
 
-    if (typeof(proj_targ) != 'undefined') {
+    if (valid(proj_pref)) {
+      where = where + ` and proj_pref = '${frmat(proj_pref)}'`
+    }
+
+    if (valid(proj_targ)) {
       where = where + ` and proj_targ = '${proj_targ}'`
     }
   }else{

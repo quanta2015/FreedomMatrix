@@ -15,3 +15,9 @@ export let strToNameList = (data,list) => {
 
   return ret;
 }
+
+
+export let valid = (data) => {
+  return ((typeof(data) != 'undefined')&&(data !== ''))?true:false;
+}
+

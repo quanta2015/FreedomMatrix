@@ -141,7 +141,7 @@ class Projquery extends React.Component {
               <MSelect className="m-form-text" placeholder="勤務希望エリア" id="proj_area"  data={CD.workareaList} onChange={this.setMVal.bind(this,'proj_area')}/>
             </div>
             <div className="m-col">
-              <span>希望稼働時期</span>
+              <span>業界</span>
               <MSelect className="m-form-text" placeholder="業界" id="proj_domn" data={CD.projdomnList} onChange={this.setMVal.bind(this,'proj_domn')}/>
             </div>
             <div className="m-col">
@@ -150,7 +150,8 @@ class Projquery extends React.Component {
             </div>
             <div className="m-col">
               <span>応募対象</span>
-              <Select className="m-form-text m-form-select" id="proj_targ"  onChange={this.setMVal.bind(this,'proj_targ')}>
+              <Select className="m-form-text m-form-select" id="proj_targ" defaultValue="" onChange={this.setMVal.bind(this,'proj_targ')}>
+                <Select.Option value="">全部</Select.Option>
                 {CD.projTarget.map((item,index)=> <Select.Option value={item.val} key={index}>{item.txt}</Select.Option> )}
               </Select>
             </div>
@@ -184,8 +185,11 @@ class Projquery extends React.Component {
         </div>
 
         <Skeleton  loading={this.state.loading}>
+          <Pagination defaultCurrent={1} total={projList.length} onChange={this.showPageData}  
+            showTotal={ total => <span>検索結果 <em className='m-page-count'>{projList.length}</em>件</span>  }/>
+            
 
-          <Pagination defaultCurrent={1} total={projList.length} onChange={this.showPageData} />
+          
 
           {pageList.map((item,index)=>{
             return (
