@@ -1,7 +1,7 @@
 import { action, runInAction, toJS } from 'mobx'
 import BaseActions from 'component/BaseActions'
 import * as urls from 'constant/urls'
-import store from 'model/apply/store'
+import store from '../store'
 import jwt from 'util/token'
 import fileToBlob from 'util/fileToBlob'
 

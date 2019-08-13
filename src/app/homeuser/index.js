@@ -99,6 +99,10 @@ class Homeuser extends React.Component {
     let favList = getValue(this.props.favStore.fav, 'data', [])
     let appList = getValue(this.props.applyStore.apply, 'data', [])
 
+    appList = (typeof(appList)==='undefined')?[]:appList
+    favList = (typeof(favList)==='undefined')?[]:favList
+
+
     expList.map((item,index)=>{
       let from = date.convertI2D(item.date_from+'')
       let to = date.convertI2D(item.date_to+'')
@@ -326,7 +330,7 @@ class Homeuser extends React.Component {
               {appList.map((e,index)=>{
                 return( 
                   <div className="m-row-f" key={index} >
-                    <span>{e.pid}</span>
+                    <span>{e.sid}</span>
                     <span>{e.proj_name}</span>
                     <span>{date.convertI2S(e.date_from)} ~ {date.convertI2S(e.date_to)}</span>
                     <span>
@@ -354,7 +358,7 @@ class Homeuser extends React.Component {
               {favList.map((e,index)=>{
                 return( 
                   <div className="m-row-f" key={index} >
-                    <span>{e.pid}</span>
+                    <span>{e.sid}</span>
                     <span>{e.proj_name}</span>
                     <span>{date.convertI2S(e.date_from)} ~ {date.convertI2S(e.date_to)}</span>
                     <span>

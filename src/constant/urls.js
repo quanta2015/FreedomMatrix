@@ -12,6 +12,8 @@ export const API_USER_LOGIN   = API_SERVER + '/user/login'
 
 
 export const API_QUERY_FAV    = API_SERVER + '/fav/query'
+export const API_ADD_FAV      = API_SERVER + '/fav/add'
+
 
 
 

@@ -80,16 +80,14 @@ app.post('/apply/add', function(req, res) {
     pid: req.body.pid,
     apply_date: moment(new Date()).format("YYYYMMDD"),
   }
-  
   db.procedureSQL(sql,JSON.stringify(params),(err,ret)=>{
-
     if (err) {
       res.status(500).json({ code: -1, msg: 'add apply failed', data: null})
     }else{
       if (ret[0].err_code===0) {
-        res.status(200).json({ code: 200, msg: '应募成功'  })
+        res.status(200).json({ code: 200 })
       }else{
-        res.status(200).json({ code: 201, msg: '您已经应募该职位'})
+        res.status(200).json({ code: 201 })
       }
     }
   })
@@ -97,7 +95,25 @@ app.post('/apply/add', function(req, res) {
 
 
 
-
+app.post('/fav/add', function(req, res) {
+  let sql  = `CALL PROC_ADD_FAV(?)`;
+  let params = {
+    cid: req.body.cid,
+    pid: req.body.pid,
+    fav_date: moment(new Date()).format("YYYYMMDD"),
+  }
+  db.procedureSQL(sql,JSON.stringify(params),(err,ret)=>{
+    if (err) {
+      res.status(500).json({ code: -1, msg: 'add apply failed', data: null})
+    }else{
+      if (ret[0].err_code===0) {
+        res.status(200).json({ code: 200 })
+      }else{
+        res.status(200).json({ code: 201})
+      }
+    }
+  })
+})
 
 
 app.post('/fav/query', function(req, res) {

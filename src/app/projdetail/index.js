@@ -11,7 +11,7 @@ import './index.less'
 
 
 
-@inject('applyActions','applyStore', 'userStore')
+@inject('favActions', 'favStore','applyActions','applyStore', 'userStore')
 @observer
 class Projdetail extends React.Component {
 
@@ -20,7 +20,6 @@ class Projdetail extends React.Component {
     this.state = {
       show: props.show
     }
-    this.action = props.applyActions
     this.store = props.applyStore
   }
 
@@ -30,17 +29,26 @@ class Projdetail extends React.Component {
   }
 
   doApply = async (cid, pid)=>{
-    let r = await this.action.addApply({cid:cid, pid:pid})
+    let r = await this.props.applyActions.addApply({cid:cid, pid:pid})
     if (r && r.code === 200) {
-      console.log(r)
-      Modal.confirm({
+      Modal.info({
         title: '应募成功！',
-        onOk:()=> {
-          this.props.close()
-        }
+        onOk:()=> { }
       });
     }else{
       message.success('您已经应募该职位')
+    }
+  }
+
+  doFav = async (cid, pid)=>{
+    let r = await this.props.favActions.addFav({cid:cid, pid:pid})
+    if (r && r.code === 200) {
+      Modal.info({
+        title: '收藏成功！',
+        onOk:()=> { }
+      });
+    }else{
+      message.success('您已经收藏该职位')
     }
   }
 
@@ -164,7 +172,7 @@ class Projdetail extends React.Component {
                       </div>
 
                       <div className="m-row m-fun">
-                        <Button type="default" htmlType="submit" onClick={this.doFav}>気になる</Button>
+                        <Button type="default" htmlType="submit" className="c-green" onClick={this.doFav.bind(this,id,item.id)}>気になる</Button>
                         <Button type="danger" htmlType="submit" onClick={this.doApply.bind(this,id,item.id)}>応募する</Button>
                       </div>
 
