@@ -54,7 +54,7 @@ class Projquery extends React.Component {
 
   showDetail = async (item)=>{
     this.setState({ loading: true });
-    let r = await this.action.projDetail({id:item.pid})
+    let r = await this.action.projDetail({id:item.id})
     if (r && r.code === 200) {
       this.setState({
         showDetail: true,
@@ -185,8 +185,8 @@ class Projquery extends React.Component {
         </div>
 
         <Skeleton  loading={this.state.loading}>
-          <Pagination defaultCurrent={1} total={projList.length} onChange={this.showPageData}  
-            showTotal={ total => <span>検索結果 <em className='m-page-count'>{projList.length}</em>件</span>  }/>
+          <Pagination defaultCurrent={1} total={projList.length} onChange={this.showPageData}  showLessItems={true}
+            showTotal={ total => <span> <em className='m-page-count'>{projList.length}</em>件</span>  }/>
             
 
           

@@ -1,7 +1,7 @@
 import React from 'react'
 import { toJS } from 'mobx'
 import { observer, inject } from 'mobx-react'
-import { Input,message,Button,Select,Switch,Pagination } from 'antd'
+import { Input,message,Button,Select,Switch,Pagination,Icon } from 'antd'
 import getNode   from 'util/getNode'
 import MSelect   from 'util/MSelect'
 import * as DATE from 'util/date'
@@ -42,8 +42,11 @@ class Projdetail extends React.Component {
 
 
                 <div className="m-detail">
-                  <div className="md-row md-row-tl">
-                    <span className="m-proj-title c-blue">
+                  <div className="md-row md-row-tl c-blue">
+                    <span className="m-return" onClick={this.close}>
+                      <Icon type="left" />
+                    </span>
+                    <span className="m-proj-title">
                       {project.proj_name}
                     </span>
                     <span className="m-proj-pd m-date">
@@ -139,7 +142,6 @@ class Projdetail extends React.Component {
                       </div>
 
                       <div className="m-row m-fun">
-                        <Button type="default" htmlType="submit" onClick={this.close}>返回</Button>
                         <Button type="default" htmlType="submit" onClick={this.doReg}>気になる</Button>
                         <Button type="danger" htmlType="submit" onClick={this.doApply}>応募する</Button>
                       </div>
