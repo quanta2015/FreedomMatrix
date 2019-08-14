@@ -62,7 +62,6 @@ class Projquery extends React.Component {
         curProj: item,
         loading: false,
       })
-
     }
   }
 

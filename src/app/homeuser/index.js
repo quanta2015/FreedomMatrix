@@ -1,6 +1,6 @@
 import React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Input,Tabs,Form,Button,DatePicker,Select,InputNumber,Modal, message } from 'antd';
+import { Input,Tabs,Form,Button,DatePicker,Select,InputNumber,Modal, message, Skeleton } from 'antd';
 import './index.less'
 import * as urls from 'constant/urls'
 import * as CD   from 'constant/data'
@@ -29,7 +29,8 @@ class Homeuser extends React.Component {
 
     regex.va_start()
     this.state = {
-      editable: false
+      loading: false,
+      editable: false,
     }
   }
 
@@ -71,20 +72,38 @@ class Homeuser extends React.Component {
       Modal.success({
         title: '辞退成功！',
         okText:"確認",
-        onOk:()=> {
-          // this.setState({ editable: false })
-        }
+        onOk:()=> { }
       })
     }
   }
 
-  doChangeMenu=(e)=>{
+  cancel = async (id, uid) => {
+    let r = await this.props.favActions.cancelFav({id:id, uid: uid})
+    if (r && r.code === 200) {
+      Modal.success({
+        title: '取消关注成功！',
+        okText:"確認",
+        onOk:()=> { }
+      })
+    }
+  }
+
+
+  doChangeMenu = async(e)=>{
     let id = getValue(this.props.userStore.user, 'user.id', '')
     let params = { id: id }
     if (parseInt(e) === 2) {
-      this.props.applyActions.queryApply(params) 
+      this.setState({ loading: true });
+      let r = await this.props.applyActions.queryApply(params) 
+      if (r && r.code === 200) {
+        this.setState({ loading: false })
+      }
     }else if (parseInt(e)===3) {
-      this.props.favActions.queryFav(params) 
+      this.setState({ loading: true });
+      let r = await this.props.favActions.queryFav(params) 
+      if (r && r.code === 200) {
+        this.setState({ loading: false })
+      }
     }
   }
 
@@ -329,73 +348,77 @@ class Homeuser extends React.Component {
               </Form>
             </TabPane>
             <TabPane tab={MSG.TAB_HOME_APP_PR} key="2">
-              <div className="m-fav">
-                <div className="m-row-f m-row-tl">
-                  <span>ID</span>
-                  <span>プロジェクト名</span>
-                  <span>開始日-締め切り</span>
-                  <span>勤務地</span>
-                  <span>状態</span>
-                  <span>気になる</span>
-                </div>
-              {appList.map((e,index)=>{
-                return( 
-                  <div className="m-row-f" key={index} >
-                    <span>{e.sid}</span>
-                    <span>{e.proj_name}</span>
-                    <span>{date.convertI2S(e.date_from)} ~ {date.convertI2S(e.date_to)}</span>
-                    <span>
-                      { CT.strToNameList(e.proj_area, CD.workareaList).map((item_area,j)=>
-                        <span className="m-proj-item-d" key={j}>{item_area}</span> ) }
-                    </span>
-                    <span>
-                      <span>{CT.strToName(e.status, CD.APPLY_STATUS)}</span>
-                     
-                    </span>
-                    <span>
-                      <Button type="primary" size="small">详情</Button>
-                      {e.status===0 &&
-                        <Button type="primary" size="small">進捗</Button>}
-                      {e.status===0 &&
-                        <Button type="primary" size="small">メッセージ</Button>}
-                      {e.status===0 &&
-                        <Button type="primary" size="small" onClick={this.dismiss.bind(this,e.id, this.props.userStore.user.user.id)}>辞退</Button>}
-                    </span>
+              <Skeleton  loading={this.state.loading}>
+                <div className="m-fav">
+                  <div className="m-row-f m-row-tl">
+                    <span>ID</span>
+                    <span>プロジェクト名</span>
+                    <span>開始日-締め切り</span>
+                    <span>勤務地</span>
+                    <span>状態</span>
+                    <span>気になる</span>
                   </div>
-                )
-              })}
-              </div>
+                {appList.map((e,index)=>{
+                  return( 
+                    <div className="m-row-f" key={index} >
+                      <span>{e.sid}</span>
+                      <span>{e.proj_name}</span>
+                      <span>{date.convertI2S(e.date_from)} ~ {date.convertI2S(e.date_to)}</span>
+                      <span>
+                        { CT.strToNameList(e.proj_area, CD.workareaList).map((item_area,j)=>
+                          <span className="m-proj-item-d" key={j}>{item_area}</span> ) }
+                      </span>
+                      <span>
+                        <span>{CT.strToName(e.status, CD.APPLY_STATUS)}</span>
+                       
+                      </span>
+                      <span>
+                        <Button type="primary" size="small">详情</Button>
+                        {e.status===0 &&
+                          <Button type="primary" size="small">進捗</Button>}
+                        {e.status===0 &&
+                          <Button type="primary" size="small">メッセージ</Button>}
+                        {e.status===0 &&
+                          <Button type="primary" size="small" onClick={this.dismiss.bind(this,e.id, this.props.userStore.user.user.id)}>辞退</Button>}
+                      </span>
+                    </div>
+                  )
+                })}
+                </div>
+              </Skeleton>
             </TabPane>
             <TabPane tab={MSG.TAB_HOME_FAV_PR} key="3">
-              <div className="m-fav">
-                <div className="m-row-f m-row-tl">
-                  <span>ID</span>
-                  <span>プロジェクト名</span>
-                  <span>開始日-締め切り</span>
-                  <span>勤務地</span>
-                  <span>状態</span>
-                  <span>気になる</span>
-                </div>
-              {favList.map((e,index)=>{
-                return( 
-                  <div className="m-row-f" key={index} >
-                    <span>{e.sid}</span>
-                    <span>{e.proj_name}</span>
-                    <span>{date.convertI2S(e.date_from)} ~ {date.convertI2S(e.date_to)}</span>
-                    <span>
-                      { CT.strToNameList(e.proj_area, CD.workareaList).map((item_area,j)=>
-                        <span className="m-proj-item-d" key={j}>{item_area}</span> ) }
-                    </span>
-                    <span></span>
-                    <span>
-                      <Button type="primary" size="small">详情</Button>
-                      <Button type="primary" size="small">应募</Button>
-                      <Button type="primary" size="small">キャンセル</Button>
-                    </span>
+              <Skeleton  loading={this.state.loading}>
+                <div className="m-fav">
+                  <div className="m-row-f m-row-tl">
+                    <span>ID</span>
+                    <span>プロジェクト名</span>
+                    <span>開始日-締め切り</span>
+                    <span>勤務地</span>
+                    <span>状態</span>
+                    <span>気になる</span>
                   </div>
-                )
-              })}
-              </div>
+                {favList.map((e,index)=>{
+                  return( 
+                    <div className="m-row-f" key={index} >
+                      <span>{e.sid}</span>
+                      <span>{e.proj_name}</span>
+                      <span>{date.convertI2S(e.date_from)} ~ {date.convertI2S(e.date_to)}</span>
+                      <span>
+                        { CT.strToNameList(e.proj_area, CD.workareaList).map((item_area,j)=>
+                          <span className="m-proj-item-d" key={j}>{item_area}</span> ) }
+                      </span>
+                      <span></span>
+                      <span>
+                        <Button type="primary" size="small">详情</Button>
+                        <Button type="primary" size="small">应募</Button>
+                        <Button type="primary" size="small" onClick={this.cancel.bind(this, e.id, this.props.userStore.user.user.id)}>キャンセル</Button>
+                      </span>
+                    </div>
+                  )
+                })}
+                </div>
+              </Skeleton>
             </TabPane>
           </Tabs>
       </div>

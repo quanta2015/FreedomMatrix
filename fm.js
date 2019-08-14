@@ -128,6 +128,20 @@ app.post('/fav/add', function(req, res) {
 })
 
 
+app.post('/fav/cancel', function(req, res) {
+  let sql  = `CALL PROC_CANCEL_FAV(?)`;
+  let params = req.body
+  db.procedureSQL(sql,JSON.stringify(params),(err,ret)=>{
+    if (err) {
+      res.status(500).json({ code: -1, msg: 'cancel fav failed', data: null})
+    }else{
+      res.status(200).json({ code: 200, data: ret })
+    }
+  })
+})
+
+
+
 app.post('/fav/query', function(req, res) {
   var {id} = req.body
   let sql = `CALL PROC_GET_FAV(?)`;

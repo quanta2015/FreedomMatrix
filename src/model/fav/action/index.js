@@ -27,7 +27,19 @@ class FavActions extends BaseActions {
     let r = await this.post(urls.API_ADD_FAV, params, true)
     if (r && r.code === 200) {
       runInAction(() => {
-        this.store.apply = {
+        this.store.fav = {
+          data: r.data
+        }
+      })
+    }
+    return r
+  }
+
+  async cancelFav(params) {
+    let r = await this.post(urls.API_CANCEL_FAV, params, true)
+    if (r && r.code === 200) {
+      runInAction(() => {
+        this.store.fav = {
           data: r.data
         }
       })
