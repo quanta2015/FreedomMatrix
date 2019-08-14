@@ -87,7 +87,11 @@ class Dashboard extends React.Component {
                   <SubMenu key={i} title={<span><Icon type={item.icon} /><span>{item.title}</span></span>}>
                     {item.submenu.map(subitem =>{
                       return (
-                        <Menu.Item key={subitem.path}><Icon type={subitem.icon} />{subitem.title}</Menu.Item>
+                        <Menu.Item key={subitem.path}>
+                          <NavLink to={subitem.path} >
+                            <Icon type={subitem.icon} />{subitem.title}
+                          </NavLink>
+                        </Menu.Item>
                       )
                     })}
                   </SubMenu>

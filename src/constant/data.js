@@ -3,7 +3,7 @@ export const MONTH_FORMAT = 'YYYY/MM'
 
 
 export const MAIN_MENU = [{ title:'案件検索', icon:'search',  path:'/projquery', type: 0 },{
-                            title:'案件登録', icon:'laptop', path:'/projadd',   type: 2 },{
+                            title:'案件登録', icon:'laptop',  path:'/projadd',   type: 2 },{
                             title:'会員HOME', icon:'user',    path:'/homeuser',  type: 1 },{
                             title:'会社HOME', icon:'user',    path:'/homecomp',  type: 2 },{
                             title:'お問い合わせ', icon:'question-circle', path:'/ask', type: 0 },{
@@ -120,3 +120,12 @@ export const projrespList = [{txt: '計画調査',  val:'0'},
                              {txt: 'その他',   val:'7'}]
                              
 
+
+export const APPLY_STATUS = [{txt: '应募中',  val:0},
+                             {txt: '辞退',  val:1},
+                             {txt: '成約',  val:2},
+                             {txt: '見送り', val:3}]
+
+export const PROJ_STATUS  = [{txt:  '未发布', val:0},
+                             {txt:  '应募中', val:1},
+                             {txt:  '结束'  , val:2}]

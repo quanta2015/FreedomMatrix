@@ -32,11 +32,12 @@ class ProjectActions extends BaseActions {
   @action
   async projQuery(params) {
     let r = await this.post(urls.API_PROJ_QUERY, params, true)
-
-    runInAction(() => {
-      this.store.project = r.data
-    })
-    return r
+    if (r && r.code===200) {
+      runInAction(() => {
+        this.store.project = r.data
+      })
+      return r
+    }
   }
 
   @action

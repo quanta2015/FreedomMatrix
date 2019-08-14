@@ -65,17 +65,27 @@ class Homeuser extends React.Component {
     }
   }
 
+  dismiss = async (id, uid) => {
+    let r = await this.props.applyActions.dismissApply({id:id, status: 1, uid: uid})
+    if (r && r.code === 200) {
+      Modal.success({
+        title: '辞退成功！',
+        okText:"確認",
+        onOk:()=> {
+          // this.setState({ editable: false })
+        }
+      })
+    }
+  }
+
   doChangeMenu=(e)=>{
     let id = getValue(this.props.userStore.user, 'user.id', '')
     let params = { id: id }
-
     if (parseInt(e) === 2) {
       this.props.applyActions.queryApply(params) 
     }else if (parseInt(e)===3) {
       this.props.favActions.queryFav(params) 
     }
-    
-    
   }
 
 
@@ -325,6 +335,7 @@ class Homeuser extends React.Component {
                   <span>プロジェクト名</span>
                   <span>開始日-締め切り</span>
                   <span>勤務地</span>
+                  <span>状態</span>
                   <span>気になる</span>
                 </div>
               {appList.map((e,index)=>{
@@ -338,8 +349,17 @@ class Homeuser extends React.Component {
                         <span className="m-proj-item-d" key={j}>{item_area}</span> ) }
                     </span>
                     <span>
-                      <Button type="primary">進捗</Button>
-                      <Button type="primary">辞退</Button>
+                      <span>{CT.strToName(e.status, CD.APPLY_STATUS)}</span>
+                     
+                    </span>
+                    <span>
+                      <Button type="primary" size="small">详情</Button>
+                      {e.status===0 &&
+                        <Button type="primary" size="small">進捗</Button>}
+                      {e.status===0 &&
+                        <Button type="primary" size="small">メッセージ</Button>}
+                      {e.status===0 &&
+                        <Button type="primary" size="small" onClick={this.dismiss.bind(this,e.id, this.props.userStore.user.user.id)}>辞退</Button>}
                     </span>
                   </div>
                 )
@@ -353,6 +373,7 @@ class Homeuser extends React.Component {
                   <span>プロジェクト名</span>
                   <span>開始日-締め切り</span>
                   <span>勤務地</span>
+                  <span>状態</span>
                   <span>気になる</span>
                 </div>
               {favList.map((e,index)=>{
@@ -365,14 +386,16 @@ class Homeuser extends React.Component {
                       { CT.strToNameList(e.proj_area, CD.workareaList).map((item_area,j)=>
                         <span className="m-proj-item-d" key={j}>{item_area}</span> ) }
                     </span>
-                    <span><Button type="primary">キャンセル</Button></span>
+                    <span></span>
+                    <span>
+                      <Button type="primary" size="small">详情</Button>
+                      <Button type="primary" size="small">应募</Button>
+                      <Button type="primary" size="small">キャンセル</Button>
+                    </span>
                   </div>
                 )
               })}
               </div>
-            </TabPane>
-            <TabPane tab={MSG.TAB_HOME_MSG} key="4">
-              Content of Tab Pane 3
             </TabPane>
           </Tabs>
       </div>

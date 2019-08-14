@@ -4,7 +4,8 @@ let conf = {
   database: 	'bizplus',
   user: 		'root',
   password: 	'Bizplus2019!',
-  multipleStatements: true
+  multipleStatements: true,
+  secret: 'bizsecret',
 };
 
 module.exports = conf;

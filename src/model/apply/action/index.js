@@ -36,6 +36,18 @@ class ApplyActions extends BaseActions {
     return r
   }
 
+  async dismissApply(params) {
+    let r = await this.post(urls.API_STATUS_APPLY, params, true)
+    if (r && r.code === 200) {
+      runInAction(() => {
+        this.store.apply = {
+          data: r.data
+        }
+      })
+    }
+    return r
+  }
+
 
 }
 

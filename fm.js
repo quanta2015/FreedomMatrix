@@ -10,13 +10,15 @@ var exphbs = require('express-handlebars');
 var url = require('url')
 var db = require("./db/db")
 var jwt= require('jsonwebtoken')
+var auth = require('./db/auth')
+var conf = require('./db/conf')
 
 const valid = (d) => { return ((typeof(d) != 'undefined')&&(d.length !== 0))?true:false }
 const frmat = (d) => { return d.sort().join('|') }
 const clone = (e) =>{ return JSON.parse(JSON.stringify(e))}
 
 var port = 1080;
-var secret = 'bizsecret';
+var secret = conf.secret
 
 var app = express();
 
@@ -50,7 +52,7 @@ app.get('/', function(req, res, next) {
 
 
 
-app.post('/apply/query', function(req, res) {
+app.post('/apply/query',function(req, res) {
   var {id} = req.body
   let sql = `CALL PROC_GET_APPLY(?)`;
   db.procedureSQL(sql,id,(err,ret)=>{
@@ -87,6 +89,18 @@ app.post('/apply/add', function(req, res) {
       }else{
         res.status(200).json({ code: 201 })
       }
+    }
+  })
+})
+
+app.post('/apply/setstatus', function(req, res) {
+  let sql  = `CALL PROC_STATUS_APPLY(?)`;
+  let params = req.body
+  db.procedureSQL(sql,JSON.stringify(params),(err,ret)=>{
+    if (err) {
+      res.status(500).json({ code: -1, msg: 'dismiss apply failed', data: null})
+    }else{
+        res.status(200).json({ code: 200, data: ret })
     }
   })
 })
@@ -358,7 +372,7 @@ app.post('/user/projadd', function(req, res, next) {
     })
 });
 
-app.post('/proj/query', function(req, res, next) {
+app.post('/proj/query',  function(req, res, next) {
   let data = req.body
   let len = Object.getOwnPropertyNames(data).length
   let table = 'project'

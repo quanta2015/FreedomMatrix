@@ -54,10 +54,8 @@ class Projdetail extends React.Component {
 
   render() {
     let { show } = this.state
-
-    console.log(show)
     let { detail, project } = this.props
-    let { id } = this.props.userStore.user.user
+    
     let { isLogin } = this.props.userStore
     console.log(isLogin)
 
@@ -174,8 +172,8 @@ class Projdetail extends React.Component {
 
                       { (isLogin===1) && 
                       <div className="m-row m-fun">
-                        <Button type="default" htmlType="submit" className="c-green" onClick={this.doFav.bind(this,id,item.id)}>気になる</Button>  
-                        <Button type="danger" htmlType="submit" onClick={this.doApply.bind(this,id,item.id)}>応募する</Button> 
+                        <Button type="default" htmlType="submit" className="c-green" onClick={this.doFav.bind(this,this.props.userStore.user.user.id,item.id)}>気になる</Button>  
+                        <Button type="danger" htmlType="submit" onClick={this.doApply.bind(this,this.props.userStore.user.user.id,item.id)}>応募する</Button> 
                       </div> }
 
                     </div>

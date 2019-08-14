@@ -17,6 +17,17 @@ export let strToNameList = (data,list) => {
 }
 
 
+export let strToName = (data,list) => {
+  let ret 
+  list.map(item=>{
+    if (parseInt(data) === parseInt(item.val) ) {
+      ret = item.txt
+    }
+  })
+  return ret;
+}
+
+
 export let valid = (data) => {
   return ((typeof(data) != 'undefined')&&(data !== ''))?true:false;
 }

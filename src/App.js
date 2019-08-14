@@ -13,6 +13,10 @@ import projquery  from 'app/projquery'
 import projadd    from 'app/projadd'
 import question   from 'app/question'
 
+import management   from 'app/other/management'
+import privacy      from 'app/other/privacy'
+import rule         from 'app/other/rule'
+import news         from 'app/other/news'
 
 @inject('userActions')
 @observer
@@ -47,6 +51,11 @@ class App extends React.Component {
                   <Route exact path='/homeuser'  component={homeuser}/>
                   <Route exact path='/homecomp'  component={homecomp}/>
                   <Route exact path='/question'  component={question}/>
+
+                  <Route exact path='/management'  component={management}/>
+                  <Route exact path='/privacy'     component={privacy}/>
+                  <Route exact path='/rule'        component={rule}/>
+                  <Route exact path='/news'        component={news}/>
                 </Switch>
               </Dashboard>
             </div>
