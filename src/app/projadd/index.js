@@ -224,7 +224,7 @@ class Projadd extends React.Component {
               >
                 {this.state.panes.map((item, index) => {
                   return (
-                    <TabPane key={item.key} tab={`案件 ${index + 1}`}
+                    <TabPane key={item.key} tab={`ポジション ${index + 1}`}
                     >
                       <Form.Item label="単価（万円）">
                         {getFieldDecorator(`input-number-proj_mony_${index + 1}`, {
