@@ -50,8 +50,6 @@ app.get('/', function(req, res, next) {
 
 
 
-
-
 app.post('/apply/query', function(req, res) {
   var {id} = req.body
   let sql = `CALL PROC_GET_APPLY(?)`;

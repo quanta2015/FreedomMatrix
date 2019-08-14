@@ -130,7 +130,15 @@ class UserActions extends BaseActions {
     return
   }
 
-
+  @action
+  async vertify(params) {
+    let r = await this.post(urls.API_USER_LOGIN, params, true)
+    if (r && r.code === 200) {
+      return true
+    }else{
+      return false
+    }
+  }
 }
 
 export default new UserActions(store)
