@@ -20,6 +20,9 @@ export const API_CANCEL_FAV   = API_SERVER + '/fav/cancel'
 export const API_QUERY_APPLY  = API_SERVER + '/apply/query'
 export const API_ADD_APPLY    = API_SERVER + '/apply/add'
 export const API_STATUS_APPLY = API_SERVER + '/apply/setstatus'
+export const API_SEND_MSG     = API_SERVER + '/apply/sendmsg'
+
+
 
 
 export const API_PROJ_QUERY  = API_SERVER + '/proj/query'

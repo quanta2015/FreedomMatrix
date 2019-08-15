@@ -33,7 +33,7 @@ class Change extends React.Component {
       proj_lang: ["0"],
       reqr_exp: "",
       pref_exp: "",
-      key: '1'
+      key: '0'
     }];
 
     this.state = {
@@ -100,7 +100,7 @@ class Change extends React.Component {
     this.setState({ panes, activeKey });
   };
 
-  doAdd = (e) => {
+  doChange = (e) => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
@@ -108,7 +108,7 @@ class Change extends React.Component {
         Modal.confirm({
           title: 'データを確認してください',
           onOk: () => {
-            this.addProj(params)
+            this.changeProj(params)
           }
         });
       }
@@ -119,20 +119,20 @@ class Change extends React.Component {
     this.props.close()
   }
 
-  addProj = async (params) => {
+  changeProj = async (params) => {
     params.count = this.state.panes.length
     params.pid = this.props.userStore.user.user.id
     params[`date_from,date_to`][0] = DT.convertD2I(params[`date_from,date_to`][0])
     params[`date_from,date_to`][1] = DT.convertD2I(params[`date_from,date_to`][1])
 
-    let r = await this.actions.projAdd(params)
+    let r = await this.props.userActions.saveUser(params)
     if (r && r.code === 200) {
       Modal.success({
-        title: '添加工程成功！',
+        title: '更改工程成功！',
         okText: "確認",
-        onOk() {
-          window.location.assign(`${window.location.origin}${window.location.pathname}#/homecomp`)
-        }
+        // onOk() {
+        //   window.location.assign(`${window.location.origin}${window.location.pathname}#/homecomp`)
+        // }
       })
     }
   }
@@ -145,7 +145,8 @@ class Change extends React.Component {
     let { detail, project } = this.props
   }
 
-  saveMul = (id, name, e) => {
+  saveVal
+   = (id, name, e) => {
     let val = []
     const { panes } = this.state;
     e.map((i) => { val.push(i) })
@@ -290,7 +291,7 @@ class Change extends React.Component {
                       </Tabs>
                     }
                     <div className="m-row fn-frc">
-                      <Button type="primary" htmlType="submit" onClick={this.doAdd}>変更</Button>
+                      <Button type="primary" htmlType="submit" onClick={this.doChange}>変更</Button>
                     </div>
                   </Form>
                 </div>

@@ -48,6 +48,18 @@ class ApplyActions extends BaseActions {
     return r
   }
 
+  async sendMsg(params) {
+    let r = await this.post(urls.API_SEND_MSG, params, true)
+    if (r && r.code === 200) {
+      runInAction(() => {
+        this.store.msg = {
+          data: r.data
+        }
+      })
+    }
+    return r
+  }
+
 
 }
 
