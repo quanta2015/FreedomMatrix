@@ -18,7 +18,6 @@
     background: #fff;
     margin: 20px auto;
     position: relative;
-    height: 100%;
   }
 
   .m-pd-wrap::-webkit-scrollbar {
@@ -95,8 +94,9 @@
     }
 
     .m-tl {
-      background: #666;
-      width: 200px;
+      color: #333;
+      background: #fff;
+      width: 100px;
     }
 
     .m-co {
@@ -105,6 +105,24 @@
       flex: 1;
       justify-content: center;
     }
+
+    .md-row-t {
+      display: flex;
+      flex-direction: column;
+      margin-top: 5px;
+
+      .m-tl {
+        width: 100%;
+        background: #eee;
+      }
+
+      .m-co {
+        justify-content: flex-start;
+        padding: 5px 10px;
+      }
+    }
+
+    
 
  
   }

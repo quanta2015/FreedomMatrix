@@ -52,8 +52,6 @@ class Posdetail extends React.Component {
                   <span className="m-co">
                     {DATE.convertI2S(pos.date_from)} ~ {DATE.convertI2S(pos.date_from)}
                   </span>
-                </div>
-                <div className="md-row">
                   <span className="m-tl">勤務エリア</span>
                   <span className="m-co">
                     {CT.strToNameList(pos.proj_area, CD.workareaList).map((item_area,i)=> 
@@ -66,8 +64,6 @@ class Posdetail extends React.Component {
                     {CT.strToNameList(pos.proj_domn, CD.projdomnList).map((item_domn,i)=> 
                         <span key={i}>{item_domn} </span> )}
                   </span>
-                </div>
-                <div className="md-row">
                   <span className="m-tl">応募対象</span>
                   <span className="m-co">
                     {CT.strToNameList(pos.proj_targ, CD.projTarget).map((item_targ,i)=> 
@@ -80,14 +76,56 @@ class Posdetail extends React.Component {
                     {CT.strToNameList(pos.proj_styl, CD.worktypeList).map((item_styl,i)=> 
                         <span key={i}>{item_styl}</span>)}
                   </span>
-                </div>
-                <div className="md-row">
                   <span className="m-tl">こだわり</span>
                   <span className="m-co">
                     {CT.strToNameList(pos.proj_pref, CD.projprefList).map((item_pref,i)=> 
                         <span className="m-proj-item-d" key={`pref-${i}`}>{item_pref}</span>)}
                   </span>
                 </div>
+                <div className="md-row">
+                  <span className="m-tl">職種</span>
+                  <span className="m-co">
+                    {CT.strToNameList(pos.proj_role, CD.workroleList).map((item_role,i)=> 
+                        <span key={i}>{item_role}</span>)}
+                  </span>
+                  <span className="m-tl">费用</span>
+                  <span className="m-co">
+                    {pos.proj_mony}
+                  </span>
+                </div>
+                <div className="md-row">
+                  <span className="m-tl">担当工程</span>
+                  <span className="m-co">
+                    {CT.strToNameList(pos.proj_resp, CD.projprefList).map((item_resp,i)=> 
+                            <span className="" key={i}>{item_resp}</span>)}
+                  </span>
+                  <span className="m-tl">言語スキル</span>
+                  <span className="m-co">
+                    {CT.strToNameList(pos.proj_lang, CD.worklangList).map((item_lang,i)=> 
+                      <span className="m-proj-item-d" key={i}>{item_lang}</span>)}
+                  </span>
+                </div>
+                <div className="md-row-t">
+                  <span className="m-tl">作業内容</span>
+                  <span className="m-co">
+                    {pos.proj_cont}
+                  </span>
+                </div>
+                <div className="md-row-t">
+                  <span className="m-tl">経験必須</span>
+                  <span className="m-co">
+                    {pos.reqr_exp}
+                  </span>
+                </div>
+                <div className="md-row-t">
+                  <span className="m-tl">経験歓迎</span>
+                  <span className="m-co">
+                    {pos.pref_exp}
+                  </span>
+                </div>
+
+
+                
 
               </div>
               

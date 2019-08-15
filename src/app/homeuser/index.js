@@ -92,10 +92,12 @@ class Homeuser extends React.Component {
   }
 
   detail = async (id) => {
+    this.setState({ loading: true })
     let r = await this.props.projectActions.posDetail({id:id})
     if (r && r.code === 200) {
       this.setState({
         showDetail: true,
+        loading: false,
       })
     }
   }
@@ -110,7 +112,7 @@ class Homeuser extends React.Component {
     let id = getValue(this.props.userStore.user, 'user.id', '')
     let params = { id: id }
     if (parseInt(e) === 2) {
-      this.setState({ loading: true });
+      this.setState({ loading: true })
       let r = await this.props.applyActions.queryApply(params) 
       if (r && r.code === 200) {
         this.setState({ loading: false })
@@ -398,7 +400,7 @@ class Homeuser extends React.Component {
                      
                     </span>
                     <span>
-                      <Button type="primary" size="small"  onClick={this.detail.bind(this, e.id)}  >详情</Button>
+                      <Button type="primary" size="small"  onClick={this.detail.bind(this, e.sid)}  >详情</Button>
                       {e.status===0 &&
                         <Button type="primary" size="small">進捗</Button>}
                       {e.status===0 &&
@@ -435,7 +437,7 @@ class Homeuser extends React.Component {
                     </span>
                     <span></span>
                     <span>
-                      <Button type="primary" size="small"  onClick={this.detail.bind(this, e.id)} >详情</Button>
+                      <Button type="primary" size="small"  onClick={this.detail.bind(this, e.sid)} >详情</Button>
                       <Button type="primary" size="small">应募</Button>
                       <Button type="primary" size="small" onClick={this.cancel.bind(this, e.id, this.props.userStore.user.user.id)}>キャンセル</Button>
                     </span>
