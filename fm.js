@@ -106,6 +106,24 @@ app.post('/apply/setstatus', function(req, res) {
 })
 
 
+app.post('/apply/sendmsg', function(req, res) {
+  let sql  = `CALL PROC_SEND_MSG(?)`;
+  let params = req.body
+  db.procedureSQL(sql,JSON.stringify(params),(err,ret)=>{
+    if (err) {
+      res.status(500).json({ code: -1, msg: 'send msg failed', data: null})
+    }else{
+      res.status(200).json({ code: 200, data: ret })
+    }
+  })
+})
+
+
+
+
+
+
+
 
 app.post('/fav/add', function(req, res) {
   let sql  = `CALL PROC_ADD_FAV(?)`;

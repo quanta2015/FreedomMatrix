@@ -14,6 +14,8 @@ import * as regex from 'util/regex'
 import moment  from 'moment'
 import { toJS } from 'mobx'
 
+
+
 import PosDetail from 'app/posdetail'
 
 const { TabPane } = Tabs;
@@ -34,6 +36,7 @@ class Homeuser extends React.Component {
       loading: false,
       editable: false,
       showDetail:false,
+      cur_id:null,
     }
   }
 
@@ -94,6 +97,33 @@ class Homeuser extends React.Component {
   detail = async (id) => {
     this.setState({ loading: true })
     let r = await this.props.projectActions.posDetail({id:id})
+    if (r && r.code === 200) {
+      this.setState({
+        showDetail: true,
+        loading: false,
+      })
+    }
+  }
+
+
+  showMsg =(id,e)=>{
+    let msg = document.querySelector('#msg_w')
+    if (msg.classList.contains('fn-show')) {
+      msg.classList.remove('fn-show')
+    }else{
+      msg.classList.add('fn-show')
+    }
+    this.setState({
+      cur_id: id
+    })
+  }
+
+
+  sendMsg = async()=>{
+    let msg = document.querySelector('#msg_t').value
+    let id  = this.state.cur_id
+
+    let r = await this.props.applyActions.sendMsg({id:id, msg:msg})
     if (r && r.code === 200) {
       this.setState({
         showDetail: true,
@@ -387,7 +417,7 @@ class Homeuser extends React.Component {
                 </div>
               {appList.map((e,index)=>{
                 return( 
-                  <div className="m-row-f" key={index} >
+                  <div className="m-row-f"  key={index}>
                     <span>{e.sid}</span>
                     <span>{e.proj_name}</span>
                     <span>{date.convertI2S(e.date_from)} ~ {date.convertI2S(e.date_to)}</span>
@@ -404,7 +434,7 @@ class Homeuser extends React.Component {
                       {e.status===0 &&
                         <Button type="primary" size="small">進捗</Button>}
                       {e.status===0 &&
-                        <Button type="primary" size="small">メッセージ</Button>}
+                        <Button type="primary" size="small" onClick={this.showMsg.bind(this,e.id)} >メッセージ</Button>}
                       {e.status===0 &&
                         <Button type="primary" size="small" onClick={this.dismiss.bind(this,e.id, this.props.userStore.user.user.id)}>辞退</Button>}
                     </span>
@@ -448,6 +478,13 @@ class Homeuser extends React.Component {
             </Skeleton>
           </TabPane>
         </Tabs>
+
+        <div className="m-msg" id="msg_w">
+          <TextArea rows={3} id="msg_t"/>
+           <Button htmlType="button" onClick={this.sendMsg}>发送</Button>
+        </div>
+
+
       </div>
     )
   }
