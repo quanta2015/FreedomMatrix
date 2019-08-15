@@ -479,6 +479,19 @@ app.post('/proj/detail', function(req, res, next) {
 })
 
 
+app.post('/proj/posdetail', function(req, res, next) {
+  let sql  = `CALL PROC_POS_DETAIL(?)`;
+  let params = req.body
+  db.procedureSQL(sql,JSON.stringify(params),(err,ret)=>{
+    if (err) {
+      res.status(500).json({ code: -1, msg: 'dismiss apply failed', data: null})
+    }else{
+        res.status(200).json({ code: 200, data: ret })
+    }
+  })
+})
+
+
 app.post('/proj/add', function(req, res, next) {
   
   let data = req.body
