@@ -102,7 +102,6 @@ class Homeproj extends React.Component {
 
   }
 
-
   setVal = (id,e) =>{
     let {query} = this.state
     query[id] = e.currentTarget.value
@@ -141,7 +140,7 @@ class Homeproj extends React.Component {
       <div className='g-homeproj'>
 
         {showDetail && <ProjDetail show={showDetail} project={curProj} detail={detail} close={this.closeDetail} />}
-        {showChange && <ChangeProj show={showChange} project={curProj} change={detail} close={this.closeChange} />}
+        {showChange && <ChangeProj show={showChange} project={curProj} change={change} close={this.closeChange} />}
 
         <Pagination defaultCurrent={1} total={projList.length} onChange={this.showPageData} />
         {pageList.map((item, index) => {

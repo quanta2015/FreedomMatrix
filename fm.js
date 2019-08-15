@@ -562,6 +562,59 @@ app.post('/proj/add', function(req, res, next) {
 
 });
 
+app.post('/proj/change', function(req, res, next) {
+  
+  let data = req.body
+  let posList = []
+  let sql = `CALL PROC_CHANGE_PROJ(?)`;
+
+  let project = {
+    id: data.id,
+    proj_name:data.proj_name,
+    proj_detl:data.proj_detl,
+    date_from:data['date_from,date_to'][0],
+    date_to:  data['date_from,date_to'][1],
+    proj_domn:data['select-multiple-proj_domn'].join('|'),
+    proj_area:data['select-multiple-proj_area'].join('|'),
+    proj_pref:data['select-multiple-proj_pref'].join('|'),
+    proj_targ:data.proj_targ,
+    proj_styl:data['select-multiple-proj_styl'].join('|')
+  }
+
+  if (data.count>0) {
+    for(let i=1;i<data.count+1;i++) {
+      let item = {}
+      item[`id`] = data.cid[i-1]
+      item[`proj_mony`] = data[`input-number-proj_mony_${i}`]
+      item[`proj_role`] = data[`select-multiple-proj_role_${i}`].join('|')
+      item[`proj_resp`] = data[`select-multiple-proj_resp_${i}`].join('|')
+      item[`proj_lang`] = data[`select-multiple-proj_lang_${i}`].join('|')
+      item[`proj_cont`] = data[`proj_cont_${i}`]
+      item[`reqr_exp`]  = data[`reqr_exp_${i}`]
+      item[`pref_exp`]  = data[`pref_exp_${i}`]
+      posList.push(item)
+    }
+  }
+
+  project['pos'] = posList
+  db.procedureSQL(sql,JSON.stringify(project),(err,ret)=>{
+    if (err) {
+      res.status(500).json({ code: -1, msg: 'change failed', data: null})
+    }else{
+      if (ret[0].err_code===0) {
+        delete project.pos
+        project.id = ret[0].id
+        let data = {
+          project:project, 
+          pos: posList
+        }
+        res.status(200).json({ code: 200, msg: 'change project succ' })
+      }
+    }
+  })
+
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

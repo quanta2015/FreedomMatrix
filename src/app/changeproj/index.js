@@ -33,7 +33,7 @@ class Change extends React.Component {
       proj_lang: ["0"],
       reqr_exp: "",
       pref_exp: "",
-      key: '0'
+      key: '0',
     }];
 
     this.state = {
@@ -120,43 +120,45 @@ class Change extends React.Component {
   }
 
   changeProj = async (params) => {
-    params.count = this.state.panes.length
-    params.pid = this.props.userStore.user.user.id
+    params.count = this.props.change.length
+    params.id = this.props.project.id
     params[`date_from,date_to`][0] = DT.convertD2I(params[`date_from,date_to`][0])
     params[`date_from,date_to`][1] = DT.convertD2I(params[`date_from,date_to`][1])
-
-    let r = await this.props.userActions.saveUser(params)
+    let i = 0
+    params.cid = []
+    for(i; i < this.props.change.length; i++){
+      params.cid.push(this.props.change[i].id);
+    }
+    let r = await this.actions.projChange(params)
     if (r && r.code === 200) {
       Modal.success({
         title: '更改工程成功！',
         okText: "確認",
-        // onOk() {
-        //   window.location.assign(`${window.location.origin}${window.location.pathname}#/homecomp`)
-        // }
+        onOk() {
+          window.location.reload();
+          
+        }
       })
     }
   }
 
-  saveVal = (id, name, e) => {
-    const { panes } = this.state;
-    let val = e.target.value
-    panes[id][name] = val
-    this.setState({ panes });
-    let { detail, project } = this.props
-  }
+  // saveVal = (id, name, e) => {
+  //   const { panes } = this.state;
+  //   let val = e.target.value
+  //   panes[id][name] = val
+  //   this.setState({ panes });
+  // }
 
-  saveVal
-   = (id, name, e) => {
-    let val = []
-    const { panes } = this.state;
-    e.map((i) => { val.push(i) })
-    panes[id][name] = val
-    this.setState({ panes });
-  }
+  // saveMul = (id, name, e) => {
+  //   let val = []
+  //   const { panes } = this.state;
+  //   e.map((i) => { val.push(i) })
+  //   panes[id][name] = val
+  //   this.setState({ panes });
+  // }
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    // let { panes, regtype } = this.state
     let { change, project } = this.props
     return (
       <div className='g-changeproj'>
@@ -186,7 +188,7 @@ class Change extends React.Component {
                     <Form.Item label="業界">
                       {getFieldDecorator(`select-multiple-proj_domn`, {
                         rules: [{ required: true, type: 'array', message: '業界を選択してください' }],
-                        initialValue: CT.strToNameList(project.proj_domn, CD.projdomnList)
+                        initialValue: getValue(project, 'proj_domn', '').split("|")
                       })(<MSelect className="m-form-text" data={CD.projdomnList} />)}
                     </Form.Item>
                     <Form.Item label="稼働期間">
@@ -199,18 +201,18 @@ class Change extends React.Component {
                     <Form.Item label="勤務エリア">
                       {getFieldDecorator('select-multiple-proj_area', {
                         rules: [{ required: true, type: 'array', message: '勤務エリアを選択してください' }],
-                        initialValue: CT.strToNameList(project.proj_area, CD.workareaList)
+                        initialValue: getValue(project, 'proj_area', '').split("|")
                       })(<MSelect className="m-form-text" data={CD.workareaList} />)}
                     </Form.Item>
                     <Form.Item label="こだわり">
                       {getFieldDecorator('select-multiple-proj_pref', {
                         rules: [{ required: true, type: 'array', message: 'こだわりを選択してください' }],
-                        initialValue: CT.strToNameList(project.proj_pref, CD.projprefList)
+                        initialValue: getValue(project, 'proj_pref', '').split("|")
                       })(<MSelect className="m-form-text" data={CD.projprefList} />)}
                     </Form.Item>
                     <Form.Item label="応募対象">
                       {getFieldDecorator('proj_targ', {
-                        initialValue: project.proj_targ ,
+                        initialValue: project.proj_targ,
                         rules: [{ required: true, type: 'string', message: 'カテゴリーを選択してください' }]
                       })(<Select className="m-form-text">
                         <Option value="0">フリーランス</Option>
@@ -221,7 +223,7 @@ class Change extends React.Component {
                     <Form.Item label="働き方">
                       {getFieldDecorator('select-multiple-proj_styl', {
                         rules: [{ required: true, type: 'array', message: '働き方を選択してください' }],
-                        initialValue:  CT.strToNameList(project.proj_styl, CD.worktypeList)
+                        initialValue:  getValue(project, 'proj_styl', '').split("|")
                       })(<MSelect className="m-form-text" data={CD.worktypeList} />)}
                     </Form.Item>
 
@@ -230,15 +232,18 @@ class Change extends React.Component {
                     </h2>
 
                     {
-                      <Tabs defaultActiveKey="1"
+                      <Tabs 
+                      defaultActiveKey="0"
                         onChange={this.onChange}
                         activeKey={this.state.activeKey}
                         type="editable-card"
-                        onEdit={this.onEdit}
+                        hideAdd={true}
+                        onEdit={this.onEdit}                        
                       >
                         {change.map((item, index) => {
+
                           return (
-                            <TabPane key={item.key} tab={`ポジション ${index + 1}`}
+                            <TabPane closable={false} key={item.key} tab={`ポジション ${index + 1}`}
                             >
                               <Form.Item label="単価（万円）">
                                 {getFieldDecorator(`input-number-proj_mony_${index + 1}`, {
@@ -249,26 +254,26 @@ class Change extends React.Component {
                               <Form.Item label="職種">
                                 {getFieldDecorator(`select-multiple-proj_role_${index + 1}`, {
                                   rules: [{ required: true, type: 'array', message: '職種を選択してください' }],
-                                  initialValue: CT.strToNameList(change[index].proj_role, CD.workroleList)
+                                  initialValue: getValue(change[index], 'proj_role', '').split("|")
                                 })(<MSelect className="m-form-text" data={CD.workroleList} />)}
                               </Form.Item>
                               <Form.Item label="担当工程">
                                 {getFieldDecorator(`select-multiple-proj_resp_${index + 1}`, {
                                   rules: [{ required: true, type: 'array', message: '担当工程を選択してください' }],
-                                  initialValue: CT.strToNameList(change[index].proj_resp, CD.projrespList) 
+                                  initialValue: getValue(change[index], 'proj_resp', '').split("|")
                                 })(<MSelect className="m-form-text" data={CD.projrespList} />)}
                               </Form.Item>
                               <Form.Item label="言語スキル">
                                 {getFieldDecorator(`select-multiple-proj_lang_${index + 1}`, {
                                   rules: [{ required: true, type: 'array', message: '言語スキルを選択してください' }],
-                                  initialValue: CT.strToNameList(change[index].proj_lang, CD.worklangList) 
+                                  initialValue: getValue(change[index], 'proj_lang', '').split("|")
                                 })(<MSelect className="m-form-text" data={CD.worklangList} />)}
                               </Form.Item>
                               <Form.Item label="作業内容">
                                 {getFieldDecorator(`proj_cont_${index + 1}`, {
                                   rules: [{ required: false, type: 'string', message: '作業内容を入力してください' }],
                                   initialValue: change[index].proj_cont
-                                })(<TextArea rows={4} onChange={this.saveVal.bind(this, index, 'work_cont')} />)}
+                                })(<TextArea rows={4} />)}
                               </Form.Item>
 
                               <h1>求める経験</h1>
@@ -277,13 +282,13 @@ class Change extends React.Component {
                                 {getFieldDecorator(`reqr_exp_${index + 1}`, {
                                   rules: [{ required: false, type: 'string', message: '求める経験（必須）を入力してください' }],
                                   initialValue: change[index].reqr_exp
-                                })(<TextArea rows={4} onChange={this.saveVal.bind(this, index, 'reqr_exp')} />)}
+                                })(<TextArea rows={4} />)}
                               </Form.Item>
                               <Form.Item label="歓迎">
                                 {getFieldDecorator(`pref_exp_${index + 1}`, {
                                   rules: [{ required: false, type: 'string', message: '求める経験(歓迎)を入力してください' }],
                                   initialValue: change[index].pref_exp
-                                })(<TextArea rows={4} onChange={this.saveVal.bind(this, index, 'pref_exp')} />)}
+                                })(<TextArea rows={4}  />)}
                               </Form.Item>
                             </TabPane>
                           )
