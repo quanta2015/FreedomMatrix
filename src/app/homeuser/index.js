@@ -164,6 +164,7 @@ class Homeuser extends React.Component {
         this.setState({ loading: false })
       }
     }else if (parseInt(e)===3) {
+      document.querySelector('#msg_w').classList.remove('fn-show')
       this.setState({ loading: true });
       let r = await this.props.favActions.queryFav(params) 
       if (r && r.code === 200) {

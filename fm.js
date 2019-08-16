@@ -15,7 +15,8 @@ var conf = require('./db/conf')
 
 const valid = (d) => { return ((typeof(d) != 'undefined')&&(d.length !== 0))?true:false }
 const frmat = (d) => { return d.sort().join('|') }
-const clone = (e) =>{ return JSON.parse(JSON.stringify(e))}
+const clone = (e) =>{ return (typeof(e)!=='undefined')?JSON.parse(JSON.stringify(e)):''　}
+　
 
 var port = 1080;
 var secret = conf.secret
