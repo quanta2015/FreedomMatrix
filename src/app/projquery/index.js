@@ -199,7 +199,7 @@ class Projquery extends React.Component {
                   </div>
                   <div className="m-proj-row">
                     <div className="m-proj-tl">项目时间</div>
-                    <div className="m-proj-co m-date">{DATE.convertI2S(item.date_from)} ~ {DATE.convertI2S(item.date_from)}</div>
+                    <div className="m-proj-co m-date">{DATE.convertI2S(item.date_from)} ~ {DATE.convertI2S(item.date_to)}</div>
                     <div className="m-proj-tl">業界</div>
                     <div className="m-proj-co">
                     { (projList.length !== 0) &&

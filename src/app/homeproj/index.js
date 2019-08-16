@@ -23,11 +23,11 @@ class Homeproj extends React.Component {
     this.store = props.projectStore
 
     this.state = {
-      showAdv: false,
       curPage: 1,
       showDetail: false,
       showChange: false,
       detail: [],
+      change: [],
       curProj: {},
       query: {
         key: ''
@@ -52,25 +52,27 @@ class Homeproj extends React.Component {
     })
   }
 
-  showDetail = async (item) => {
-    let r = await this.action.projDetail({ id: item.pid })
+  showDetail = async (item)=>{
+    this.setState({ loading: true });
+    let r = await this.action.projDetail({id:item.id})
     if (r && r.code === 200) {
       this.setState({
         showDetail: true,
         detail: r.data,
         curProj: item,
+        loading: false,
       })
-
     }
   }
 
   showChange = async (item) => {
-    let r = await this.action.projDetail({ id: item.pid })
+    let r = await this.action.projDetail({ id: item.id })
     if (r && r.code === 200) {
       this.setState({
         showChange: true,
-        detail: r.data,
+        change: r.data,
         curProj: item,
+        loading: false,
       })
 
     }
@@ -88,14 +90,38 @@ class Homeproj extends React.Component {
     })
   }
 
-  query = () => {
+  query = async () => {
+    this.setState({ loading: true });
     let query = this.state.query
-    this.action.projQuery(query)
+    let r = await this.action.projQuery(query)
+    if (r && r.code === 200) {
+      this.setState({
+        loading: false,
+      })
+    }
+
   }
 
+  setVal = (id,e) =>{
+    let {query} = this.state
+    query[id] = e.currentTarget.value
+    this.setState({
+      query: query
+    })
+  }
+
+  setMVal = (id,val) =>{
+    let {query} = this.state
+    query[id] = val
+    this.setState({
+      query: query
+    })
+  }
+
+  
   render() {
 
-    let { showAdv, curPage, curProj, showDetail, showChange, detail } = this.state
+    let { showAdv, curPage, curProj, showDetail, showChange, detail, change } = this.state
     let projList, projdomnList, pageList = []
     let PAGESIZE = 10
     let posList = [1, 2, 3];
@@ -114,7 +140,7 @@ class Homeproj extends React.Component {
       <div className='g-homeproj'>
 
         {showDetail && <ProjDetail show={showDetail} project={curProj} detail={detail} close={this.closeDetail} />}
-        {showChange && <ChangeProj show={showChange} project={curProj} detail={detail} close={this.closeChange} />}
+        {showChange && <ChangeProj show={showChange} project={curProj} change={change} close={this.closeChange} />}
 
         <Pagination defaultCurrent={1} total={projList.length} onChange={this.showPageData} />
         {pageList.map((item, index) => {
@@ -125,7 +151,7 @@ class Homeproj extends React.Component {
                 <div className="m-proj-id">{(index + 1) + (curPage - 1) * PAGESIZE}.</div>
                 <div className="m-proj-name">{item.proj_name}</div>
                 <div className="m-proj-tl">项目时间</div>
-                <div className="m-proj-co m-date">{DATE.convertI2S(item.date_from)} ~ {DATE.convertI2S(item.date_from)}</div>
+                <div className="m-proj-co m-date">{DATE.convertI2S(item.date_from)} ~ {DATE.convertI2S(item.date_to)}</div>
                 <div className="m-proj-row m-proj-row-f">
                   <Button type="default" htmlType="submit" className="c-green" onClick={this.showDetail.bind(this, item)}>詳細を見る</Button>
                   <Button type="default" htmlType="submit" className="c-green" onClick={this.showChange.bind(this, item)}>案件を変更</Button>
