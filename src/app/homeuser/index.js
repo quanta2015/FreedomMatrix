@@ -37,6 +37,7 @@ class Homeuser extends React.Component {
       editable: false,
       showDetail:false,
       cur_id:null,
+      msg:[]
     }
   }
 
@@ -106,28 +107,43 @@ class Homeuser extends React.Component {
   }
 
 
-  showMsg =(id,e)=>{
+  showMsg = async(id,e)=>{
     let msg = document.querySelector('#msg_w')
-    if (msg.classList.contains('fn-show')) {
-      msg.classList.remove('fn-show')
-    }else{
-      msg.classList.add('fn-show')
+    // if (msg.classList.contains('fn-show')) {
+    //   msg.classList.remove('fn-show')
+    // }else{
+    //   msg.classList.add('fn-show')
+    // }
+
+    msg.classList.add('fn-show')
+
+    let r = await this.props.applyActions.queryMsg({id:id})
+    if (r && r.code === 200) {
+      this.setState({
+        cur_id: id,
+        msg: r.data
+      })
     }
-    this.setState({
-      cur_id: id
-    })
   }
 
 
   sendMsg = async()=>{
     let msg = document.querySelector('#msg_t').value
     let id  = this.state.cur_id
+    let time = moment(new Date()).format("YYYY/MM/DD hh:mm")
 
-    let r = await this.props.applyActions.sendMsg({id:id, msg:msg})
+    this.setState({ loading: true })
+    let r = await this.props.applyActions.sendMsg({id:id, msg:msg, type:0, time:time})
     if (r && r.code === 200) {
-      this.setState({
-        showDetail: true,
-        loading: false,
+
+      Modal.info({
+        title: '发送消息成功！',
+        onOk:()=> { 
+          this.setState({
+            loading: false,
+            msg: r.data
+          })
+        }
       })
     }
   }
@@ -193,9 +209,10 @@ class Homeuser extends React.Component {
     let _pos = this.props.projectStore.pos
     let pos = (typeof(_pos)!=='undefined')?_pos.data[0]:{}
 
-    console.log(pos)
-    let { showDetail } = this.state
+    let { showDetail,msg } = this.state
 
+
+    console.log(msg)
 
     return (
       <div className='g-homeuser'>
@@ -480,8 +497,22 @@ class Homeuser extends React.Component {
         </Tabs>
 
         <div className="m-msg" id="msg_w">
-          <TextArea rows={3} id="msg_t"/>
-           <Button htmlType="button" onClick={this.sendMsg}>发送</Button>
+          <div className="m-msg-wrap">
+            {msg.map((item,index)=>
+              <div className="m-msg-row" key={index}>
+                <span className={(item.msg_type==0)?"m-user m-left":"m-user m-right"} >
+                  {(item.msg_type==0)?"my":item.msg_from}
+                </span>
+                <span className={(item.msg_type==0)?"m-user m-right fn-hide":"m-user m-left fn-hide"}>
+                  {item.msg_to}
+                </span>
+                <span className="m-time">{item.msg_time}</span>
+                <span className={(item.msg_type==0)?"m-cnt m-cnt-left":"m-cnt m-cnt-right"} >{item.msg_cnt}</span>
+              </div>
+            )}
+          </div>
+          <TextArea className="m-msg-cnt" rows={3} id="msg_t"/>
+           <Button type="primary" className="m-btn-send" htmlType="button" onClick={this.sendMsg}>发送</Button>
         </div>
 
 
