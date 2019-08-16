@@ -358,8 +358,7 @@ app.post('/user/regcomp', function(req, res, next) {
       if (ret[0].err_code===0) {
         let data = {
           token: jwt.sign({ email: account.email, pwd: account.pwd }, secret),
-          user:account, 
-          exp: expList
+          user:account
         }
         res.status(200).json({ code: 200, msg: 'reg successful', data: data  })
       }else{
