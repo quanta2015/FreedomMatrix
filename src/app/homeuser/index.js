@@ -175,6 +175,7 @@ class Homeuser extends React.Component {
 
 
   render() {
+
     const { editable } = this.state
     const { user } = this.props.userStore
     const ptList = CD.personType
@@ -190,6 +191,8 @@ class Homeuser extends React.Component {
     const pers_type    = getValue(user, 'user.pers_type', '') 
     const work_mony   = getValue(user, 'user.work_mony', '') 
     const expList      = clone(getValue(user, 'exp', []))
+    const uid   = getValue(user, 'user.id', '')      
+
 
     let favList = getValue(this.props.favStore.fav, 'data', [])
     let appList = toJS(getValue(this.props.applyStore.apply, 'data', [])) 
@@ -454,7 +457,7 @@ class Homeuser extends React.Component {
                       {e.status===0 &&
                         <Button type="primary" size="small" onClick={this.showMsg.bind(this,e.id)} >メッセージ</Button>}
                       {e.status===0 &&
-                        <Button type="primary" size="small" onClick={this.dismiss.bind(this,e.id, this.props.userStore.user.user.id)}>辞退</Button>}
+                        <Button type="primary" size="small" onClick={this.dismiss.bind(this,e.id, uid)}>辞退</Button>}
                     </span>
                   </div>
                 )
@@ -487,7 +490,7 @@ class Homeuser extends React.Component {
                     <span>
                       <Button type="primary" size="small"  onClick={this.detail.bind(this, e.sid)} >详情</Button>
                       <Button type="primary" size="small">应募</Button>
-                      <Button type="primary" size="small" onClick={this.cancel.bind(this, e.id, this.props.userStore.user.user.id)}>キャンセル</Button>
+                      <Button type="primary" size="small" onClick={this.cancel.bind(this, e.id, uid)}>キャンセル</Button>
                     </span>
                   </div>
                 )
@@ -515,7 +518,6 @@ class Homeuser extends React.Component {
           <TextArea className="m-msg-cnt" rows={3} id="msg_t"/>
            <Button type="primary" className="m-btn-send" htmlType="button" onClick={this.sendMsg}>发送</Button>
         </div>
-
 
       </div>
     )
