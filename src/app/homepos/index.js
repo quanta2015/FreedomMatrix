@@ -40,6 +40,10 @@ class Homepos extends React.Component {
     }
   }
 
+  doMsg = (id) => {
+
+  }
+
   render() {
     let { curPos } = this.state
 
@@ -57,13 +61,13 @@ class Homepos extends React.Component {
               <span>{item.name_kj}</span>
               <span>
                 {CT.strToNameList(item.proj_role, CD.workroleList).map((item_role, i) =>
-                  <span className="" key={i}>{item_role}</span>)}
+                  <span className="" key={i}>{item_role}</span>) }
               </span>
               <span>
               {CT.strToName(item.status, CD.APPLY_STATUS)}
               </span>
               <span>
-                <Button type="primary" size="small" >連絡</Button>
+                <Button type="primary" size="small" onClick={doMsg.bind(this,item.id)}>連絡</Button>
                 <Button type="primary" size="small">成約</Button>
                 <Button type="primary" size="small">見送り</Button>
               </span>
