@@ -67,7 +67,7 @@ class Homepos extends React.Component {
               {CT.strToName(item.status, CD.APPLY_STATUS)}
               </span>
               <span>
-                <Button type="primary" size="small" onClick={doMsg.bind(this,item.id)}>連絡</Button>
+                <Button type="primary" size="small">連絡</Button>
                 <Button type="primary" size="small">成約</Button>
                 <Button type="primary" size="small">見送り</Button>
               </span>
