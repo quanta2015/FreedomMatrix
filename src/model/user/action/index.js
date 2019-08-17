@@ -43,16 +43,6 @@ class UserActions extends BaseActions {
   }
 
   @action
-  async regUser(params) {
-    let r = await this.post(urls.API_USER_REG, params, true)
-
-    if (r.code === 200) {
-      this.saveData(r, this.store)
-    }
-    return r
-  }
-
-  @action
   async saveUser(params) {
     let r = await this.post(urls.API_USER_SAVE, params, true)
     this.saveData(r, this.store)

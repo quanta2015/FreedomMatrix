@@ -41,6 +41,17 @@ class ProjectActions extends BaseActions {
   }
 
   @action
+  async projPos(params) {
+    let r = await this.post(urls.API_PROJ_POS, params, true)
+    if (r && r.code===200) {
+      runInAction(() => {
+        // this.store.project = r.data
+      })
+      return r
+    }
+  }
+  
+  @action
   async projAdd(params) {
     let r = await this.post(urls.API_PROJ_ADD, params, true)
     return r

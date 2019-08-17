@@ -12,7 +12,7 @@ import { toJS } from 'mobx'
 
 import ProjDetail from 'app/projdetail'
 import ChangeProj from '../changeproj';
-
+import Homepos from 'app/homepos'
 @inject('projectActions', 'projectStore', 'userStore')
 @observer
 class Homeproj extends React.Component {
@@ -44,6 +44,7 @@ class Homeproj extends React.Component {
     })
 
     this.action.projQuery(query)
+
   }
 
   showPageData = (index) => {
@@ -99,7 +100,6 @@ class Homeproj extends React.Component {
         loading: false,
       })
     }
-
   }
 
   setVal = (id,e) =>{
@@ -158,28 +158,7 @@ class Homeproj extends React.Component {
                   <Button type="default" htmlType="submit" className="c-green" onClick={this.showDetail.bind(this, item)}>案件を終了</Button>
                 </div>
               </div>
-              <div className="m-fav">
-                <div className="m-row-f m-row-tl">
-                  <span>応募者</span>
-                  <span>ポジション</span>
-                  <span>ステータス</span>
-                  <span>進捗</span>
-                </div>
-                {posList.map((e) => {
-                  return (
-                    <div className="m-row-f" key={index} >
-                      <span>オウコウ</span>
-                      <span>ウェブ開発エンジニア</span>
-                      <span>実行中</span>
-                      <span>
-                        <Button type="primary" size="small" >連絡</Button>
-                        <Button type="primary" size="small">成約</Button>
-                        <Button type="primary" size="small">見送り</Button>
-                      </span>
-                    </div>
-                  )
-                })}
-              </div>
+              <Homepos project={item.id}/>
             </div>
           )
         })}

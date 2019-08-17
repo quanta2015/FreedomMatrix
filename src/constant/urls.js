@@ -27,6 +27,8 @@ export const API_QUERY_MSG    = API_SERVER + '/apply/querymsg'
 
 
 export const API_PROJ_QUERY  = API_SERVER + '/proj/query'
+export const API_PROJ_POS  = API_SERVER + '/proj/pos'
+
 export const API_PROJ_ADD    = API_SERVER + '/proj/add'
 export const API_PROJ_CHANGE    = API_SERVER + '/proj/change'
 export const API_PROJ_DETAIL = API_SERVER + '/proj/detail'

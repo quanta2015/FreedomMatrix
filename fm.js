@@ -15,7 +15,7 @@ var conf = require('./db/conf')
 
 const valid = (d) => { return ((typeof(d) != 'undefined')&&(d.length !== 0))?true:false }
 const frmat = (d) => { return d.sort().join('|') }
-const clone = (e) =>{ return (typeof(e)!=='undefined')?JSON.parse(JSON.stringify(e)):''　}
+const clone = (e) =>{ return JSON.parse(JSON.stringify(e))}
 　
 
 var port = 1080;
@@ -489,6 +489,20 @@ app.post('/proj/query',  function(req, res, next) {
   }
 
   db.select(table,where,order,limit, (err,ret)=>{
+    res.status(200).json({
+      code: 200,
+      msg: '取案例数据成功',
+      data: ret
+    })
+  })
+})
+
+app.post('/proj/pos',  function(req, res, next) {
+  let id = Object.keys(req.body)[0]
+  
+  table = 'position inner join apply on position.id = apply.pid inner join account ON apply.cid = account.id'
+  where = `where position.pid=${id}`
+  db.select(table,where,'','', (err,ret)=>{
     res.status(200).json({
       code: 200,
       msg: '取案例数据成功',
