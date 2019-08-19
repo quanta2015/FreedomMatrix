@@ -47,14 +47,20 @@ class Homepos extends React.Component {
   render() {
     let { curPos } = this.state
 
+    console.log(curPos)
+
     return (
-      <div className="m-fav">
+      <div className="g-homepos ">
+
+        {curPos.length>0 &&
         <div className="m-row-f m-row-tl">
           <span>応募者</span>
           <span>ポジション</span>
           <span>ステータス</span>
           <span>進捗</span>
         </div>
+        }
+        
         {curPos.map((item, index) => {
           return (
             <div className="m-row-f" key={index} >
