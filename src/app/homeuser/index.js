@@ -174,6 +174,19 @@ class Homeuser extends React.Component {
   }
 
 
+  doApply = async (cid, pid)=>{
+    let r = await this.props.applyActions.addApply({cid:cid, pid:pid})
+    if (r && r.code === 200) {
+      Modal.info({
+        title: '应募成功！',
+        onOk:()=> { }
+      });
+    }else{
+      message.success('您已经应募该职位')
+    }
+  }
+
+
   render() {
 
     const { editable } = this.state
@@ -216,7 +229,7 @@ class Homeuser extends React.Component {
     let { showDetail,msg } = this.state
 
 
-    console.log(msg)
+    console.log(toJS(favList))
 
     return (
       <div className='g-homeuser'>
@@ -439,18 +452,18 @@ class Homeuser extends React.Component {
               {appList.map((e,index)=>{
                 return( 
                   <div className="m-row-f"  key={index}>
-                    <span>{e.sid}</span>
-                    <span>{e.proj_name}</span>
-                    <span>{date.convertI2S(e.date_from)} ~ {date.convertI2S(e.date_to)}</span>
-                    <span>
+                    <span className="m-col-id">{e.sid}</span>
+                    <span className="m-col-name">{e.proj_name}</span>
+                    <span className="m-col-time">{date.convertI2S(e.date_from)} ~ {date.convertI2S(e.date_to)}</span>
+                    <span className="m-col-area">
                       { CT.strToNameList(e.proj_area, CD.workareaList).map((item_area,j)=>
                         <span className="m-proj-item-d" key={j}>{item_area}</span> ) }
                     </span>
-                    <span>
+                    <span className="m-col-stat">
                       <span>{CT.strToName(e.status, CD.APPLY_STATUS)}</span>
                      
                     </span>
-                    <span>
+                    <span  className="m-col-fun">
                       <Button type="primary" size="small"  onClick={this.detail.bind(this, e.sid)}  >详情</Button>
                       {e.status===0 &&
                         <Button type="primary" size="small">進捗</Button>}
@@ -479,17 +492,17 @@ class Homeuser extends React.Component {
               {favList.map((e,index)=>{
                 return( 
                   <div className="m-row-f" key={index} >
-                    <span>{e.sid}</span>
-                    <span>{e.proj_name}</span>
-                    <span>{date.convertI2S(e.date_from)} ~ {date.convertI2S(e.date_to)}</span>
-                    <span>
+                    <span className="m-col-id">{e.sid}</span>
+                    <span className="m-col-name">{e.proj_name}</span>
+                    <span className="m-col-time">{date.convertI2S(e.date_from)} ~ {date.convertI2S(e.date_to)}</span>
+                    <span className="m-col-area">
                       { CT.strToNameList(e.proj_area, CD.workareaList).map((item_area,j)=>
                         <span className="m-proj-item-d" key={j}>{item_area}</span> ) }
                     </span>
-                    <span></span>
-                    <span>
+                    <span className="m-col-none"></span>
+                    <span className="m-col-fun">
                       <Button type="primary" size="small"  onClick={this.detail.bind(this, e.sid)} >详情</Button>
-                      <Button type="primary" size="small">应募</Button>
+                      <Button type="primary" size="small" onClick={this.doApply.bind(this,uid,e.sid)}>应募</Button>
                       <Button type="primary" size="small" onClick={this.cancel.bind(this, e.id, uid)}>キャンセル</Button>
                     </span>
                   </div>

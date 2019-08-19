@@ -39,7 +39,7 @@ class Posdetail extends React.Component {
             <div className="m-pd-wrap">
               <div className="m-close" onClick={this.close}></div> 
               <div className="m-main">
-                <div className="md-row md-row-tl">
+                <div className="md-row md-row-tl c-blue">
                   <span className="m-return" onClick={this.close}>
                     <Icon type="left" />
                   </span>
