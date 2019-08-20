@@ -339,7 +339,7 @@ class Reg extends React.Component {
           ):(<div></div>)}
 
           <div className="m-row fn-frc">
-            <Button type="primary"  htmlType="submit" onClick={this.doReg}>登録</Button>
+            <Button type="primary" className="m-btn" htmlType="submit" onClick={this.doReg}>登録</Button>
           </div>
         </Form>
       </div>

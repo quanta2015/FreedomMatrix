@@ -118,6 +118,10 @@ class Homeproj extends React.Component {
     })
   }
 
+  closeProj = ()=>{
+    
+  }
+
   
   render() {
 
@@ -155,7 +159,7 @@ class Homeproj extends React.Component {
                 <div className="m-proj-row m-proj-row-f">
                   <Button type="default" htmlType="submit" className="c-grey" onClick={this.showDetail.bind(this, item)}>詳細を見る</Button>
                   <Button type="default" htmlType="submit" className="c-grey" onClick={this.showChange.bind(this, item)}>案件を変更</Button>
-                  <Button type="default" htmlType="submit" className="c-grey" onClick={this.showDetail.bind(this, item)}>案件を終了</Button>
+                  <Button type="default" htmlType="submit" className="c-grey" onClick={this.closeProj.bind(this, item)}>案件を終了</Button>
                 </div>
               </div>
 

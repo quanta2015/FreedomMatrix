@@ -278,7 +278,7 @@ class Projadd extends React.Component {
               </Tabs>
             }
             <div className="m-row fn-frc">
-              <Button type="primary" htmlType="submit" onClick={this.doAdd}>登録</Button>
+              <Button type="primary" className="m-btn" htmlType="submit" onClick={this.doAdd}>登録</Button>
             </div>
           </Form>
         </div>

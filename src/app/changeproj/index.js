@@ -296,7 +296,7 @@ class Change extends React.Component {
                       </Tabs>
                     }
                     <div className="m-row fn-frc">
-                      <Button type="primary" htmlType="submit" onClick={this.doChange}>変更</Button>
+                      <Button type="primary" htmlType="submit" className="m-btn" onClick={this.doChange}>変更</Button>
                     </div>
                   </Form>
                 </div>
