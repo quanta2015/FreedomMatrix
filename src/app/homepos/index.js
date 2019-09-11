@@ -24,7 +24,7 @@ class Homepos extends React.Component {
     this.state = {
       loading: false,
       curPos: [],
-      msg: []
+      msg: {}
     }
   }
 
@@ -67,8 +67,10 @@ class Homepos extends React.Component {
     }
     let r = await this.props.applyActions.queryMsg({ id: id })
     if (r && r.code === 200) {
+      let { msg } = this.state
+      msg[id] = r.data
       this.setState({
-        msg: r.data
+        msg: msg
       })
     }
   }
@@ -84,9 +86,11 @@ class Homepos extends React.Component {
       Modal.info({
         title: '发送消息成功！',
         onOk: () => {
+          let { msg } = this.state
+          msg[id] = r.data
           this.setState({
             loading: false,
-            msg: r.data
+            msg: msg
           })
         }
       })
@@ -133,7 +137,8 @@ class Homepos extends React.Component {
               <div className="m-msg" id={"msg_w" + item.aid}>
                 <div className="m-msg-wrap">
                   {
-                    msg.map((item, index) =>
+                    msg[item.aid] != null &&
+                    msg[item.aid].map((item, index) =>
                     <div className="m-msg-row" key={index}>
                       <span className={(item.msg_type != 0) ? "m-user m-left" : "m-user m-right"} >
                         {(item.msg_type != 0) ? "my" : item.msg_from}
