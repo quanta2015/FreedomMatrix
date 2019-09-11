@@ -77,9 +77,7 @@ class Homepos extends React.Component {
 
   sendMsg = async (id, e) => {
     let msg = document.querySelector('#msg_t' + id).value
-
     let time = moment(new Date()).format("YYYY/MM/DD hh:mm")
-    this.setState({ loading: true })
     let r = await this.props.applyActions.sendMsg({ id: id, msg: msg, type: 1, time: time })
     if (r && r.code === 200) {
 
@@ -89,7 +87,6 @@ class Homepos extends React.Component {
           let { msg } = this.state
           msg[id] = r.data
           this.setState({
-            loading: false,
             msg: msg
           })
         }
