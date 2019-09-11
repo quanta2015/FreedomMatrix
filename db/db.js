@@ -63,6 +63,26 @@ var select = async (table, where, order, limit, cb)=>{
   })
 };
 
+var selectSP = async (select, table, where, order, limit, cb)=>{
+  pool.getConnection((err, conn)=>{
+    if (err) {
+      console.log('Connect error', err )
+    } else {
+      let sql = `select ${select} from ${table} ${where} ${order} ${limit}`
+
+      console.log(sql)
+      conn.query(sql,  ( err, rows) => {
+        if ( err ) {
+          console.log('SQL error', err )
+        } else {
+          cb( err, rows )
+        }
+        conn.release()
+      })
+    }
+  })
+};
+
 var selectAll = async (table, cb)=>{
   pool.getConnection((err, conn)=>{
     if (err) {
@@ -173,6 +193,7 @@ var vertifyUser = async (params, cb) => {
 
 
 exports.select     = select;
+exports.selectSP     = selectSP;
 exports.selectAll  = selectAll;
 exports.selectPage = selectPage;
 exports.querySQL   = querySQL;

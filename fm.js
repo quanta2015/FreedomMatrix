@@ -502,7 +502,9 @@ app.post('/proj/pos',  function(req, res, next) {
   
   table = 'position inner join apply on position.id = apply.pid inner join account ON apply.cid = account.id'
   where = `where position.pid=${id}`
-  db.select(table,where,'','', (err,ret)=>{
+  if()
+  select = '*, apply.id as aid'
+  db.selectSP(select,table,where,'','', (err,ret)=>{
     res.status(200).json({
       code: 200,
       msg: '取案例数据成功',

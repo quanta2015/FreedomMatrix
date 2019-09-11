@@ -1,19 +1,20 @@
 import React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Input } from 'antd';
 import getNode from 'util/getNode'
 import './index.less'
-import { message, Button, Select, Switch, Pagination } from 'antd'
+import { Input, message, Button, Select, Switch, Pagination, Modal } from 'antd'
 import MSelect from 'util/MSelect'
 import * as DATE from 'util/date'
 import * as CT from 'util/convert'
 import * as CD from 'constant/data'
 import { toJS } from 'mobx'
-
 import ProjDetail from 'app/projdetail'
 import ChangeProj from '../changeproj';
+import moment from 'moment'
 
-@inject('projectActions', 'projectStore', 'userStore')
+const { TextArea } = Input;
+
+@inject('projectActions', 'projectStore', 'userStore', 'applyActions')
 @observer
 class Homepos extends React.Component {
 
@@ -22,6 +23,8 @@ class Homepos extends React.Component {
     this.action = props.projectActions
     this.state = {
       curPos: [],
+      msg: [],
+      cur_id: null
     }
 
   }
@@ -40,43 +43,95 @@ class Homepos extends React.Component {
     }
   }
 
-  doMsg = (id) => {
+  showMsg = async (id, e) => {
+    let msg = document.querySelector('#msg_w' + id)
+    if (msg.classList.contains('fn-show')) {
+      msg.classList.remove('fn-show')
+    }else{
+      msg.classList.add('fn-show')
+    }
+    let r = await this.props.applyActions.queryMsg({ id: id })
+    if (r && r.code === 200) {
+      this.setState({
+        cur_id: id,
+        msg: r.data
+      })
+    }
+  }
 
+  sendMsg = async () => {
+    let id = this.state.cur_id
+    let msg = document.querySelector('#msg_t' + id).value
+    
+    let time = moment(new Date()).format("YYYY/MM/DD hh:mm")
+    this.setState({ loading: true })
+    let r = await this.props.applyActions.sendMsg({ id: id, msg: msg, type: 1, time: time })
+    if (r && r.code === 200) {
+
+      Modal.info({
+        title: '发送消息成功！',
+        onOk: () => {
+          this.setState({
+            loading: false,
+            msg: r.data
+          })
+        }
+      })
+    }
   }
 
   render() {
     let { curPos } = this.state
-
-    console.log(curPos)
-
+    let { msg } = this.state
+    let { curid } = this.state
     return (
       <div className="g-homepos ">
-
-        {curPos.length>0 &&
-        <div className="m-row-f m-row-tl">
-          <span>応募者</span>
-          <span>ポジション</span>
-          <span>ステータス</span>
-          <span>進捗</span>
-        </div>
+        {curPos.length > 0 &&
+          <div className="m-row-f m-row-tl">
+            <span>応募者</span>
+            <span>ポジション</span>
+            <span>ステータス</span>
+            <span>進捗</span>
+          </div>
         }
-        
         {curPos.map((item, index) => {
           return (
-            <div className="m-row-f" key={index} >
-              <span>{item.name_kj}</span>
-              <span>
-                {CT.strToNameList(item.proj_role, CD.workroleList).map((item_role, i) =>
-                  <span className="" key={i}>{item_role}</span>) }
-              </span>
-              <span>
-              {CT.strToName(item.status, CD.APPLY_STATUS)}
-              </span>
-              <span>
-                <Button type="primary" size="small">連絡</Button>
-                <Button type="primary" size="small">成約</Button>
-                <Button type="primary" size="small">見送り</Button>
-              </span>
+            <div>
+              <div className="m-row-f" key={index} >
+                <span>{item.name_kj}</span>
+                <span>
+                  {CT.strToNameList(item.proj_role, CD.workroleList).map((item_role, i) =>
+                    <span className="" key={i}>{item_role}</span>)}
+                </span>
+                <span>
+                  {CT.strToName(item.status, CD.APPLY_STATUS)}
+                </span>
+                <span>
+                  <Button type="primary" size="small" onClick={this.showMsg.bind(this, item.aid)}>連絡</Button>
+                  <Button type="primary" size="small">成約</Button>
+                  <Button type="primary" size="small">見送り</Button>
+                </span>
+              </div>
+
+              <div className="m-msg" id={"msg_w" + item.aid}>
+                <div className="m-msg-wrap">
+                  {msg.map((item, index) =>
+                    <div className="m-msg-row" key={index}>
+                      <span className={(item.msg_type != 0) ? "m-user m-left" : "m-user m-right"} >
+                        {(item.msg_type != 0) ? "my" : item.msg_from}
+                      </span>
+                      <span className={(item.msg_type != 0) ? "m-user m-right fn-hide" : "m-user m-left fn-hide"}>
+                        {item.msg_from}
+                      </span>
+                      <span className="m-time">{item.msg_time}</span>
+                      <span className={(item.msg_type != 0) ? "m-cnt m-cnt-left" : "m-cnt m-cnt-right"} >{item.msg_cnt}</span>
+                    </div>
+                  )}
+                </div>
+                <TextArea className="m-msg-cnt" rows={3} id={"msg_t" + item.aid} />
+                <Button type="primary" className="m-btn-send" htmlType="button" onClick={this.sendMsg}>发送</Button>
+              </div>
+            
             </div>
           )
         })}
