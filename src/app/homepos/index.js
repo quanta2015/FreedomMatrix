@@ -2,7 +2,7 @@ import React from 'react'
 import { observer, inject } from 'mobx-react'
 import getNode from 'util/getNode'
 import './index.less'
-import { Input, message, Button, Select, Switch, Pagination, Modal } from 'antd'
+import { Input, message, Button, Select, Switch, Pagination, Modal, Skeleton } from 'antd'
 import MSelect from 'util/MSelect'
 import * as DATE from 'util/date'
 import * as CT from 'util/convert'
@@ -22,11 +22,10 @@ class Homepos extends React.Component {
     super(props)
     this.action = props.projectActions
     this.state = {
+      loading: false,
       curPos: [],
-      msg: [],
-      cur_id: null
+      msg: []
     }
-
   }
 
   componentWillMount() {
@@ -35,10 +34,12 @@ class Homepos extends React.Component {
   }
 
   pos = async (project) => {
+    this.setState({ loading: true })
     let r = await this.action.projPos(project)
     if (r && r.code === 200) {
       this.setState({
         curPos: r.data,
+        loading: false
       })
     }
   }
@@ -49,7 +50,7 @@ class Homepos extends React.Component {
       Modal.success({
         title: '見送り成功！',
         okText: "確認",
-        onOk: () => { 
+        onOk: () => {
           let { project } = this.props
           this.pos(project)
         }
@@ -67,14 +68,12 @@ class Homepos extends React.Component {
     let r = await this.props.applyActions.queryMsg({ id: id })
     if (r && r.code === 200) {
       this.setState({
-        cur_id: id,
         msg: r.data
       })
     }
   }
 
-  sendMsg = async () => {
-    let id = this.state.cur_id
+  sendMsg = async (id, e) => {
     let msg = document.querySelector('#msg_t' + id).value
 
     let time = moment(new Date()).format("YYYY/MM/DD hh:mm")
@@ -97,9 +96,9 @@ class Homepos extends React.Component {
   render() {
     let { curPos } = this.state
     let { msg } = this.state
-    let { curid } = this.state
     return (
       <div className="g-homepos ">
+        <Skeleton  loading={this.state.loading}>
         {curPos.length > 0 &&
           <div className="m-row-f m-row-tl">
             <span>応募者</span>
@@ -121,18 +120,20 @@ class Homepos extends React.Component {
                   {CT.strToName(item.status, CD.APPLY_STATUS)}
                 </span>
                 <span>
-                  {item.status === 0 && <div>
-                    <Button type="primary" size="small" onClick={this.showMsg.bind(this, item.aid)}>連絡</Button>
+                  <Button type="primary" size="small" onClick={this.showMsg.bind(this, item.aid)}>メッセージ</Button>
+                  {item.status === 0 && 
                     <Button type="primary" size="small">成約</Button>
+                  }
+                  {item.status === 0 && 
                     <Button type="primary" size="small" onClick={this.reject.bind(this, item.aid, item.id)}>見送り</Button>
-                  </div>
                   }
                 </span>
               </div>
 
               <div className="m-msg" id={"msg_w" + item.aid}>
                 <div className="m-msg-wrap">
-                  {msg.map((item, index) =>
+                  {
+                    msg.map((item, index) =>
                     <div className="m-msg-row" key={index}>
                       <span className={(item.msg_type != 0) ? "m-user m-left" : "m-user m-right"} >
                         {(item.msg_type != 0) ? "my" : item.msg_from}
@@ -145,13 +146,17 @@ class Homepos extends React.Component {
                     </div>
                   )}
                 </div>
-                <TextArea className="m-msg-cnt" rows={3} id={"msg_t" + item.aid} />
-                <Button type="primary" className="m-btn-send" htmlType="button" onClick={this.sendMsg}>发送</Button>
+                {item.status === 0 && <div>
+                  <TextArea className="m-msg-cnt" rows={3} id={"msg_t" + item.aid} />
+                  <Button type="primary" className="m-btn-send" htmlType="button" onClick={this.sendMsg.bind(this, item.aid)}>发送</Button>
+                </div>
+                }
               </div>
 
             </div>
           )
         })}
+        </Skeleton>
       </div>
     )
   }

@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react'
 import { Input } from 'antd';
 import getNode from 'util/getNode'
 import './index.less'
-import { message, Button, Select, Switch, Pagination } from 'antd'
+import { message, Button, Select, Switch, Pagination, Skeleton } from 'antd'
 import MSelect from 'util/MSelect'
 import * as DATE from 'util/date'
 import * as CT from 'util/convert'
@@ -23,6 +23,7 @@ class Homeproj extends React.Component {
     this.store = props.projectStore
 
     this.state = {
+      loading: false,
       curPage: 1,
       showDetail: false,
       showChange: false,
@@ -38,9 +39,11 @@ class Homeproj extends React.Component {
 
   componentWillMount() {
     let { query } = this.state
+    this.setState({ loading: true });
     query["pid"] = getValue(this.props.userStore.user, 'user.id', '')
     this.setState({
-      query: query
+      query: query,
+      loading: false
     })
 
     this.action.projQuery(query)
@@ -53,9 +56,9 @@ class Homeproj extends React.Component {
     })
   }
 
-  showDetail = async (item)=>{
+  showDetail = async (item) => {
     this.setState({ loading: true });
-    let r = await this.action.projDetail({id:item.id})
+    let r = await this.action.projDetail({ id: item.id })
     if (r && r.code === 200) {
       this.setState({
         showDetail: true,
@@ -75,7 +78,6 @@ class Homeproj extends React.Component {
         curProj: item,
         loading: false,
       })
-
     }
   }
 
@@ -102,27 +104,27 @@ class Homeproj extends React.Component {
     }
   }
 
-  setVal = (id,e) =>{
-    let {query} = this.state
+  setVal = (id, e) => {
+    let { query } = this.state
     query[id] = e.currentTarget.value
     this.setState({
       query: query
     })
   }
 
-  setMVal = (id,val) =>{
-    let {query} = this.state
+  setMVal = (id, val) => {
+    let { query } = this.state
     query[id] = val
     this.setState({
       query: query
     })
   }
 
-  closeProj = ()=>{
-    
+  closeProj = () => {
+
   }
 
-  
+
   render() {
 
     let { showAdv, curPage, curProj, showDetail, showChange, detail, change } = this.state
@@ -143,31 +145,32 @@ class Homeproj extends React.Component {
 
     return (
       <div className='g-homeproj'>
+        <Skeleton loading={this.state.loading}>
+          {showDetail && <ProjDetail show={showDetail} project={curProj} detail={detail} close={this.closeDetail} />}
+          {showChange && <ChangeProj show={showChange} project={curProj} change={change} close={this.closeChange} />}
 
-        {showDetail && <ProjDetail show={showDetail} project={curProj} detail={detail} close={this.closeDetail} />}
-        {showChange && <ChangeProj show={showChange} project={curProj} change={change} close={this.closeChange} />}
+          <Pagination defaultCurrent={1} total={projList.length} onChange={this.showPageData} />
+          {pageList.map((item, index) => {
 
-        <Pagination defaultCurrent={1} total={projList.length} onChange={this.showPageData} />
-        {pageList.map((item, index) => {
-
-          return (
-            <div className="m-proj-item" key={index}>
-              <div className="m-proj-row">
-                <div className="m-proj-id">{(index + 1) + (curPage - 1) * PAGESIZE}.</div>
-                <div className="m-proj-name">{item.proj_name}</div>
-                <div className="m-proj-co m-date">{DATE.convertI2S(item.date_from)} ~ {DATE.convertI2S(item.date_to)}</div>
-                <div className="m-proj-row m-proj-row-f">
-                  <Button type="default" htmlType="submit" className="c-grey" onClick={this.showDetail.bind(this, item)}>詳細を見る</Button>
-                  <Button type="default" htmlType="submit" className="c-grey" onClick={this.showChange.bind(this, item)}>案件を変更</Button>
-                  <Button type="default" htmlType="submit" className="c-grey" onClick={this.closeProj.bind(this, item)}>案件を終了</Button>
+            return (
+              <div className="m-proj-item" key={index}>
+                <div className="m-proj-row">
+                  <div className="m-proj-id">{(index + 1) + (curPage - 1) * PAGESIZE}.</div>
+                  <div className="m-proj-name">{item.proj_name}</div>
+                  <div className="m-proj-co m-date">{DATE.convertI2S(item.date_from)} ~ {DATE.convertI2S(item.date_to)}</div>
+                  <div className="m-proj-row m-proj-row-f">
+                    <Button type="default" htmlType="submit" className="c-grey" onClick={this.showDetail.bind(this, item)}>詳細を見る</Button>
+                    <Button type="default" htmlType="submit" className="c-grey" onClick={this.showChange.bind(this, item)}>案件を変更</Button>
+                    <Button type="default" htmlType="submit" className="c-grey" onClick={this.closeProj.bind(this, item)}>案件を終了</Button>
+                  </div>
                 </div>
-              </div>
 
-              <Homepos project={item.id}/>
-            </div>
-          )
-        })}
-        <Pagination defaultCurrent={1} total={projList.length} onChange={this.showPageData} />
+                <Homepos project={item.id} />
+              </div>
+            )
+          })}
+          <Pagination defaultCurrent={1} total={projList.length} onChange={this.showPageData} />
+        </Skeleton>
       </div>
     )
   }
