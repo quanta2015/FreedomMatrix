@@ -13,7 +13,7 @@ var jwt= require('jsonwebtoken')
 var auth = require('./db/auth')
 var conf = require('./db/conf')
 
-const valid = (d) => { return ((typeof(d) != 'undefined')&&(d.length !== 0))?true:false }
+const valid = (d) => { return ((typeof(d) != 'undefined')&&(d.length !== 0))?true: false }
 const frmat = (d) => { return d.sort().join('|') }
 const clone = (e) =>{ return JSON.parse(JSON.stringify(e))}
 　
@@ -269,7 +269,7 @@ app.post('/user/reg', function(req, res, next) {
             user:account, 
             exp: expList
           }
-          res.status(200).json({ code: 200, msg: 'reg successful', data: data  })
+          res.status(200).json({ code: 200, msg: 'reg successful', data: data })
         }else{
           res.status(200).json({ code: 201, msg: 'user exist', data: null })
         }
@@ -300,7 +300,7 @@ app.post('/user/save', function(req, res, next) {
           user:account, 
           exp: expList
         }
-        res.status(200).json({ code: 200, msg: 'reg successful', data: data  })
+        res.status(200).json({ code: 200, msg: 'reg successful', data: data })
       }else{
         res.status(200).json({ code: 201, msg: 'user exist', data: null })
       }
@@ -328,7 +328,7 @@ app.post('/user/savecomp', function(req, res, next) {
           user:account, 
           exp: expList
         }
-        res.status(200).json({ code: 200, msg: 'reg successful', data: data  })
+        res.status(200).json({ code: 200, msg: 'reg successful', data: data })
       }else{
         res.status(200).json({ code: 201, msg: 'user exist', data: null })
       }
@@ -360,7 +360,7 @@ app.post('/user/regcomp', function(req, res, next) {
           token: jwt.sign({ email: account.email, pwd: account.pwd }, secret),
           user:account
         }
-        res.status(200).json({ code: 200, msg: 'reg successful', data: data  })
+        res.status(200).json({ code: 200, msg: 'reg successful', data: data })
       }else{
         res.status(200).json({ code: 201, msg: 'user exist', data: null })
       }
@@ -502,7 +502,6 @@ app.post('/proj/pos',  function(req, res, next) {
   
   table = 'position inner join apply on position.id = apply.pid inner join account ON apply.cid = account.id'
   where = `where position.pid=${id}`
-  if()
   select = '*, apply.id as aid'
   db.selectSP(select,table,where,'','', (err,ret)=>{
     res.status(200).json({

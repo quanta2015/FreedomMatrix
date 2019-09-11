@@ -43,11 +43,25 @@ class Homepos extends React.Component {
     }
   }
 
+  reject = async (id, uid) => {
+    let r = await this.props.applyActions.dismissApply({ id: id, status: 3, uid: uid })
+    if (r && r.code === 200) {
+      Modal.success({
+        title: '見送り成功！',
+        okText: "確認",
+        onOk: () => { 
+          let { project } = this.props
+          this.pos(project)
+        }
+      })
+    }
+  }
+
   showMsg = async (id, e) => {
     let msg = document.querySelector('#msg_w' + id)
     if (msg.classList.contains('fn-show')) {
       msg.classList.remove('fn-show')
-    }else{
+    } else {
       msg.classList.add('fn-show')
     }
     let r = await this.props.applyActions.queryMsg({ id: id })
@@ -62,7 +76,7 @@ class Homepos extends React.Component {
   sendMsg = async () => {
     let id = this.state.cur_id
     let msg = document.querySelector('#msg_t' + id).value
-    
+
     let time = moment(new Date()).format("YYYY/MM/DD hh:mm")
     this.setState({ loading: true })
     let r = await this.props.applyActions.sendMsg({ id: id, msg: msg, type: 1, time: time })
@@ -107,9 +121,12 @@ class Homepos extends React.Component {
                   {CT.strToName(item.status, CD.APPLY_STATUS)}
                 </span>
                 <span>
-                  <Button type="primary" size="small" onClick={this.showMsg.bind(this, item.aid)}>連絡</Button>
-                  <Button type="primary" size="small">成約</Button>
-                  <Button type="primary" size="small">見送り</Button>
+                  {item.status === 0 && <div>
+                    <Button type="primary" size="small" onClick={this.showMsg.bind(this, item.aid)}>連絡</Button>
+                    <Button type="primary" size="small">成約</Button>
+                    <Button type="primary" size="small" onClick={this.reject.bind(this, item.aid, item.id)}>見送り</Button>
+                  </div>
+                  }
                 </span>
               </div>
 
@@ -131,7 +148,7 @@ class Homepos extends React.Component {
                 <TextArea className="m-msg-cnt" rows={3} id={"msg_t" + item.aid} />
                 <Button type="primary" className="m-btn-send" htmlType="button" onClick={this.sendMsg}>发送</Button>
               </div>
-            
+
             </div>
           )
         })}
