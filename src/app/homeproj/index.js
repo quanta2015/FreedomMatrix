@@ -120,8 +120,8 @@ class Homeproj extends React.Component {
     })
   }
 
-  closeProj = () => {
-
+  closeProj = (item) => {
+    
   }
 
 

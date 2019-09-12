@@ -58,6 +58,20 @@ class Homepos extends React.Component {
     }
   }
 
+  accept = async (id, uid) => {
+    let r = await this.props.applyActions.dismissApply({ id: id, status: 2, uid: uid })
+    if (r && r.code === 200) {
+      Modal.success({
+        title: '成約成功！',
+        okText: "確認",
+        onOk: () => {
+          let { project } = this.props
+          this.pos(project)
+        }
+      })
+    }
+  }
+
   showMsg = async (id, e) => {
     let msg = document.querySelector('#msg_w' + id)
     if (msg.classList.contains('fn-show')) {
@@ -123,7 +137,7 @@ class Homepos extends React.Component {
                 <span>
                   <Button type="primary" size="small" onClick={this.showMsg.bind(this, item.aid)}>メッセージ</Button>
                   {item.status === 0 && 
-                    <Button type="primary" size="small">成約</Button>
+                    <Button type="primary" size="small" onClick={this.accept.bind(this, item.aid, item.id)}>成約</Button>
                   }
                   {item.status === 0 && 
                     <Button type="primary" size="small" onClick={this.reject.bind(this, item.aid, item.id)}>見送り</Button>
