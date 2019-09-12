@@ -85,7 +85,16 @@ class ProjectActions extends BaseActions {
     return r
   }
 
-
+  @action
+  async projStatus(params) {
+    let r = await this.post(urls.API_PROJ_STATUS, params, true)
+    runInAction(() => {
+      this.store.pos = {
+        data: r.data
+      }
+    })
+    return r
+  }
 
 
   

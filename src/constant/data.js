@@ -126,6 +126,6 @@ export const APPLY_STATUS = [{txt: '应募中',  val:0},
                              {txt: '成約',  val:2},
                              {txt: '見送り', val:3}]
 
-export const PROJ_STATUS  = [{txt:  '未发布', val:0},
-                             {txt:  '应募中', val:1},
+export const PROJ_STATUS  = [{txt:  '应募中', val:0},
+                             {txt:  '未发布', val:1},
                              {txt:  '结束'  , val:2}]

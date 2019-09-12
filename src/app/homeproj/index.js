@@ -120,8 +120,19 @@ class Homeproj extends React.Component {
     })
   }
 
-  closeProj = (item) => {
-    
+  closeProj = async (item) => {
+    let r = await this.action.projStatus({ id: item.id, status: 2 })
+    if (r && r.code === 200) {
+      Modal.success({
+        title: '案件終了！',
+        okText: "確認",
+        onOk: () => {
+          this.setState({
+            loading: false
+          })
+        }
+      })
+    }
   }
 
 
@@ -156,12 +167,21 @@ class Homeproj extends React.Component {
               <div className="m-proj-item" key={index}>
                 <div className="m-proj-row">
                   <div className="m-proj-id">{(index + 1) + (curPage - 1) * PAGESIZE}.</div>
+                  {item.status === 0 &&
                   <div className="m-proj-name">{item.proj_name}</div>
+                  }
+                  {item.status === 2 &&
+                  <div className="m-proj-name">{item.proj_name}(終了)</div>
+                  }
                   <div className="m-proj-co m-date">{DATE.convertI2S(item.date_from)} ~ {DATE.convertI2S(item.date_to)}</div>
                   <div className="m-proj-row m-proj-row-f">
                     <Button type="default" htmlType="submit" className="c-grey" onClick={this.showDetail.bind(this, item)}>詳細を見る</Button>
-                    <Button type="default" htmlType="submit" className="c-grey" onClick={this.showChange.bind(this, item)}>案件を変更</Button>
-                    <Button type="default" htmlType="submit" className="c-grey" onClick={this.closeProj.bind(this, item)}>案件を終了</Button>
+                    {item.status != 2 &&
+                      <Button type="default" htmlType="submit" className="c-grey" onClick={this.showChange.bind(this, item)}>案件を変更</Button>
+                    }
+                    {item.status === 0 &&
+                      <Button type="default" htmlType="submit" className="c-grey" onClick={this.closeProj.bind(this, item)}>案件を終了</Button>
+                    }
                   </div>
                 </div>
 

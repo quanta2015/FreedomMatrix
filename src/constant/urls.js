@@ -33,6 +33,7 @@ export const API_PROJ_ADD    = API_SERVER + '/proj/add'
 export const API_PROJ_CHANGE    = API_SERVER + '/proj/change'
 export const API_PROJ_DETAIL = API_SERVER + '/proj/detail'
 export const API_PROJ_POS_DETAIL= API_SERVER + '/proj/posdetail'
+export const API_PROJ_STATUS    = API_SERVER + '/proj/status'
 
 
 

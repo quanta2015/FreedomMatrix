@@ -16,7 +16,6 @@ var conf = require('./db/conf')
 const valid = (d) => { return ((typeof(d) != 'undefined')&&(d.length !== 0))?true: false }
 const frmat = (d) => { return d.sort().join('|') }
 const clone = (e) =>{ return JSON.parse(JSON.stringify(e))}
-　
 
 var port = 1080;
 var secret = conf.secret
@@ -51,8 +50,6 @@ app.get('/', function(req, res, next) {
   res.sendFile(__dirname + '/index.html');
 });
 
-
-
 app.post('/apply/query',function(req, res) {
   var {id} = req.body
   let sql = `CALL PROC_GET_APPLY(?)`;
@@ -72,7 +69,6 @@ app.post('/apply/query',function(req, res) {
       }
   })
 })
-
 
 app.post('/apply/add', function(req, res) {
   let sql  = `CALL PROC_ADD_APPLY(?)`;
@@ -106,7 +102,6 @@ app.post('/apply/setstatus', function(req, res) {
   })
 })
 
-
 app.post('/apply/sendmsg', function(req, res) {
   let sql  = `CALL PROC_SEND_MSG(?)`;
   let params = req.body
@@ -130,13 +125,6 @@ app.post('/apply/querymsg', function(req, res) {
     }
   })
 })
-
-
-
-
-
-
-
 
 app.post('/fav/add', function(req, res) {
   let sql  = `CALL PROC_ADD_FAV(?)`;
@@ -642,6 +630,18 @@ app.post('/proj/change', function(req, res, next) {
   })
 
 });
+
+app.post('/proj/status', function(req, res) {
+  let sql  = `CALL PROC_STATUS_PROJ(?)`;
+  let params = req.body
+  db.procedureSQL(sql,JSON.stringify(params),(err,ret)=>{
+    if (err) {
+      res.status(500).json({ code: -1, msg: 'change project status failed', data: null})
+    }else{
+      res.status(200).json({ code: 200, data: ret })
+    }
+  })
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
