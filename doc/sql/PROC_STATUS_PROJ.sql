@@ -5,10 +5,10 @@ BEGIN
 	
 	set id   = CONVERT(JSON_EXTRACT(data,'$.id'),UNSIGNED);
 	set stat = CONVERT(JSON_EXTRACT(data,'$.status'),UNSIGNED);
-	
-	update project p set p.status = stat where p.id =id;
+	update project p set p.status = stat where p.id = id;
 	commit;
-	
+    update apply a set a.status = 3 where a.status = 0 and a.pid in (select pos.id from position pos where pos.pid = id);
+	commit;
 	select p.id,
 		p.status
 	from 

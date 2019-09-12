@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react'
 import { Input } from 'antd';
 import getNode from 'util/getNode'
 import './index.less'
-import { message, Button, Select, Switch, Pagination, Skeleton } from 'antd'
+import { message, Button, Select, Switch, Pagination, Skeleton, Modal} from 'antd'
 import MSelect from 'util/MSelect'
 import * as DATE from 'util/date'
 import * as CT from 'util/convert'
@@ -121,12 +121,15 @@ class Homeproj extends React.Component {
   }
 
   closeProj = async (item) => {
+    this.setState({ loading: true });
     let r = await this.action.projStatus({ id: item.id, status: 2 })
     if (r && r.code === 200) {
       Modal.success({
         title: '案件終了！',
         okText: "確認",
         onOk: () => {
+          let { query } = this.state
+          this.action.projQuery(query)
           this.setState({
             loading: false
           })
