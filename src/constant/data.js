@@ -121,7 +121,7 @@ export const projrespList = [{txt: '計画調査',  val:'0'},
                              
 
 
-export const APPLY_STATUS = [{txt: '应募中',  val:0},
+export const APPLY_STATUS = [{txt: '应募済み',  val:0},
                              {txt: '辞退',  val:1},
                              {txt: '成約',  val:2},
                              {txt: '見送り', val:3}]
