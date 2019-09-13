@@ -13,9 +13,6 @@ import * as date  from 'util/date'
 import * as regex from 'util/regex'
 import moment  from 'moment'
 import { toJS } from 'mobx'
-
-
-
 import PosDetail from 'app/posdetail'
 
 const { TabPane } = Tabs;

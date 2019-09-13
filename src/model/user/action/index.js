@@ -59,7 +59,7 @@ class UserActions extends BaseActions {
   @action
   async regComp(params) {
     let r = await this.post(urls.API_COMP_REG, params, true)
-    // this.store.exp = null
+
     if(r.code === 200){
       this.saveData(r, this.store)
     }

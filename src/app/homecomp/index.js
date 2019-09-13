@@ -25,7 +25,7 @@ const { TextArea } = Input;
 class Homecomp extends React.Component {
   constructor(props) {
     super(props)
-    this.store = props.projectStore
+    
     regex.va_start()
     this.state = {
       editable: false
@@ -70,7 +70,7 @@ class Homecomp extends React.Component {
   }
 
   render() {
-    const { editable} = this.state
+    const { editable } = this.state
     const { user } = this.props.userStore
     const name_comp = getValue(user, 'user.name_comp', '')
     const name_dept = getValue(user, 'user.name_dept', '')
@@ -78,7 +78,6 @@ class Homecomp extends React.Component {
     const phone = getValue(user, 'user.phone', '')
     const name_kj = getValue(user, 'user.name_kj', '')
     const name_kn = getValue(user, 'user.name_kn', '')
-    const posList = clone(getValue(user, 'pos', []))
     let act = this.props.userActions
 
     return (
@@ -168,12 +167,6 @@ class Homecomp extends React.Component {
               <Homeproj />
             </div>
           </TabPane>
-
-          {/* <TabPane tab={MSG.TAB_HOME_PROJ} key="3" className="m-tab-userinfo">
-            <ProjaddApp/>
-          </TabPane> */}
-
-
         </Tabs>
       </div>
     )
