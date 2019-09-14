@@ -410,12 +410,12 @@ app.post('/proj/query',  function(req, res, next) {
   let data = req.body
   let len = Object.getOwnPropertyNames(data).length
   let table = 'project'
-  let where,order,limit
+  let where,limit
+  let order =  ' order by id desc' 
   
   console.log(len)
   if(typeof(data.pid) != 'undefined'){
     where = `where pid=${data.pid}`
-    order =  ' order by id desc' 
     limit =  ""
   }
   else if (len>0) {
@@ -430,7 +430,6 @@ app.post('/proj/query',  function(req, res, next) {
     let proj_resp = data.proj_resp
     let proj_role = data.proj_role
     let proj_cont = data.proj_cont
-    order = " order by id"
     limit = ""
 
     if (valid(proj_lang)) {
@@ -473,7 +472,6 @@ app.post('/proj/query',  function(req, res, next) {
     }
   }else{
     where = ''
-    order =  ' order by id desc' 
     limit =  ' limit 10'
   }
 
