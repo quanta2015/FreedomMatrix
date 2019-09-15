@@ -113,7 +113,6 @@ class Homepos extends React.Component {
     let { msg } = this.state
     return (
       <div className="g-homepos ">
-        <Skeleton  loading={this.state.loading}>
         {curPos.length > 0 &&
           <div className="m-row-f m-row-tl">
             <span>応募者</span>
@@ -172,7 +171,6 @@ class Homepos extends React.Component {
             </div>
           )
         })}
-        </Skeleton>
       </div>
     )
   }
