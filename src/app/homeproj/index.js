@@ -47,7 +47,6 @@ class Homeproj extends React.Component {
     })
 
     this.action.projQuery(query)
-
   }
 
   showPageData = (index) => {
