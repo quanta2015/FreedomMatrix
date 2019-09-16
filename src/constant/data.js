@@ -2,11 +2,23 @@ export const DATE_FORMAT  = 'YYYY/MM/DD'
 export const MONTH_FORMAT = 'YYYY/MM'
 
 
+// export const MAIN_MENU = [{ title:'案件検索', icon:'search',  path:'/projquery', type: 0 },{
+//                             title:'案件登録', icon:'laptop',  path:'/projadd',   type: 2 },{
+//                             title:'会員HOME', icon:'user',    path:'/homeuser',  type: 1 },{
+//                             title:'会社HOME', icon:'user',    path:'/homecomp',  type: 2 },{
+//                             title:'お問い合わせ', icon:'question-circle', path:'/question', type: 0 },{
+//                             title: 'その他', icon:'user', type: 0, submenu:  
+//                               [{ title:'運営企業', icon:'profile', path:'/management', type: 0 },
+//                                { title:'利用規約', icon:'profile', path:'/rule', type: 0 },
+//                                { title:'プライバシーポリシー', icon:'profile', path:'/privacy', type: 0 },
+//                                { title:'お役たち情報', icon:'profile', path:'/news', type: 0 }]
+//                           }]
+
+
 export const MAIN_MENU = [{ title:'案件検索', icon:'search',  path:'/projquery', type: 0 },{
                             title:'案件登録', icon:'laptop',  path:'/projadd',   type: 2 },{
                             title:'会員HOME', icon:'user',    path:'/homeuser',  type: 1 },{
                             title:'会社HOME', icon:'user',    path:'/homecomp',  type: 2 },{
-                            title:'お問い合わせ', icon:'question-circle', path:'/question', type: 0 },{
                             title: 'その他', icon:'user', type: 0, submenu:  
                               [{ title:'運営企業', icon:'profile', path:'/management', type: 0 },
                                { title:'利用規約', icon:'profile', path:'/rule', type: 0 },
