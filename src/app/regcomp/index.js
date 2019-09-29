@@ -85,49 +85,48 @@ class Reg extends React.Component {
           <Form.Item label="会社名">
             {getFieldDecorator('name_comp', {
               rules: [{ required: true, message: '会社名を入力してください' }],
-              initialValue: 'テスト' 
+              initialValue: '' 
             })(<Input placeholder="自由陣株式会社" />)}
           </Form.Item>
           <Form.Item label="部署">
             {getFieldDecorator('name_dept', {
               rules: [{ required: true, message: '部署を入力してください' }],
-              initialValue: 'テスト部' 
+              initialValue: '' 
             })(<Input placeholder="総務部、人事部、経理部、営業部、開発部等" />)}
           </Form.Item>
           <Form.Item label="担当者氏名（漢字）">
             {getFieldDecorator('name_kj', {
               rules: [{ required: true, message: '担当者氏名（漢字）を入力してください' }],
-              initialValue: 'テスト' 
+              initialValue: '' 
             })(<Input placeholder="自由陣　太郎"/>)}
           </Form.Item>
           <Form.Item label="担当者氏名（カナ）">
             {getFieldDecorator('name_kn', {
               rules: [{ required: true, message: '氏名（カナ）を入力してください' }],
-              initialValue: 'テスト' 
+              initialValue: '' 
             })(<Input placeholder="ジユウジン　タロウ"/>)}
           </Form.Item>
           <Form.Item label="電話番号">
             {getFieldDecorator('input-number-phone', {
-              rules: [{ required: true, type:'number', min:10000000000, max:99999999999,  message: '電話番号を入力してください' }],
-              initialValue: 12345678901
+              rules: [{ required: true, type:'number', min:10000000000, max:99999999999,  message: '電話番号を入力してください' }]
             })(<InputNumber placeholder="01234567890（ハイフン不要）" style={{width:'100%'}} />)}
           </Form.Item>
           <Form.Item label="メールアドレス">
             {getFieldDecorator('email', {
               rules: [{ required: true, message: 'メールアドレスを入力してください' }],
-              initialValue:'test@gmail.com'
+              initialValue:''
             })(<Input placeholder="email@address.com" />)}
           </Form.Item>
           <Form.Item label="パスワード">
             {getFieldDecorator('pwd', {
               rules: [{ required: true, message: 'パスワードを入力してください' }],
-              initialValue: '123' 
+              initialValue: '' 
             })(<Input.Password placeholder=""/>)}
           </Form.Item>
           <Form.Item label="パスワード（確認用）">
             {getFieldDecorator('repwd', {
               rules: [{ required: true, message: 'パスワードを再入力してください' }],
-              initialValue: '123' 
+              initialValue: '' 
             })(<Input.Password placeholder=""/>)}
           </Form.Item>   
 

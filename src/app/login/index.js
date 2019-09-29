@@ -4,7 +4,7 @@ import { Form, Button, Input, Icon } from 'antd'
 import { NavLink } from 'react-router-dom'
 import './index.less'
 const FormItem = Form.Item
-import * as MSG  from 'constant/msg'
+import * as MSG from 'constant/msg'
 
 @Form.create()
 @inject('userActions', 'userStore')
@@ -22,33 +22,33 @@ class Login extends React.Component {
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
         let r = await this.actions.login(values)
-        if (r && r.code === 200) {   
-          if(r.data.user.usertype == 1){
+        if (r && r.code === 200) {
+          if (r.data.user.usertype == 1) {
             window.location.assign(`${window.location.origin}${window.location.pathname}#/homecomp`)
-          }else{
+          } else {
             window.location.assign(`${window.location.origin}${window.location.pathname}#/homeuser`)
-          }  
+          }
         }
       }
     })
   }
 
   render() {
-    const {  getFieldDecorator } = this.props.form
+    const { getFieldDecorator } = this.props.form
 
     return (
       <div className='g-login'>
         <div className='m-login'>
           <div className='login__header'>
-            <span>自由阵ログイン </span>
+            <span>自由陣ログイン</span>
           </div>
 
           <div className='login__form'>
             <Form onSubmit={this.handleSubmit}>
               <FormItem hasFeedback>
-                {getFieldDecorator('email', { 
+                {getFieldDecorator('email', {
                   rules: [{ required: true, message: MSG.MSG_INPUT_ACCOUNT }],
-                  initialValue: 'liy@163.com'
+                  initialValue: ''
                 })(
                   <Input
                     name='email'
@@ -58,10 +58,12 @@ class Login extends React.Component {
                 )}
               </FormItem>
               <FormItem hasFeedback>
-                {getFieldDecorator('pwd', { 
-                  rules: [{ required: true, message: MSG.MSG_INPUT_PWD,
-                  initialValue: 'aaa'
-                }] })(
+                {getFieldDecorator('pwd', {
+                  rules: [{
+                    required: true, message: MSG.MSG_INPUT_PWD,
+                    initialValue: ''
+                  }]
+                })(
                   <Input
                     prefix={<Icon type='lock' />}
                     name='pwd'
@@ -73,7 +75,7 @@ class Login extends React.Component {
 
               <Form.Item formItemLayout='vertical'>
                 <Button className='login__btn' >
-                  <NavLink to='/'><span>返回</span></NavLink> 
+                  <NavLink to='/'><span>返回</span></NavLink>
                 </Button>
                 <Button className='login__btn' type='primary' htmlType='submit' > 登录 </Button>
               </Form.Item>

@@ -194,31 +194,31 @@ class Reg extends React.Component {
           <Form.Item label="メールアドレス">
             {getFieldDecorator('email', {
               rules: [{ required: true, message: 'メールアドレスを入力してください' }],
-              initialValue:'liyangtom@163.com'
+              initialValue:''
             })(<Input placeholder="email@address.com" />)}
           </Form.Item>
           <Form.Item label="パスワード">
             {getFieldDecorator('pwd', {
               rules: [{ required: true, message: 'パスワードを入力してください' }],
-              initialValue: 'aaa' 
+              initialValue: '' 
             })(<Input.Password placeholder=""/>)}
           </Form.Item>
           <Form.Item label="パスワード（確認用）">
             {getFieldDecorator('repwd', {
               rules: [{ required: true, message: 'パスワードを再入力してください' }],
-              initialValue: 'aaa' 
+              initialValue: '' 
             })(<Input.Password placeholder=""/>)}
           </Form.Item>
           <Form.Item label="氏名（漢字）">
             {getFieldDecorator('name_kj', {
               rules: [{ required: true, message: '氏名を入力してください' }],
-              initialValue: 'liyangtom' 
+              initialValue: '' 
             })(<Input placeholder="自由陣　太郎" />)}
           </Form.Item>
           <Form.Item label="氏名（カナ）">
             {getFieldDecorator('name_kn', {
               rules: [{ required: true, message: '氏名（カナ）を入力してください' }],
-              initialValue: 'tom' 
+              initialValue: '' 
             })(<Input placeholder="ジユウジン　タロウ"/>)}
           </Form.Item>
           <Form.Item label="生年月日">
@@ -226,13 +226,12 @@ class Reg extends React.Component {
               rules: [{ required: true,　message: '生年月日を入力してください' }],
             })(<DatePicker className="m-form-text"          
                             placeholder='年/月/日'              
-                            format= {CD.DATE_FORMAT}              
+                            format= {CD.DATE_FORMAT}  
             />)}
           </Form.Item>
           <Form.Item label="電話番号">
             {getFieldDecorator('input-number-phone', {
-              rules: [{ required: true, type:'number', min:10000000000, max:99999999999,  message: '電話番号を入力してください' }],
-              initialValue: 12345678901
+              rules: [{ required: true, type:'number', min:10000000000, max:99999999999,  message: '電話番号を入力してください' }]
             })(<InputNumber placeholder="01234567890（ハイフン不要）" style={{width:'100%'}} />)}
           </Form.Item>
           <Form.Item label="カテゴリー">
@@ -253,9 +252,9 @@ class Reg extends React.Component {
               initialValue: ['0']
             })(<MSelect className="m-form-text" data={CD.workareaList}/> )}
           </Form.Item>
-          <Form.Item label="希望稼働時期">
+          <Form.Item label="稼働可能なタイミング">
             {getFieldDecorator('select-multiple-work_time', {
-              rules: [{ required: true, type: 'array', message: '希望稼働時期を選択してください' }],
+              rules: [{ required: true, type: 'array', message: '稼働可能なタイミングを選択してください' }],
               initialValue: ["0"]
             })(<MSelect className="m-form-text" data={CD.worktimeList}/> )}
           </Form.Item>
@@ -265,9 +264,9 @@ class Reg extends React.Component {
               initialValue: 10
             })(<InputNumber placeholder="数字（単位：万円）" />)}
           </Form.Item>
-          <Form.Item label="希望働き方">
+          <Form.Item label="希望の働き方">
             {getFieldDecorator('select-multiple-work_type', {
-              rules: [{ required: true, type: 'array', message: '希望働き方を選択してください' }],
+              rules: [{ required: true, type: 'array', message: '希望の働き方を選択してください' }],
               initialValue: ["0"]
             })(<MSelect className="m-form-text" data={CD.worktypeList}/>)}
           </Form.Item>

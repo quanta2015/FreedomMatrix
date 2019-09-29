@@ -116,7 +116,7 @@ class Homepos extends React.Component {
         {curPos.length > 0 &&
           <div className="m-row-f m-row-tl">
             <span>応募者</span>
-            <span>ポジション</span>
+            <span>職種</span>
             <span>ステータス</span>
             <span>進捗</span>
           </div>

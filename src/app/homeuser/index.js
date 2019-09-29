@@ -440,10 +440,10 @@ class Homeuser extends React.Component {
               <div className="m-fav">
                 <div className="m-row-f m-row-tl">
                   <span>ID</span>
-                  <span>プロジェクト名</span>
-                  <span>開始日-締め切り</span>
+                  <span>案件名</span>
+                  <span>稼働期間</span>
                   <span>勤務地</span>
-                  <span>状態</span>
+                  <span>進捗</span>
                   <span>気になる</span>
                 </div>
               {appList.map((e,index)=>{
@@ -480,10 +480,10 @@ class Homeuser extends React.Component {
               <div className="m-fav">
                 <div className="m-row-f m-row-tl">
                   <span>ID</span>
-                  <span>プロジェクト名</span>
-                  <span>開始日-締め切り</span>
+                  <span>案件名</span>
+                  <span>稼働期間</span>
                   <span>勤務地</span>
-                  <span>状態</span>
+                  <span>進捗</span>
                   <span>気になる</span>
                 </div>
               {favList.map((e,index)=>{

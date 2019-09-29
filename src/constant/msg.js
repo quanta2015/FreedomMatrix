@@ -11,9 +11,9 @@ export const MSG_FORM_BIRTH     = '生年月日'
 export const MSG_FORM_EMAIL     = 'メールアドレス'
 export const MSG_FORM_PS_TYPE   = 'カテゴリー'
 export const MSG_FORM_HP_AREA   = '勤務希望エリア'
-export const MSG_FORM_HP_TIME   = '希望稼働時期'
+export const MSG_FORM_HP_TIME   = '稼働可能なタイミング'
 export const MSG_FORM_HP_MONEY  = '希望月額報酬（万円）'
-export const MSG_FORM_HP_TYPE   = '希望働き方'
+export const MSG_FORM_HP_TYPE   = '希望の働き方'
 export const MSG_FORM_PR_NAME   = '案件名'
 export const MSG_FORM_PR_PERD   = '期间'
 export const MSG_FORM_PR_LANG   = '経験言語'
@@ -39,7 +39,7 @@ export const MSG_FORM_HOPE      = '稼働希望'
 export const MSG_FORM_PROJ      = '案件一覧'
 export const MSG_FORM_EXP       = '経験・スキル登録'
 
-export const TAB_HOME_USR_IF    = '用户信息'
+export const TAB_HOME_USR_IF    = '基本情報'
 export const TAB_HOME_APP_PR    = '応募案件'
 export const TAB_HOME_FAV_PR    = '気になる案件'
 export const TAB_HOME_MSG       = 'メッセージ'
@@ -47,7 +47,7 @@ export const TAB_HOME_PROJ      = '案件登録'
 
 
 /*----  button message define  ----*/
-export const MSG_UPDATE         = '修改'
+export const MSG_UPDATE         = '編集'
 export const MSG_SAVE           = '保存'
 
 

@@ -50,7 +50,7 @@ class Dashboard extends React.Component {
       <Menu>
         <Menu.Item>
           <span onClick={this.logout}>
-            <Icon type='poweroff' /> <span>退出登录</span>
+            <Icon type='poweroff' /> <span>ログアウト</span>
           </span>
         </Menu.Item>
       </Menu>
@@ -60,11 +60,12 @@ class Dashboard extends React.Component {
       <Layout className="layout">
         <Header>
           <div className="logo">自由陣</div>
+          {(isLogin===0)&&
           <div className="m-hd-btn m-login">
             <NavLink to='login'>
               <span>ログイン</span>
             </NavLink>
-          </div>
+          </div>}
           <div className="m-hd-btn m-reg">
             <NavLink to='reg'>
               <span>無料登録</span>
@@ -111,7 +112,7 @@ class Dashboard extends React.Component {
           <div className="m-hd-mobile">
             <Drawer
               className="m-mobile-menu"
-              title={ <div><Icon type="codepen" /><span>自由阵</span></div>}
+              title={ <div><Icon type="codepen" /><span>自由陣</span></div>}
               placement="left"
               closable={false}
               onClose={this.onClose}
@@ -147,7 +148,7 @@ class Dashboard extends React.Component {
               <p className="fn-show m-menu_h" onClick={this.logout}>
                 <a href="#/homeuser">
                   <i aria-label="图标: user" className="anticon anticon-user"></i>
-                  <span>退出登录</span>
+                  <span>ログアウト</span>
                 </a>
               </p>}
 

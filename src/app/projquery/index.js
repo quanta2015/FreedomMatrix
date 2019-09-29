@@ -128,10 +128,10 @@ class Projquery extends React.Component {
             <div className="m-co">
               <Input placeholder="Basic usage" id="proj_key" onChange={this.setVal.bind(this,'proj_key')}/>
               <div className="m-adv">
-                <span className="m-tl" >高级检索 </span>
+                <span className="m-tl" >詳細検索 </span>
                 <Switch size="small" onChange={this.showAdv}/>
               </div>
-              <Button type="primary" className="m-btn-search" onClick={this.query}> 案件を探す</Button>
+              <Button type="primary" className="m-btn-search" onClick={this.query}>検索</Button>
             </div>
           </div>
           <div className="m-row">
@@ -144,7 +144,7 @@ class Projquery extends React.Component {
               <MSelect className="m-form-text" placeholder="業界" id="proj_domn" data={CD.projdomnList} onChange={this.setMVal.bind(this,'proj_domn')}/>
             </div>
             <div className="m-col">
-              <span>希望働き方</span>
+              <span>希望の働き方</span>
               <MSelect className="m-form-text" placeholder="こだわり" id="proj_pref" data={CD.projprefList} onChange={this.setMVal.bind(this,'proj_pref')}/>
             </div>
             <div className="m-col">
@@ -178,7 +178,7 @@ class Projquery extends React.Component {
           }
 
           <div className="m-row m-row-mobile"> 
-              <Button type="primary" className="m-btn-search-m" onClick={this.query}> 案件を探す</Button>
+              <Button type="primary" className="m-btn-search-m" onClick={this.query}>検索</Button>
           </div>
 
         </div>

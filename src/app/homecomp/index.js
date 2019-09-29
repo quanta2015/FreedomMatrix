@@ -226,7 +226,7 @@ class Homecomp extends React.Component {
                 <div className="m-tl">
                   <span>{MSG.MSG_FORM_BASIC}</span>
                   <div className="m-fn">
-                    {!editable && <Button htmlType="button" onClick={this.setEdit}>{MSG.MSG_UPDATE}</Button>}
+                    {!editable && <Button htmlType="button"  onClick={this.setEdit}>{MSG.MSG_UPDATE}</Button>}
                     {editable && <Button htmlType="submit" type="danger" >{MSG.MSG_SAVE}</Button>}
                   </div>
                 </div>
