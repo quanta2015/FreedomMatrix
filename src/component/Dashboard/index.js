@@ -60,7 +60,7 @@ class Dashboard extends React.Component {
       <Layout className="layout">
         <Header>
           <div className="logo">自由陣</div>
-          {(isLogin===0)&&
+          {(isLogin === 0 || isLogin == null)&&
           <div className="m-hd-btn m-login">
             <NavLink to='login'>
               <span>ログイン</span>
